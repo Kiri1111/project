@@ -15,7 +15,7 @@ export const App = () => {
         <div className={style.app}>
             <Header/>
             <Routes>
-                <Route path={'/'} element={<Demo/>}/>
+                <Route path={'/project'} element={<Demo/>}/>
                 <Route path={'/*'} element={<Navigate to={'/404'}/>}/>
                 <Route path={'/404'} element={<ErrorNotFound/>}/>
                 <Route path={'/login'} element={<Login/>}/>
