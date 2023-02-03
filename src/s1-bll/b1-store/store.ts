@@ -3,10 +3,12 @@ import {FirsReducerActionsType, firstReducer} from "../b2-reducers/firstReducer"
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {secondReducer, SecondReducerActionsType} from "../b2-reducers/secondReducer";
+import {thirdReducer} from "../b2-reducers/thirdReducer";
 
 const rootReducer = combineReducers({
     first: firstReducer,
-    second:secondReducer
+    second: secondReducer,
+    third: thirdReducer
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
