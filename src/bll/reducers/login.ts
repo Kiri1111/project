@@ -1,8 +1,8 @@
-import {RootThunkType} from "../b1-store/store";
+import {RootThunkType} from "../store/store";
 
 const initialState = {}
 
-export const firstReducer = (state: FirstReducerInitialStateType, action: FirsReducerActionsType): FirstReducerInitialStateType => {
+export const login = (state = initialState , action: FirsReducerActionsType): FirstReducerInitialStateType => {
     switch (action.type) {
         case 'BLA':
             return state

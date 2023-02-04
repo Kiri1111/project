@@ -1,8 +1,8 @@
 import React from 'react';
 import style from './Demo.module.scss'
-import Input from "../../u1-common/c1-components/commonInput/Input";
-import Button from "../../u1-common/c1-components/commonButton/Button";
-import Checkbox from "../../u1-common/c1-components/commonCheckbox/Checkbox";
+import Input from "../../common/components/commonInput/Input";
+import Button from "../../common/components/commonButton/Button";
+import Checkbox from "../../common/components/commonCheckbox/Checkbox";
 
 export const Demo = () => {
     return (

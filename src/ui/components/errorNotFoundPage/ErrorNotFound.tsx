@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './ErrorNotFound.module.scss'
-import error404 from '../../u1-common/c2-assets/images/error404.webp'
+import error404 from '../../common/assets/images/error404.webp'
 
 export const ErrorNotFound = () => {
 
