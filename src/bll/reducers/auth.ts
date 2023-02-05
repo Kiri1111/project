@@ -4,7 +4,7 @@ import {cardsApi} from "../../dal/api/CardsApi";
 import {setUserAC} from "./profile";
 
 const initialState = {
-    isLoggedIn: true,
+    isLoggedIn: false,
     isInitialized: false
 }
 
@@ -36,8 +36,23 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
     try {
         const res = await cardsApi.me()
         dispatch(setUserAC(res.data))
+        dispatch(setIsLoggedInAC(true))
     } catch (e: any) {
 
+    } finally {
+        dispatch(setAppStatus('succeeded'))
+    }
+}
+
+export const logOutTC = (): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
+    const res = await cardsApi.logOut()
+    try {
+        dispatch(setIsLoggedInAC(false))
+    } catch (e: any) {
+
+    } finally {
+        dispatch(setAppStatus('succeeded'))
     }
 }
 ///////Types

@@ -18,7 +18,7 @@ export const App = () => {
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [])
-    
+
     return (
         <div className={style.app}>
             <Header/>

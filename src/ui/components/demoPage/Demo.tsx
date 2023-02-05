@@ -9,7 +9,8 @@ export const Demo = () => {
         <div className={style.demoBlock}>
             <h1>Demo Page</h1>
             <Input/>
-            <Button title={'Click mee)'}/>
+            <Button title={'Click mee)'} onClickCallBack={() => {
+            }}/>
             <Checkbox/>
         </div>
     );
