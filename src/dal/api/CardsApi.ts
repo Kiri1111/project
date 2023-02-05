@@ -10,8 +10,15 @@ export const cardsApi = {
     me() {
         return instance.post<AxiosResponse<ResponseType>>('auth/me')
     },
-    login(data: LoginRequestType) {
-        return instance.post<AxiosResponse<ResponseType>>('auth/login', {data})
+    login() {
+        return instance.post<AxiosResponse<ResponseType>>('auth/login', {
+            // email: "92_medved@mail.ru",
+            // password: "me290815",
+            // rememberMe: false
+        })
+    },
+    logOut() {
+        return instance.delete('auth/me')
     }
 }
 
