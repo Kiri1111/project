@@ -15,7 +15,7 @@ export const Profile = () => {
     return (
         <div className={style.profileBlock}>
             <h1>Personal Information</h1>
-            <div>AVATAR</div>
+            <div>AVATAaR</div>
             <div>Name: {user.name}</div>
             <div> {user.email}</div>
             <button>Log out</button>
