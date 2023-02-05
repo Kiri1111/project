@@ -13,7 +13,7 @@ export const Profile = () => {
         <div className={style.profileBlock}>
             <h1>My profile</h1>
             <div>Name:{user.name}</div>
-            <div>Age:{user.age}</div>
+            <div>ageeee:{user.age}</div>
         </div>
     );
 };
