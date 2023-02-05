@@ -1,16 +1,18 @@
 import {RootThunkType} from "../store/store";
+import {ResponseType} from "../../dal/api/CardsApi";
 
-const initialState = {
-    name: "Kir9",
-    age: 30
-}
+const initialState = {} as ResponseType
 
 export const profile = (state = initialState, action: ProfileReducerActionsType): ProfileReducerInitialStateType => {
     switch (action.type) {
-        case 'BLA':
-            return state
-        case 'BLA-BLA':
-            return state
+        case 'PROFILE/SET-USER':
+            return {
+                ...state,
+                _id: action.payload.user._id,
+                name: action.payload.user.name,
+                publicCardPacksCount: action.payload.user.publicCardPacksCount,
+                email: action.payload.user.email
+            }
         default:
             return state
     }
@@ -18,21 +20,16 @@ export const profile = (state = initialState, action: ProfileReducerActionsType)
 
 //------------------action creators-----------------------
 
-export const bla = () => ({type: 'BLA', payload: {first: 'bla'}} as const)
-
-export const blaBla = () => ({type: 'BLA-BLA', payload: {second: 'bla-bla'}} as const)
+export const setUserAC = (user: any) => ({type: 'PROFILE/SET-USER', payload: {user}} as const)
 
 //------------------thunks-----------------------
 
-export const thunk = (): RootThunkType => (dispatch) => {
-    dispatch(bla())
-}
+export const setUserTC = (): RootThunkType => (dispatch) => {
 
-export const thunkSecond = (): RootThunkType => (dispatch) => {
-    dispatch(blaBla())
+    // dispatch(setUserAC())
 }
 
 //------------------types-----------------------
 export type ProfileReducerInitialStateType = typeof initialState
 
-export type ProfileReducerActionsType = ReturnType<typeof bla> | ReturnType<typeof blaBla>
+export type ProfileReducerActionsType = ReturnType<typeof setUserAC>
