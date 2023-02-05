@@ -1,5 +1,9 @@
+import {RootThunkType} from "../store/store";
+import {setAppStatus} from "./app";
+import {cardsApi} from "../../dal/api/CardsApi";
+
 const initialState = {
-    isLoggedIn: false,
+    isLoggedIn: true,
     isInitialized: false
 }
 
@@ -15,7 +19,7 @@ export const auth = (state: InitialStateType = initialState, action: authActions
     }
 }
 
-
+////////action creators
 export const setIsInitialized = (isInitialized: boolean) => ({
     type: 'AUTH/SET-INITIALIZED',
     payload: {isInitialized}
@@ -24,5 +28,16 @@ export const setIsInitialized = (isInitialized: boolean) => ({
 export const setIsLoggedInAC = (isLoggedIn: boolean) =>
     ({type: 'AUTH/SET-IS-LOGGED-IN', isLoggedIn} as const)
 
+////////Thunks
+
+export const initializeAppTC = (): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
+    try {
+        const res = await cardsApi.me()
+    } catch (e: any) {
+
+    }
+}
+///////Types
 export type authActionsType = ReturnType<typeof setIsInitialized> | ReturnType<typeof setIsLoggedInAC>
 type InitialStateType = typeof initialState
