@@ -6,11 +6,11 @@ type RegistrationInputLabelPropsType = {
     text: string
 }
 
-export const RegistrationInputLabel: React.FC<RegistrationInputLabelPropsType> = ({text}) => {
+export const RegistrationInputLabel: React.FC<RegistrationInputLabelPropsType> = ({text, ...props}) => {
   return (
     <div>
         <label className="form__label">{text}</label>
-        <Input />
+        <Input {...props}/>
     </div>
   )
 }
