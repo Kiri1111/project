@@ -50,7 +50,7 @@ export const Registration: React.FC = () => {
                 <RegistrationInputLabel text='Email' {...formik.getFieldProps('email')} />
                 <RegistrationInputLabel text='Password' {...formik.getFieldProps('password')}/>
                 <RegistrationInputLabel text='Confirm password' {...formik.getFieldProps('confirmPassword')}/>
-                <Button title={'Sign Up'}/>
+                <Button title={'Sign Up'} onClickCallBack={() => {}}/>
             </form>
         </div>
     );
