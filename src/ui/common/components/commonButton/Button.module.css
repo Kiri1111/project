@@ -2,6 +2,8 @@
     width: 167px;
     height: 30px;
     margin: 3px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px lightgray;
 }
 
 .disabled {
@@ -12,7 +14,7 @@
 .secondary {
     width: 167px;
     height: 30px;
-    border-radius: 5px;
+
     border: 1px solid #0066CC;
     color: #0066CC;
     font-size: 15px;
@@ -22,10 +24,9 @@
 .default {
     width: 132px;
     height: 30px;
-    color: #ffffff;
-    background: #0066CC;
+    background: #f3e7e7;
     border: none;
-    border-radius: 5px;
+
     font-size: 15px;
 }
 
@@ -33,7 +34,7 @@
     width: 129px;
     height: 30px;
     border: none;
-    border-radius: 5px;
+
     background-color: #cc0000;
     color: #FFFFFF;
     font-size: 15px;

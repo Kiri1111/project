@@ -1,3 +1,39 @@
 .profileBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  width: 413px;
+  height: 360px;
+  background: #FFFFFF;
+  box-shadow: 5px 5px 30px lightgray;
+  margin-top: 60px;
+  font-family: 'Montserrat', sans-serif;
 
+  .userPhoto {
+    width: 96px;
+  }
+
+  .photoIcon {
+    width: 32px;
+    position: relative;
+    left: 35px;
+    top: -30px;
+  }
+
+  .nameText {
+    font-size: 20px;
+    font-style: normal;
+
+
+    .changeNameIcon {
+      width: 16px;
+    }
+  }
+
+  .emailText {
+    font-size: 14px;
+    opacity: 50%;
+  }
 }

@@ -12,9 +12,9 @@ export const cardsApi = {
     },
     login() {
         return instance.post<AxiosResponse<ResponseType>>('auth/login', {
-            // email: "92_medved@mail.ru",
-            // password: "me290815",
-            // rememberMe: false
+            email: "92_medved@mail.ru",
+            password: "me290815",
+            rememberMe: false
         })
     },
     logOut() {
@@ -26,18 +26,19 @@ export const cardsApi = {
 //------------------types-----------------------
 
 export type ResponseType = {
-    _id: string;
-    email: string;
-    rememberMe: boolean;
-    isAdmin: boolean;
-    name: string;
-    verified: boolean;
-    publicCardPacksCount: number;
-    created: Date;
-    updated: Date;
-    __v: number;
-    token: string;
-    tokenDeathTime: number;
+    _id: string
+    email: string
+    avatar?: string
+    rememberMe: boolean
+    isAdmin: boolean
+    name: string
+    verified: boolean
+    publicCardPacksCount: number
+    created: Date
+    updated: Date
+    __v: number
+    token: string
+    tokenDeathTime: number
 }
 
 export type LoginRequestType = {
