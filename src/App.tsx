@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import style from './App.module.scss'
 import {Demo} from "./ui/components/demoPage/Demo";
 import {Header} from "./ui/components/header/header";
@@ -9,8 +9,17 @@ import {RecoveryPassword} from "./ui/components/passwordRecoveryPage/RecoveryPas
 import {Profile} from "./ui/components/profilePage/Profile";
 import {Registration} from "./ui/components/registerPage/Registration";
 import {ErrorNotFound} from "./ui/components/errorNotFoundPage/ErrorNotFound";
+import {useAppDispatch} from "./hooks/redux";
+import {initializeAppTC} from "./bll/reducers/auth";
 
 export const App = () => {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        dispatch(initializeAppTC())
+        // cardsApi.login()
+    }, [])
+
     return (
         <div className={style.app}>
             <Header/>
@@ -22,7 +31,6 @@ export const App = () => {
                 <Route path={'/newPassword'} element={<NewPassword/>}/>
                 <Route path={'/recoveryPassword'} element={<RecoveryPassword/>}/>
                 <Route path={'/profile'} element={<Profile/>}/>
-                <Route path={'/registration'} element={<Registration/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
             </Routes>
         </div>

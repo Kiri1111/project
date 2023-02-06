@@ -2,7 +2,7 @@ import {RootThunkType} from "../store/store";
 
 const initialState = {}
 
-export const registration = (state = initialState, action: SecondReducerActionsType): SecondReducerInitialStateType => {
+export const registration = (state = initialState, action: RegistrationActionsType): RegistrationInitialStateType => {
     switch (action.type) {
         case 'BLA':
             return state
@@ -30,6 +30,6 @@ export const thunkSecond = (): RootThunkType => (dispatch) => {
 }
 
 //------------------types-----------------------
-export type SecondReducerInitialStateType = typeof initialState
+export type RegistrationInitialStateType = typeof initialState
 
-export type SecondReducerActionsType = ReturnType<typeof bla> | ReturnType<typeof blaBla>
+export type RegistrationActionsType = ReturnType<typeof bla> | ReturnType<typeof blaBla>

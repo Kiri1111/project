@@ -1,13 +1,23 @@
 import {RootThunkType} from "../store/store";
+import {cardsApi, ResponseType} from "../../dal/api/CardsApi";
+import {setAppStatus} from "./app";
 
-const initialState = {}
+const initialState = {} as ResponseType
 
-export const profile = (state = initialState, action: ThirdReducerActionsType): ThirdReducerInitialStateType => {
+export const profile = (state = initialState, action: ProfileReducerActionsType): ProfileReducerInitialStateType => {
     switch (action.type) {
-        case 'BLA':
-            return state
-        case 'BLA-BLA':
-            return state
+        case 'PROFILE/SET-USER':
+            return {
+                ...state,
+                _id: action.payload.user._id,
+                name: action.payload.user.name,
+                publicCardPacksCount: action.payload.user.publicCardPacksCount,
+                email: action.payload.user.email
+            }
+        case 'PROFILE/SET-NEW-NAME':
+            return {...state, name: action.payload.newName}
+        case 'PROFILE/SET-NEW-AVATAR':
+            return {...state, avatar: action.payload.newAvatar}
         default:
             return state
     }
@@ -15,21 +25,46 @@ export const profile = (state = initialState, action: ThirdReducerActionsType): 
 
 //------------------action creators-----------------------
 
-export const bla = () => ({type: 'BLA', payload: {first: 'bla'}} as const)
-
-export const blaBla = () => ({type: 'BLA-BLA', payload: {second: 'bla-bla'}} as const)
+export const setUserAC = (user: any) => ({type: 'PROFILE/SET-USER', payload: {user}} as const)
+export const setNewNameAC = (newName: string) => ({type: 'PROFILE/SET-NEW-NAME', payload: {newName}} as const)
+export const setNewAvatarAC = (newAvatar: string | null) => ({
+    type: 'PROFILE/SET-NEW-AVATAR',
+    payload: {newAvatar}
+} as const)
 
 //------------------thunks-----------------------
 
-export const thunk = (): RootThunkType => (dispatch) => {
-    dispatch(bla())
+export const setNewNameTC = (newName: string): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
+    try {
+        const res = await cardsApi.changeNewName(newName)
+        debugger
+        dispatch(setNewNameAC(res.data.data.name))
+    } catch (e: any) {
+
+    } finally {
+        dispatch(setAppStatus('succeeded'))
+    }
 }
 
-export const thunkSecond = (): RootThunkType => (dispatch) => {
-    dispatch(blaBla())
-}
+export const setNewAvatarTC = (newAvatar: string): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
+    try {
+        const res = await cardsApi.changeNewAvatar(newAvatar)
+        // console.log(res.data.data.updateUser.avatar)
+// dispatch(setNewAvatarAC(res.data.data.avatar))
 
+    } catch (e: any) {
+
+    } finally {
+        dispatch(setAppStatus('succeeded'))
+
+    }
+}
 //------------------types-----------------------
-export type ThirdReducerInitialStateType = typeof initialState
+export type ProfileReducerInitialStateType = typeof initialState
 
-export type ThirdReducerActionsType = ReturnType<typeof bla> | ReturnType<typeof blaBla>
+export type ProfileReducerActionsType =
+    ReturnType<typeof setUserAC>
+    | ReturnType<typeof setNewNameAC>
+    | ReturnType<typeof setNewAvatarAC>
