@@ -6,7 +6,7 @@ type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonE
     HTMLButtonElement>
 
 type SuperButtonPropsType = DefaultButtonPropsType & {
-    xType?: string
+    xType?: 'secondary' | 'red' | ''
     title: string
     onClickCallBack: () => void
 }

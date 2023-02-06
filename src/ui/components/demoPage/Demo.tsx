@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './Demo.module.scss'
-import Input from "../../common/components/commonInput/Input";
+import {Input} from "../../common/components/commonInput/Input";
 import Button from "../../common/components/commonButton/Button";
 import Checkbox from "../../common/components/commonCheckbox/Checkbox";
 

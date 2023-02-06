@@ -17,6 +17,7 @@ export const App = () => {
 
     useEffect(() => {
         dispatch(initializeAppTC())
+        // cardsApi.login()
     }, [])
 
     return (
