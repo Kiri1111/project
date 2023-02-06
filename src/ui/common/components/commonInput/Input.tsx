@@ -21,7 +21,7 @@ type SuperInputTextPropsType = Omit<DefaultInputPropsType, 'type'> & {
     spanClassName?: string
 }
 
-const Input: React.FC<SuperInputTextPropsType> = (
+export const Input: React.FC<SuperInputTextPropsType> = (
     {
         onChange,
         onChangeText,
@@ -74,4 +74,3 @@ const Input: React.FC<SuperInputTextPropsType> = (
     )
 }
 
-export default Input

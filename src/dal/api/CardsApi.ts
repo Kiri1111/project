@@ -8,17 +8,22 @@ const instance = axios.create({
 
 export const cardsApi = {
     me() {
-        return instance.post<AxiosResponse<ResponseType>>('auth/me')
+        return instance.post<ResponseType>('auth/me')
     },
     login() {
-        return instance.post<AxiosResponse<ResponseType>>('auth/login', {
-            email: "92_medved@mail.ru",
-            password: "me290815",
-            rememberMe: false
+        return instance.post<ResponseType>('auth/login', {
+            // email: "92_medved@mail.ru",
+            // password: "me290815",
+            // rememberMe: true
         })
     },
     logOut() {
         return instance.delete('auth/me')
+    },
+    changeNewName(newName: string) {
+        return instance.put<AxiosResponse<ResponseType>>('auth/me', {name: newName})
+    }, changeNewAvatar(newAvatar: string) {
+        return instance.put('auth/me', {avatar: newAvatar})
     }
 }
 
@@ -28,7 +33,6 @@ export const cardsApi = {
 export type ResponseType = {
     _id: string
     email: string
-    avatar?: string
     rememberMe: boolean
     isAdmin: boolean
     name: string
@@ -36,6 +40,7 @@ export type ResponseType = {
     publicCardPacksCount: number
     created: Date
     updated: Date
+    avatar?: string | null
     __v: number
     token: string
     tokenDeathTime: number
