@@ -21,7 +21,7 @@ export const Profile = () => {
     }
     return (
         <div className={style.profileBlock}>
-            <h1>Personal Information</h1>
+            <h1>Personal Informatioon</h1>
             <img alt={'img avatar'} className={style.userPhoto}
                  src={user.avatar !== undefined ? user.avatar : userPhoto}/>
             <img alt={'img photo'} className={style.photoIcon}
