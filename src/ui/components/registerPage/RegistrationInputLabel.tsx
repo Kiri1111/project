@@ -1,5 +1,5 @@
 import React from 'react';
-import Input from '../../common/components/commonInput/Input';
+import {Input} from '../../common/components/commonInput/Input';
 
 
 type RegistrationInputLabelPropsType = {

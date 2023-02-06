@@ -17,6 +17,12 @@ export const cardsApi = {
             // rememberMe: true
         })
     },
+    register(email: string, password: string) {
+        return instance.post<ResponseType>('auth/register', {
+            email: email,
+            password: password
+        });
+    },
     logOut() {
         return instance.delete('auth/me')
     },

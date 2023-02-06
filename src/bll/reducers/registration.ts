@@ -1,6 +1,7 @@
 import {RootThunkType} from "../store/store";
 
-const initialState = {}
+const initialState = {
+}
 
 export const registration = (state = initialState, action: RegistrationActionsType): RegistrationInitialStateType => {
     switch (action.type) {
