@@ -9,10 +9,15 @@
   background: #FFFFFF;
   box-shadow: 5px 5px 30px lightgray;
   margin-top: 60px;
+  font-size: 30px;
+  font-weight: bold;
   font-family: 'Montserrat', sans-serif;
 
   .userPhoto {
-    width: 96px;
+    height: 106px;
+    width: 106px;
+    border-radius: 50px;
+    object-fit: cover;
   }
 
   .photoIcon {
@@ -20,12 +25,14 @@
     position: relative;
     left: 35px;
     top: -30px;
+
+
   }
 
   .nameText {
     font-size: 20px;
     font-style: normal;
-
+    padding-top: 0;
 
     .changeNameIcon {
       width: 15px;

@@ -1,7 +1,7 @@
 import {RootThunkType} from "../store/store";
-import {setAppStatus} from "./app";
+import {setAppError, setAppStatus} from "./app";
 import {cardsApi} from "../../dal/api/CardsApi";
-import {setUserAC} from "./profile";
+import {setNewAvatarTC, setUserAC} from "./profile";
 
 const initialState = {
     isLoggedIn: false,
@@ -32,15 +32,16 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) =>
 ////////Thunks
 
 export const initializeAppTC = (): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setIsInitialized(true))
     try {
         const res = await cardsApi.me()
         dispatch(setUserAC(res.data))
+        dispatch(setNewAvatarTC(res.data.avatar))
         dispatch(setIsLoggedInAC(true))
     } catch (e: any) {
-
+        dispatch(setAppError(e.response.data.error))
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setIsInitialized(false))
     }
 }
 
@@ -50,7 +51,7 @@ export const logOutTC = (): RootThunkType => async (dispatch) => {
     try {
         dispatch(setIsLoggedInAC(false))
     } catch (e: any) {
-
+        dispatch(setAppError('Network error'))
     } finally {
         dispatch(setAppStatus('succeeded'))
     }

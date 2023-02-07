@@ -1,5 +1,5 @@
 const initialState = {
-    status: 'idle' as RequestStatusType,
+    status: 'loading' as RequestStatusType,
     error: null as string | null,
 }
 
