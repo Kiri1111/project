@@ -27,7 +27,7 @@ export const profile = (state = initialState, action: ProfileReducerActionsType)
 
 export const setUserAC = (user: any) => ({type: 'PROFILE/SET-USER', payload: {user}} as const)
 export const setNewNameAC = (newName: string) => ({type: 'PROFILE/SET-NEW-NAME', payload: {newName}} as const)
-export const setNewAvatarAC = (newAvatar: string | null) => ({
+export const setNewAvatarAC = (newAvatar: any | null) => ({
     type: 'PROFILE/SET-NEW-AVATAR',
     payload: {newAvatar}
 } as const)
@@ -38,8 +38,7 @@ export const setNewNameTC = (newName: string): RootThunkType => async (dispatch)
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewName(newName)
-        debugger
-        dispatch(setNewNameAC(res.data.data.name))
+        dispatch(setNewNameAC(res.data.updatedUser.name))
     } catch (e: any) {
 
     } finally {
@@ -47,13 +46,12 @@ export const setNewNameTC = (newName: string): RootThunkType => async (dispatch)
     }
 }
 
-export const setNewAvatarTC = (newAvatar: string): RootThunkType => async (dispatch) => {
+export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewAvatar(newAvatar)
-        // console.log(res.data.data.updateUser.avatar)
-// dispatch(setNewAvatarAC(res.data.data.avatar))
-
+        console.log(res.data.updatedUser.avatar)
+        dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
     } catch (e: any) {
 
     } finally {

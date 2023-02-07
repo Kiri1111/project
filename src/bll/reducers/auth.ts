@@ -1,7 +1,7 @@
 import {RootThunkType} from "../store/store";
 import {setAppStatus} from "./app";
 import {cardsApi} from "../../dal/api/CardsApi";
-import {setUserAC} from "./profile";
+import {setNewAvatarTC, setUserAC} from "./profile";
 
 const initialState = {
     isLoggedIn: false,
@@ -36,6 +36,7 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
     try {
         const res = await cardsApi.me()
         dispatch(setUserAC(res.data))
+        dispatch(setNewAvatarTC(res.data.avatar))
         dispatch(setIsLoggedInAC(true))
     } catch (e: any) {
 

@@ -12,7 +12,11 @@
   font-family: 'Montserrat', sans-serif;
 
   .userPhoto {
-    width: 96px;
+    height: 116px;
+    border-radius: 50px;
+    background-size: cover;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .photoIcon {
@@ -25,7 +29,7 @@
   .nameText {
     font-size: 20px;
     font-style: normal;
-
+    padding-top: 0;
 
     .changeNameIcon {
       width: 15px;
