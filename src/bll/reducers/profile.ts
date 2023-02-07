@@ -1,6 +1,6 @@
 import {RootThunkType} from "../store/store";
 import {cardsApi, ResponseType} from "../../dal/api/CardsApi";
-import {setAppStatus} from "./app";
+import {setAppError, setAppStatus} from "./app";
 
 const initialState = {} as ResponseType
 
@@ -38,9 +38,13 @@ export const setNewNameTC = (newName: string): RootThunkType => async (dispatch)
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewName(newName)
-        dispatch(setNewNameAC(res.data.updatedUser.name))
+        if (res.status === 200) {
+            dispatch(setNewNameAC(res.data.updatedUser.name))
+        } else {
+            dispatch(setAppError('Error'))
+        }
     } catch (e: any) {
-
+        dispatch(setAppError('Network error'))
     } finally {
         dispatch(setAppStatus('succeeded'))
     }
@@ -50,10 +54,9 @@ export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewAvatar(newAvatar)
-        console.log(res.data.updatedUser.avatar)
         dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
     } catch (e: any) {
-
+        dispatch(setAppError('Network error'))
     } finally {
         dispatch(setAppStatus('succeeded'))
 
