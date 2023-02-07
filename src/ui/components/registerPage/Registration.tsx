@@ -3,6 +3,7 @@ import style from './Registration.module.scss'
 import {useFormik} from 'formik';
 import Button from '../../common/components/commonButton/Button';
 import {RegistrationInputLabel} from './RegistrationInputLabel';
+import * as yup from 'yup';
 
 
 type FormValuesType = {
@@ -11,7 +12,20 @@ type FormValuesType = {
     confirmPassword: string
 }
 
+type FormErrorsType = {
+    email?: string
+    password?: string
+    confirmPassword?: string
+    equalPass?: string
+}
+
 export const Registration: React.FC = () => {
+
+    const chema = yup.object().shape({
+        email: yup.string().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, 'Invalid email address').typeError('Invalid email address').required('Required'),
+        password: yup.string().min(8, () => 'minimum password length 8 characters').required('Required'),
+        confirmPassword: yup.string().oneOf([yup.ref('password')], 'Given passwords are not equal!'),
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -19,23 +33,7 @@ export const Registration: React.FC = () => {
             password: '',
             confirmPassword: '',
         },
-        validate: (values: FormValuesType) => {
-            const errors: Partial<Omit<any, 'captcha'>> = {
-            };
-            if (!values.email) {
-                errors.email = 'Required';
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
-
-            if (!values.password) {
-                errors.password = 'Required'
-            } else if (values.password.length < 8) {
-                errors.password = 'minimum password length 8 characters';
-            }
-
-            return errors;
-        },
+        validationSchema: chema,
         onSubmit: (values) => {
             console.log(JSON.stringify(values));
         }
@@ -48,8 +46,11 @@ export const Registration: React.FC = () => {
             <h1>Register page</h1>
             <form onSubmit={formik.handleSubmit}>
                 <RegistrationInputLabel text='Email' {...formik.getFieldProps('email')} />
+                {formik.touched.email && formik.errors.email && <div style={{ color: "red" }}>{formik.errors.email}</div>}
                 <RegistrationInputLabel text='Password' {...formik.getFieldProps('password')}/>
+                {formik.touched.password && formik.errors.password && <div style={{ color: "red" }}>{formik.errors.password}</div>}
                 <RegistrationInputLabel text='Confirm password' {...formik.getFieldProps('confirmPassword')}/>
+                {formik.touched.confirmPassword && formik.errors.confirmPassword && <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div>}
                 <Button title={'Sign Up'} onClickCallBack={() => {}}/>
             </form>
         </div>
