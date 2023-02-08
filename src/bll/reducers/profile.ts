@@ -57,7 +57,6 @@ export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewAvatar(newAvatar)
-        //
         if (res.status === 200) {
             dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
         } else {

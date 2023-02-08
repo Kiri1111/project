@@ -12,6 +12,7 @@ import {ErrorNotFound} from "./ui/components/errorNotFoundPage/ErrorNotFound";
 import {useAppDispatch, useAppSelector} from "./hooks/redux";
 import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
+import {cardsApi} from "./dal/api/CardsApi";
 
 export const App = () => {
     const dispatch = useAppDispatch()
