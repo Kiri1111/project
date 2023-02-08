@@ -32,7 +32,7 @@ export const registerTC = (email: string, password: string): RootThunkType => as
     dispatch(setLoading(true))
     try {
         const response = await cardsApi.register(email, password);
-        if(response.statusText) {
+        if(response.statusText === 'Created') {
             dispatch(setLoginIn(true));
         }
         dispatch(setLoading(false));
