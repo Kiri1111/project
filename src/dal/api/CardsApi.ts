@@ -36,6 +36,7 @@ export const cardsApi = {
 
 //------------------types-----------------------
 
+
 export type ResponseType = {
     _id: string
     email: string

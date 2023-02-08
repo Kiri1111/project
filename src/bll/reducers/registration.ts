@@ -14,7 +14,7 @@ export const registration = (state: InitialStateType = initialState, action: Reg
         case 'REGISTRATION/IS_LOADING':
             return {...state, loading: action.payload.loading}
         case 'REGISTRATION/IS_LOGIN_IN':
-            return state
+            return {...state, isLoginIn: action.payload.isLoginIn}
         default:
             return state
     }
@@ -24,24 +24,21 @@ export const registration = (state: InitialStateType = initialState, action: Reg
 
 export const setLoading = (loading: boolean) => ({type: 'REGISTRATION/IS_LOADING', payload: {loading}} as const)
 
-export const setLoginIn = (isLoginIn?: boolean) => ({type: 'REGISTRATION/IS_LOGIN_IN', payload: {isLoginIn}} as const)
+export const setLoginIn = (isLoginIn: boolean) => ({type: 'REGISTRATION/IS_LOGIN_IN', payload: {isLoginIn}} as const)
 
 //------------------thunks-----------------------
 
 export const registerTC = (email: string, password: string): RootThunkType => async (dispatch) => {
     dispatch(setLoading(true))
     try {
-        const request = await cardsApi.register(email, password);
-        console.log(request);
-        debugger
+        const response = await cardsApi.register(email, password);
+        if(response.statusText) {
+            dispatch(setLoginIn(true));
+        }
         dispatch(setLoading(false));
     } catch(e) {
-        console.log("enthernet error");
+        console.log("server error");
     }
-}
-
-export const thunkSecond = (): RootThunkType => (dispatch) => {
-    dispatch(setLoginIn())
 }
 
 //------------------types-----------------------

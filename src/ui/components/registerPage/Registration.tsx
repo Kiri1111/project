@@ -5,7 +5,8 @@ import Button from '../../common/components/commonButton/Button';
 import {RegistrationInputLabel} from './RegistrationInputLabel';
 import * as yup from 'yup';
 import {registerTC} from '../../../bll/reducers/registration';
-import {useAppDispatch} from '../../../hooks/redux';
+import {useAppDispatch, useAppSelector} from '../../../hooks/redux';
+import {useNavigate, Navigate} from 'react-router-dom';
 
 
 type FormValuesType = {
@@ -17,6 +18,8 @@ type FormValuesType = {
 export const Registration: React.FC = () => {
 
     const dispatch = useAppDispatch();
+    const isLoginIn = useAppSelector(state => state.registration.isLoginIn);
+    const navigate = useNavigate();
 
     const chema = yup.object().shape({
         email: yup.string().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, 'Invalid email address').typeError('Invalid email address').required('Required'),
@@ -32,12 +35,16 @@ export const Registration: React.FC = () => {
         },
         validationSchema: chema,
         onSubmit: (values: FormValuesType) => {
-            console.log(JSON.stringify(values));
             dispatch(registerTC(values.email, values.password));
         }
     });
 
+    if(isLoginIn) {
+        return <Navigate to={'/project'}/>;
+    }
+
     return (
+
         <div className={style.registerBlock}>
             <h1>Register page</h1>
             <form>
