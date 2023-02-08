@@ -6,7 +6,7 @@ import {RegistrationInputLabel} from './RegistrationInputLabel';
 import * as yup from 'yup';
 import {registerTC} from '../../../bll/reducers/registration';
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux';
-import {useNavigate, Navigate} from 'react-router-dom';
+import {Navigate} from 'react-router-dom';
 
 
 type FormValuesType = {
@@ -19,13 +19,19 @@ export const Registration: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const isLoginIn = useAppSelector(state => state.registration.isLoginIn);
-    const navigate = useNavigate();
 
     const chema = yup.object().shape({
         email: yup.string().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, 'Invalid email address').typeError('Invalid email address').required('Required'),
         password: yup.string().min(8, () => 'minimum password length 8 characters').required('Required'),
-        confirmPassword: yup.string().oneOf([yup.ref('password')], 'Given passwords are not equal!'),
+        confirmPassword: yup.string().oneOf([yup.ref('password')], 'Given passwords are not equal!').required('Required'),
     });
+
+    const compareStrAndLength = (a: string, b: string) => {
+        if(a.length && b.length && a.localeCompare(b) === 0) {
+            return false
+        }
+        return true
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -54,7 +60,7 @@ export const Registration: React.FC = () => {
                 {formik.touched.password && formik.errors.password && <div style={{ color: "red" }}>{formik.errors.password}</div>}
                 <RegistrationInputLabel text='Confirm password' {...formik.getFieldProps('confirmPassword')} type={'password'}/>
                 {formik.touched.confirmPassword && formik.errors.confirmPassword && <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div>}
-                <Button title={'Sign Up'} onClickCallBack={formik.handleSubmit} type={'button'}/>
+                <Button title={'Sign Up'} onClickCallBack={formik.handleSubmit} type={'button'} disabled={compareStrAndLength(formik.values.password, formik.values.confirmPassword)}/>
             </form>
         </div>
     );
