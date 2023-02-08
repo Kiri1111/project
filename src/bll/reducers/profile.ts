@@ -44,7 +44,10 @@ export const setNewNameTC = (newName: string): RootThunkType => async (dispatch)
             dispatch(setAppError('Error'))
         }
     } catch (e: any) {
-        dispatch(setAppError('Network error'))
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console')
+        dispatch(setAppError(error))
     } finally {
         dispatch(setAppStatus('succeeded'))
     }
@@ -54,9 +57,17 @@ export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewAvatar(newAvatar)
-        dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
+        //
+        if (res.status === 200) {
+            dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
+        } else {
+            dispatch(setAppError('Error'))
+        }
     } catch (e: any) {
-        dispatch(setAppError('Network error'))
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console')
+        dispatch(setAppError(error))
     } finally {
         dispatch(setAppStatus('succeeded'))
 
