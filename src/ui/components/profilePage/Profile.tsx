@@ -48,7 +48,7 @@ export const Profile = () => {
                         {
                             !error
                                 ? <EditName callBack={setNewNameHandler} userName={user.name}/>
-                                : <span style={{color: 'red'}}>{error}</span>
+                                : <span style={{color: 'red', fontSize: '15px'}}>{error}</span>
                         }
                         <div
                             className={style.emailText}> {user.email}
