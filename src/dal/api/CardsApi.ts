@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 
 const instance = axios.create({
     baseURL: 'http://localhost:7542/2.0/',
@@ -27,8 +27,9 @@ export const cardsApi = {
         return instance.delete('auth/me')
     },
     changeNewName(newName: string) {
-        return instance.put<AxiosResponse<ResponseType>>('auth/me', {name: newName})
-    }, changeNewAvatar(newAvatar: string) {
+        return instance.put('auth/me', {name: newName})
+    },
+    changeNewAvatar(newAvatar: string) {
         return instance.put('auth/me', {avatar: newAvatar})
     }
 }

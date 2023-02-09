@@ -1,5 +1,37 @@
 .headerBlock {
-  height: 8vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 60px;
   width: 100%;
   box-shadow: 0 5px 10px lightgray;
+
+  .headerPhoto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+
+    .userName {
+      font-size: 25px;
+      font-weight: 500;
+      color: black;
+      text-decoration-style: dashed;
+      line-height: 123%;
+
+      &:hover {
+        color: #0059b3;
+        text-decoration-style: solid;
+      }
+    }
+
+    .imgAvatar {
+      height: 50px;
+      border-radius: 10px;
+      margin-left: 20px;
+    }
+  }
 }

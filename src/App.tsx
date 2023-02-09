@@ -9,16 +9,26 @@ import {RecoveryPassword} from "./ui/components/passwordRecoveryPage/RecoveryPas
 import {Profile} from "./ui/components/profilePage/Profile";
 import {Registration} from "./ui/components/registerPage/Registration";
 import {ErrorNotFound} from "./ui/components/errorNotFoundPage/ErrorNotFound";
-import {useAppDispatch} from "./hooks/redux";
+import {useAppDispatch, useAppSelector} from "./hooks/redux";
 import {initializeAppTC} from "./bll/reducers/auth";
+import {Preloader} from "./ui/common/components/preloader/Preloader";
+import {cardsApi} from "./dal/api/CardsApi";
 
 export const App = () => {
     const dispatch = useAppDispatch()
+    const isInitialized = useAppSelector(state => state.auth.isInitialized)
 
     useEffect(() => {
         dispatch(initializeAppTC())
         // cardsApi.login()
     }, [])
+
+    if (isInitialized) {
+        return <div
+            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+            <Preloader width={'300px'}/>
+        </div>
+    }
 
     return (
         <div className={style.app}>

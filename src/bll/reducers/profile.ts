@@ -1,6 +1,6 @@
 import {RootThunkType} from "../store/store";
 import {cardsApi, ResponseType} from "../../dal/api/CardsApi";
-import {setAppStatus} from "./app";
+import {setAppError, setAppStatus} from "./app";
 
 const initialState = {} as ResponseType
 
@@ -27,7 +27,7 @@ export const profile = (state = initialState, action: ProfileReducerActionsType)
 
 export const setUserAC = (user: any) => ({type: 'PROFILE/SET-USER', payload: {user}} as const)
 export const setNewNameAC = (newName: string) => ({type: 'PROFILE/SET-NEW-NAME', payload: {newName}} as const)
-export const setNewAvatarAC = (newAvatar: string | null) => ({
+export const setNewAvatarAC = (newAvatar: any | null) => ({
     type: 'PROFILE/SET-NEW-AVATAR',
     payload: {newAvatar}
 } as const)
@@ -38,24 +38,35 @@ export const setNewNameTC = (newName: string): RootThunkType => async (dispatch)
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewName(newName)
-        debugger
-        dispatch(setNewNameAC(res.data.data.name))
+        if (res.status === 200) {
+            dispatch(setNewNameAC(res.data.updatedUser.name))
+        } else {
+            dispatch(setAppError('Error'))
+        }
     } catch (e: any) {
-
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console')
+        dispatch(setAppError(error))
     } finally {
         dispatch(setAppStatus('succeeded'))
     }
 }
 
-export const setNewAvatarTC = (newAvatar: string): RootThunkType => async (dispatch) => {
+export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.changeNewAvatar(newAvatar)
-        // console.log(res.data.data.updateUser.avatar)
-// dispatch(setNewAvatarAC(res.data.data.avatar))
-
+        if (res.status === 200) {
+            dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
+        } else {
+            dispatch(setAppError('Error'))
+        }
     } catch (e: any) {
-
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console')
+        dispatch(setAppError(error))
     } finally {
         dispatch(setAppStatus('succeeded'))
 
