@@ -1,7 +1,6 @@
 import {RootThunkType} from '../store/store';
-import { cardsApi } from '../../dal/api/CardsApi';
-
-
+import {cardsApi} from '../../dal/api/CardsApi';
+import {setIsInitialized, setIsLoggedInAC} from "./auth";
 
 
 const initialState = {
@@ -32,11 +31,13 @@ export const registerTC = (email: string, password: string): RootThunkType => as
     dispatch(setLoading(true))
     try {
         const response = await cardsApi.register(email, password);
-        if(response.statusText === 'Created') {
+        if (response.statusText === 'Created') {
             dispatch(setLoginIn(true));
+            dispatch(setIsLoggedInAC(true));
+            dispatch(setIsInitialized(true));
         }
         dispatch(setLoading(false));
-    } catch(e) {
+    } catch (e) {
         console.log("server error");
     }
 }
