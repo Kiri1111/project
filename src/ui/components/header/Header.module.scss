@@ -8,8 +8,9 @@
 
   .headerPhoto {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    margin-left: 70px;
     height: 50px;
     width: 50px;
     border-radius: 50%;
@@ -20,7 +21,7 @@
       font-weight: 500;
       color: black;
       text-decoration-style: dashed;
-      line-height: 123%;
+      //line-height: 123%;
 
       &:hover {
         color: #0059b3;

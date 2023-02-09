@@ -45,11 +45,8 @@ export const Profile = () => {
                             src={photo}
                         />
                         <ChangeAvatar/>
-                        {
-                            !error
-                                ? <EditName callBack={setNewNameHandler} userName={user.name}/>
-                                : <span style={{color: 'red'}}>{error}</span>
-                        }
+                        {error && <span style={{color: 'red', fontSize: '15px'}}>{error}</span>}
+                        <EditName callBack={setNewNameHandler} userName={user.name}/>
                         <div
                             className={style.emailText}> {user.email}
                         </div>

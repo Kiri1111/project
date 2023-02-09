@@ -7,6 +7,7 @@ import {NavLink} from "react-router-dom";
 
 export const Header = () => {
     const user = useAppSelector(state => state.profile)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const photo = user.avatar == null ? userPhoto : user.avatar
 
@@ -14,11 +15,14 @@ export const Header = () => {
         <div className={style.headerBlock}>
 
             <NavBar/>
-            <span className={style.headerPhoto}>
-                 <NavLink className={style.userName} to={'/profile'}>{user.name}</NavLink>
-                <img alt={'img avatar'} className={style.imgAvatar}
-                     src={photo}/>
-            </span>
+            {
+                isLoggedIn &&
+                <div className={style.headerPhoto}>
+                    <NavLink className={style.userName} to={'/profile'}>{user.name}</NavLink>
+                    <img alt={'img avatar'} className={style.imgAvatar}
+                         src={photo}/>
+                </div>
+            }
         </div>
     );
 };

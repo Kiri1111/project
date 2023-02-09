@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import style from './App.module.scss'
 import {Demo} from "./ui/components/demoPage/Demo";
 import {Header} from "./ui/components/header/header";
@@ -12,8 +12,11 @@ import {ErrorNotFound} from "./ui/components/errorNotFoundPage/ErrorNotFound";
 import {useAppDispatch, useAppSelector} from "./hooks/redux";
 import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
+import {cardsApi} from "./dal/api/CardsApi";
 
-export const App = () => {
+export const App: FC = React.memo(() => {
+
+    console.log('APP Render')
     const dispatch = useAppDispatch()
     const isInitialized = useAppSelector(state => state.auth.isInitialized)
 
@@ -44,7 +47,5 @@ export const App = () => {
             </Routes>
         </div>
     );
-}
+})
 
-//@ts-ignore
-// window.store=store
