@@ -62,17 +62,20 @@ export const Registration: React.FC = () => {
     return (
 
         <div className={style.registerBlock}>
-            <h1>Register page</h1>
-            <div><span style={{color: 'red', fontSize: '24px'}}>{error}</span></div>
-            <form>
-                <RegistrationInputLabel text='Email' {...formik.getFieldProps('email')} />
-                {formik.touched.email && formik.errors.email && <div style={{ color: "red" }}>{formik.errors.email}</div>}
-                <RegistrationInputLabel text='Password' {...formik.getFieldProps('password')} type={'password'} />
-                {formik.touched.password && formik.errors.password && <div style={{ color: "red" }}>{formik.errors.password}</div>}
-                <RegistrationInputLabel text='Confirm password' {...formik.getFieldProps('confirmPassword')} type={'password'} />
-                {formik.touched.confirmPassword && formik.errors.confirmPassword && <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div>}
-                <Button title={'Sign Up'} onClickCallBack={formik.handleSubmit} type={'button'} disabled={compareStrAndLength(formik.values.password, formik.values.confirmPassword)} />
-            </form>
+            <div className={style.wrapper}>
+                <h1>Register page</h1>
+                <div><span style={{ color: 'red', fontSize: '24px' }}>{error}</span></div>
+                <form>
+                    <RegistrationInputLabel text='Email' {...formik.getFieldProps('email')} />
+                    {formik.touched.email && formik.errors.email && <div style={{ color: "red" }}>{formik.errors.email}</div>}
+                    <RegistrationInputLabel text='Password' {...formik.getFieldProps('password')} type={'password'} />
+                    {formik.touched.password && formik.errors.password && <div style={{ color: "red" }}>{formik.errors.password}</div>}
+                    <RegistrationInputLabel text='Confirm password' {...formik.getFieldProps('confirmPassword')} type={'password'} />
+                    {formik.touched.confirmPassword && formik.errors.confirmPassword && <div style={{ color: "red" }}>{formik.errors.confirmPassword}</div>}
+                    <Button title={'Sign Up'} onClickCallBack={formik.handleSubmit} type={'button'} disabled={compareStrAndLength(formik.values.password, formik.values.confirmPassword)} />
+                </form>
+
+            </div>
         </div>
     );
 };
