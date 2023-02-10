@@ -1,13 +1,17 @@
 import {RootThunkType} from "../store/store";
+import {cardsApi, LoginRequestType} from "../../dal/api/CardsApi";
+import {setAppError, setAppStatus} from "./app";
 
-const initialState = {}
+
+const initialState = {
+    isLoggedIn: false
+}
 
 export const login = (state = initialState, action: LoginReducerActionsType): LoginReducerInitialStateType => {
     switch (action.type) {
-        case 'BLA':
-            return state
-        case 'BLA-BLA':
-            return state
+        case 'SET-IS-LOGGED-IN':
+            return {
+                ...state, isLoggedIn: action.value}
         default:
             return state
     }
@@ -15,21 +19,32 @@ export const login = (state = initialState, action: LoginReducerActionsType): Lo
 
 //------------------action creators-----------------------
 
-export const bla = () => ({type: 'BLA', payload: {first: 'bla'}} as const)
-
-export const blaBla = () => ({type: 'BLA-BLA', payload: {second: 'bla-bla'}} as const)
+export const IsLoggedInAC = (value:boolean) =>
+    ({type: 'SET-IS-LOGGED-IN', value} as const)
 
 //------------------thunks-----------------------
 
-export const thunk = (): RootThunkType => (dispatch) => {
-    dispatch(bla())
+export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatch) => {
+    try {
+        dispatch(setAppStatus('loading'))
+        const res = await cardsApi.login(data)
+        if (res.status === 200) {
+            dispatch(IsLoggedInAC(true))
+        }
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console');
+        dispatch(setAppError(error))
+    }
+    finally {
+        dispatch(setAppStatus('succeeded'))
+    }
 }
 
-export const thunkSecond = (): RootThunkType => (dispatch) => {
-    dispatch(blaBla())
-}
+
 
 //------------------types-----------------------
 export type LoginReducerInitialStateType = typeof initialState
 
-export type LoginReducerActionsType = ReturnType<typeof bla> | ReturnType<typeof blaBla>
+export type LoginReducerActionsType = ReturnType<typeof IsLoggedInAC>
