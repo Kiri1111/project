@@ -8,15 +8,12 @@ const instance = axios.create({
 
 export const cardsApi = {
     me() {
-        console.log('alalala')
         return instance.post<ResponseType>('auth/me')
     },
     login() {
         return instance.post<ResponseType>('auth/login', {
-            email: "92_medved4@mail.ru",
-            password: "12345678",
-            // email: "92_medved@mail.ru",
-            // password: "me290815",
+            email: "92_medved@mail.ru",
+            password: "me290815",
             rememberMe: true
         })
     },
@@ -50,8 +47,6 @@ export type ResponseType = {
     name: string
     verified: boolean
     publicCardPacksCount: number
-    created: Date
-    updated: Date
     avatar?: string | null
     __v: number
     token: string

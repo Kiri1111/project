@@ -14,7 +14,7 @@ import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
 import {cardsApi} from "./dal/api/CardsApi";
 
-export const App: FC = React.memo(() => {
+export const App = (() => {
 
     console.log('APP Render')
     const dispatch = useAppDispatch()
@@ -25,7 +25,7 @@ export const App: FC = React.memo(() => {
         // cardsApi.login()
     }, [])
 
-    if (isInitialized) {
+    if (!isInitialized) {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <Preloader width={'300px'}/>

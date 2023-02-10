@@ -32,7 +32,7 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) =>
 ////////Thunks
 
 export const initializeAppTC = (): RootThunkType => async (dispatch) => {
-
+    dispatch(setAppStatus('loading'))
     try {
         const res = await cardsApi.me()
         dispatch(setIsInitialized(true))
@@ -45,7 +45,8 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
     } finally {
-        dispatch(setIsInitialized(false))
+        dispatch(setAppStatus('succeeded'))
+        console.log('Hello my friend )))')
     }
 }
 
