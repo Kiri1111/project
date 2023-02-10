@@ -5,6 +5,7 @@ import {Input} from '../../common/components/commonInput/Input';
 type RegistrationInputLabelPropsType = {
     text: string
     type?: string
+    placeholder?: string
 }
 
 export const RegistrationInputLabel: React.FC<RegistrationInputLabelPropsType> = ({text, ...props}) => {

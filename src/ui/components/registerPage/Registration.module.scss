@@ -1,9 +1,17 @@
 .registerBlock {
     .wrapper {
-        margin: 0 auto;
+        margin: 90px auto;
         max-width: 413px;
-        background-color: #c0c0c0;
+        background-color: #B0E0E6;
         padding: 25px 33px 30px;
         border-radius: 15px;
+
+        .button {
+            display: inline-block;
+            margin: 0 auto;
+            max-width: 266px;
+            border-radius: 15px;
+            font-size: 16px;
+        }
     }
 }
