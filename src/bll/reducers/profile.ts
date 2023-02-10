@@ -9,10 +9,20 @@ export const profile = (state = initialState, action: ProfileReducerActionsType)
         case 'PROFILE/SET-USER':
             return {
                 ...state,
+                avatar: action.payload.user.avatar,
                 _id: action.payload.user._id,
                 name: action.payload.user.name,
                 publicCardPacksCount: action.payload.user.publicCardPacksCount,
                 email: action.payload.user.email
+            }
+        case "PROFILE/DELETE-USER":
+            return {
+                ...state,
+                avatar: '',
+                _id: '',
+                name: '',
+                publicCardPacksCount: 0,
+                email: ''
             }
         case 'PROFILE/SET-NEW-NAME':
             return {...state, name: action.payload.newName}
@@ -26,6 +36,7 @@ export const profile = (state = initialState, action: ProfileReducerActionsType)
 //------------------action creators-----------------------
 
 export const setUserAC = (user: any) => ({type: 'PROFILE/SET-USER', payload: {user}} as const)
+export const deleteUserAC = () => ({type: 'PROFILE/DELETE-USER'} as const)
 export const setNewNameAC = (newName: string) => ({type: 'PROFILE/SET-NEW-NAME', payload: {newName}} as const)
 export const setNewAvatarAC = (newAvatar: any | null) => ({
     type: 'PROFILE/SET-NEW-AVATAR',
@@ -79,3 +90,5 @@ export type ProfileReducerActionsType =
     ReturnType<typeof setUserAC>
     | ReturnType<typeof setNewNameAC>
     | ReturnType<typeof setNewAvatarAC>
+    | ReturnType<typeof deleteUserAC>
+

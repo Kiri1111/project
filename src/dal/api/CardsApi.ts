@@ -10,12 +10,8 @@ export const cardsApi = {
     me() {
         return instance.post<ResponseType>('auth/me')
     },
-    login() {
-        return instance.post<ResponseType>('auth/login', {
-            email: "92_medved@mail.ru",
-            password: "me290815",
-            rememberMe: true
-        })
+    login(data: LoginRequestType) {
+        return instance.post<ResponseType>('auth/login', data)
     },
     register(email: string, password: string) {
         return instance.post<ResponseType>('auth/register', {
@@ -56,5 +52,5 @@ export type ResponseType = {
 export type LoginRequestType = {
     email: string
     password: string
-    rememberMe: boolean
+    rememberMe?: boolean
 }

@@ -14,12 +14,13 @@ import {Preloader} from "../../common/components/preloader/Preloader";
 export const Profile = () => {
 
     const user = useAppSelector(state => state.profile)
-    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const error = useAppSelector(state => state.app.error)
     const status = useAppSelector(state => state.app.status)
     const dispatch = useAppDispatch()
 
     const logOutHandler = () => dispatch(logOutTC())
+
 
     const setNewNameHandler = useCallback((newName: string) => {
         dispatch(setNewNameTC(newName))

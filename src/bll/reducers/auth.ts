@@ -1,8 +1,7 @@
 import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
-import {cardsApi} from "../../dal/api/CardsApi";
-import {setNewAvatarAC, setUserAC} from "./profile";
-import {IsLoggedInAC} from "./login";
+import {cardsApi, LoginRequestType} from "../../dal/api/CardsApi";
+import {deleteUserAC, setNewAvatarAC, setUserAC} from "./profile";
 
 const initialState = {
     isLoggedIn: false,
@@ -37,12 +36,12 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
 
     try {
         const res = await cardsApi.me()
-        ///????
         // dispatch(setIsLoggedInAC(true))
-        dispatch(IsLoggedInAC(true))
+        dispatch(setIsLoggedInAC(true))
         dispatch(setUserAC(res.data))
         dispatch(setNewAvatarAC(res.data.avatar))
-        // dispatch(setIsLoggedInAC(true))
+        dispatch(setIsInitialized(true))
+
     } catch (e: any) {
         const error = e.response
             ? e.response.data.error
@@ -50,14 +49,38 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
         dispatch(setAppError(error))
     } finally {
         dispatch(setIsInitialized(true))
+
     }
 }
+
+export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
+    try {
+        const res = await cardsApi.login(data)
+        if (res.status === 200) {
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setUserAC(res.data))
+            dispatch(setAppError(null))
+        }
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console');
+        dispatch(setAppError(error))
+    } finally {
+        dispatch(setAppStatus('succeeded'))
+    }
+}
+
 
 export const logOutTC = (): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     const res = await cardsApi.logOut()
+
     try {
         dispatch(setIsLoggedInAC(false))
+        dispatch(setIsLoggedInAC(false))
+        dispatch(deleteUserAC())
     } catch (e: any) {
         const error = e.response
             ? e.response.data.error
