@@ -29,17 +29,17 @@ export const setLoginIn = (isLoginIn: boolean) => ({type: 'REGISTRATION/IS_LOGIN
 
 export const registerTC = (email: string, password: string): RootThunkType => async (dispatch) => {
     dispatch(setLoading(true))
-    try {
-        const response = await cardsApi.register(email, password);
-        if (response.statusText === 'Created') {
-            dispatch(setLoginIn(true));
-            dispatch(setIsLoggedInAC(true));
-            dispatch(setIsInitialized(true));
-        }
-        dispatch(setLoading(false));
-    } catch (e) {
-        console.log("server error");
-    }
+    // try {
+    //     const response = await cardsApi.register();
+    //     if (response.statusText === 'Created') {
+    //         dispatch(setLoginIn(true));
+    //         dispatch(setIsLoggedInAC(true));
+    //         dispatch(setIsInitialized(true));
+    //     }
+    //     dispatch(setLoading(false));
+    // } catch (e) {
+    //     console.log("server error");
+    // }
 }
 
 //------------------types-----------------------

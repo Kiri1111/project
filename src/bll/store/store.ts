@@ -7,7 +7,7 @@ import {app, appActionsType} from "../reducers/app";
 import {auth, authActionsType} from "../reducers/auth";
 
 const rootReducer = combineReducers({
-    login,
+    login:login,
     registration,
     profile,
     app,

@@ -2,6 +2,7 @@ import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
 import {cardsApi} from "../../dal/api/CardsApi";
 import {setNewAvatarAC, setUserAC} from "./profile";
+import {IsLoggedInAC} from "./login";
 
 const initialState = {
     isLoggedIn: false,
@@ -26,6 +27,7 @@ export const setIsInitialized = (isInitialized: boolean) => ({
     payload: {isInitialized}
 } as const)
 
+//// ???????
 export const setIsLoggedInAC = (isLoggedIn: boolean) =>
     ({type: 'AUTH/SET-IS-LOGGED-IN', isLoggedIn} as const)
 
@@ -35,17 +37,19 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
 
     try {
         const res = await cardsApi.me()
-        dispatch(setIsInitialized(true))
+        ///????
+        // dispatch(setIsLoggedInAC(true))
+        dispatch(IsLoggedInAC(true))
         dispatch(setUserAC(res.data))
         dispatch(setNewAvatarAC(res.data.avatar))
-        dispatch(setIsLoggedInAC(true))
+        // dispatch(setIsLoggedInAC(true))
     } catch (e: any) {
         const error = e.response
             ? e.response.data.error
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
     } finally {
-        dispatch(setIsInitialized(false))
+        dispatch(setIsInitialized(true))
     }
 }
 
@@ -63,6 +67,10 @@ export const logOutTC = (): RootThunkType => async (dispatch) => {
         dispatch(setAppStatus('succeeded'))
     }
 }
-///////Types
-export type authActionsType = ReturnType<typeof setIsInitialized> | ReturnType<typeof setIsLoggedInAC>
+//Types
+export type authActionsType =
+    ReturnType<typeof setIsInitialized>
+    | ReturnType<typeof setIsLoggedInAC>
+
+
 type InitialStateType = typeof initialState

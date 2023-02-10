@@ -8,29 +8,23 @@ const instance = axios.create({
 
 export const cardsApi = {
     me() {
-        console.log('alalala')
+        debugger
         return instance.post<ResponseType>('auth/me')
     },
-    login() {
-        return instance.post<ResponseType>('auth/login', {
-            email: "92_medved4@mail.ru",
-            password: "12345678",
+    login(data:LoginRequestType) {
+        return instance.post<ResponseType>('auth/login', data
             // email: "92_medved@mail.ru",
             // password: "me290815",
-            rememberMe: true
-        })
+            // rememberMe: true
+        )
     },
-    register(email: string, password: string) {
-        return instance.post<ResponseType>('auth/register', {
-            email: email,
-            password: password
-        });
+    register () {
+
     },
     logOut() {
         return instance.delete('auth/me')
     },
     changeNewName(newName: string) {
-        console.log('alalala')
         return instance.put('auth/me', {name: newName})
     },
     changeNewAvatar(newAvatar: string) {
@@ -40,7 +34,6 @@ export const cardsApi = {
 
 
 //------------------types-----------------------
-
 
 export type ResponseType = {
     _id: string
@@ -61,5 +54,5 @@ export type ResponseType = {
 export type LoginRequestType = {
     email: string
     password: string
-    rememberMe: boolean
+    rememberMe?: boolean
 }
