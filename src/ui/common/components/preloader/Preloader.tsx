@@ -7,7 +7,7 @@ type PreloaderWidthType = {
 
 export const Preloader = (props: PreloaderWidthType) => {
     return (
-        <div>
+        <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
             <img alt={'Preloader'} style={{width: props.width}} src={preloader}/>
         </div>
     );
