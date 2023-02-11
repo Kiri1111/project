@@ -26,7 +26,6 @@ export const setIsInitialized = (isInitialized: boolean) => ({
     payload: {isInitialized}
 } as const)
 
-//// ???????
 export const setIsLoggedInAC = (isLoggedIn: boolean) =>
     ({type: 'AUTH/SET-IS-LOGGED-IN', isLoggedIn} as const)
 
@@ -36,7 +35,6 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
 
     try {
         const res = await cardsApi.me()
-        // dispatch(setIsLoggedInAC(true))
         dispatch(setIsLoggedInAC(true))
         dispatch(setUserAC(res.data))
         dispatch(setNewAvatarAC(res.data.avatar))
@@ -49,7 +47,25 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
         dispatch(setAppError(error))
     } finally {
         dispatch(setIsInitialized(true))
+    }
+}
 
+export const registerTC = (email: string, password: string): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
+    try {
+        const response = await cardsApi.register(email, password);
+        dispatch(loginTC({email, password}))
+        if (response.statusText === 'Created') {
+            dispatch(setIsLoggedInAC(true));
+        }
+        dispatch(setAppStatus('succeeded'));
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console')
+        dispatch(setAppError(error));
+        dispatch(setAppStatus('failed'));
+        dispatch(setIsLoggedInAC(false))
     }
 }
 

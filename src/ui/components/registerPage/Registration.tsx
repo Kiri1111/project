@@ -4,10 +4,10 @@ import {useFormik} from 'formik';
 import Button from '../../common/components/commonButton/Button';
 import {RegistrationInputLabel} from './RegistrationInputLabel';
 import * as yup from 'yup';
-import {registerTC} from '../../../bll/reducers/registration';
 import {useAppDispatch, useAppSelector} from '../../../hooks/redux';
 import {Navigate} from 'react-router-dom';
 import {Preloader} from '../../common/components/preloader/Preloader';
+import {registerTC} from "../../../bll/reducers/auth";
 
 
 type FormValuesType = {
@@ -19,9 +19,9 @@ type FormValuesType = {
 export const Registration: React.FC = () => {
 
     const dispatch = useAppDispatch();
-    const isLoginIn = useAppSelector(state => state.registration.isLoginIn);
-    const loading = useAppSelector(state => state.registration.loading);
-    const error = useAppSelector(state => state.registration.error);
+    const isLoginIn = useAppSelector(state => state.auth.isLoggedIn);
+    const status = useAppSelector(state => state.app.status);
+    const error = useAppSelector(state => state.app.error);
 
     const chema = yup.object().shape({
         email: yup.string().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, 'Invalid email address').typeError('Invalid email address').required('Required'),
@@ -50,7 +50,7 @@ export const Registration: React.FC = () => {
         }
     });
 
-    if (loading) {
+    if (status === 'loading') {
         return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}><Preloader
             width={'300px'}/></div>
     }

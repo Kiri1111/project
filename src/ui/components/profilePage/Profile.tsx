@@ -46,10 +46,13 @@ export const Profile = () => {
                             src={photo}
                         />
                         <ChangeAvatar/>
+                        <div className={style.cardsCounts}>
+                            Number of cards: {user.publicCardPacksCount}
+                        </div>
                         {error && <span style={{color: 'red', fontSize: '15px'}}>{error}</span>}
                         <EditName callBack={setNewNameHandler} userName={user.name}/>
-                        <div
-                            className={style.emailText}> {user.email}
+                        <div className={style.emailText}>
+                            Email: {user.email}
                         </div>
                         <Button xType={'secondary'} title={'Log out'} onClickCallBack={logOutHandler}/>
                     </>
