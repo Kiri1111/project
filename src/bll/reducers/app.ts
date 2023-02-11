@@ -4,7 +4,7 @@ const initialState = {
 }
 
 
-export const app = (state: InitialStateType = initialState, action: appActionsType): InitialStateType => {
+export const app = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'APP/SET-STATUS':
             return {...state, status: action.payload.status}
@@ -20,6 +20,6 @@ export const setAppStatus = (status: RequestStatusType) => ({type: 'APP/SET-STAT
 export const setAppError = (error: string | null) => ({type: 'APP/SET-ERROR', payload: {error}} as const)
 
 
-export type appActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>
+export type AppActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 type InitialStateType = typeof initialState

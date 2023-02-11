@@ -9,7 +9,7 @@ const initialState = {
 }
 
 
-export const auth = (state: InitialStateType = initialState, action: authActionsType): InitialStateType => {
+export const auth = (state: InitialStateType = initialState, action: AuthActionsType): InitialStateType => {
     switch (action.type) {
         case 'AUTH/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.isLoggedIn}
@@ -107,7 +107,7 @@ export const logOutTC = (): RootThunkType => async (dispatch) => {
     }
 }
 //Types
-export type authActionsType =
+export type AuthActionsType =
     ReturnType<typeof setIsInitialized>
     | ReturnType<typeof setIsLoggedInAC>
 

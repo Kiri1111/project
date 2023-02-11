@@ -1,13 +1,16 @@
 import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {profile, ProfileReducerActionsType} from "../reducers/profile";
-import {app, appActionsType} from "../reducers/app";
-import {auth, authActionsType} from "../reducers/auth";
+import {app, AppActionsType} from "../reducers/app";
+import {auth, AuthActionsType} from "../reducers/auth";
+import {packList, PackListActionsType} from "../reducers/packList";
 
 const rootReducer = combineReducers({
     profile,
     app,
-    auth
+    auth,
+    packList
+
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk))
@@ -18,8 +21,9 @@ export type AppRootStateType = ReturnType<typeof rootReducer>
 
 export type RootActionsType =
     | ProfileReducerActionsType
-    | appActionsType
-    | authActionsType
+    | AppActionsType
+    | AuthActionsType
+    | PackListActionsType
 
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, any, AnyAction>
 

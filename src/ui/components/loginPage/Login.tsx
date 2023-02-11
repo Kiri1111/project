@@ -8,13 +8,11 @@ import * as Yup from 'yup';
 import {Preloader} from "../../common/components/preloader/Preloader";
 import {loginTC} from "../../../bll/reducers/auth";
 
-
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const error = useAppSelector(state => state.app.error)
     const status = useAppSelector(state => state.app.status)
-
 
     const formik = useFormik({
         initialValues: {
@@ -29,7 +27,6 @@ export const Login = () => {
                 .min(4, 'Length should be more 4 symbols')
                 .max(20, 'Must be 20 characters or less')
                 .required('Required'),
-
         }),
         onSubmit: values => {
             dispatch(loginTC(values))
@@ -78,8 +75,6 @@ export const Login = () => {
                             </form>
                         }
                     </div>
-
-
                 </FormControl>
             </Grid>
         </Grid>

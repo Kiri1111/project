@@ -1,4 +1,4 @@
-import {appActionsType, setAppError, setAppStatus} from "../bll/reducers/app";
+import {AppActionsType, setAppError, setAppStatus} from "../bll/reducers/app";
 import {Dispatch} from "redux";
 import {setNewNameAC} from "../bll/reducers/profile";
 
@@ -13,4 +13,4 @@ export const handleServerAppError = (res: any, dispatch: ErrorUtilsDispatchType)
 }
 
 
-type ErrorUtilsDispatchType = Dispatch<appActionsType>
+type ErrorUtilsDispatchType = Dispatch<AppActionsType>
