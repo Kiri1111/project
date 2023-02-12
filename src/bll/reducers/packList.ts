@@ -37,10 +37,10 @@ export const setCardsPacksAC = (data: ResponsePackType) => ({
 
 //-------------thunks-----------------
 
-export const setCardsPacksTC = (): RootThunkType => async (dispatch) => {
+export const setCardsPacksTC = (page: number, pageCount: number): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
-        const res = await cardsApi.getPacks()
+        const res = await cardsApi.getPacks(page, pageCount)
         console.log(res)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
