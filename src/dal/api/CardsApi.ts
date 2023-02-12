@@ -7,8 +7,8 @@ const instance = axios.create({
 })
 
 export const cardsApi = {
-    getPacks(page: number, pageCount: number) {
-        return instance.get<ResponsePackType>('cards/pack', {})
+    getPacks(page: number, pageCount: number, sortPacks: string = '0updated') {
+        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}`)
     },
     me() {
         return instance.post<ResponseType>('auth/me')

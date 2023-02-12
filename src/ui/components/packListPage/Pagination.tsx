@@ -18,13 +18,15 @@ export const PaginationComponent: FC<PaginationPropsType> = ({count, onChange, t
         onChange(page, count)
     }
 
-    const onChangeSelect = (event: number) => {
-        onChange(page, event)
+    const onChangeSelect = (newCountFromSelect: number) => {
+        onChange(page, newCountFromSelect)
 
     }
     return (
         <div>
             <Pagination
+                color={'primary'}
+                shape={'rounded'}
                 page={page}
                 count={lastPage}
                 onChange={onChangePaginationCallBack}
@@ -32,13 +34,14 @@ export const PaginationComponent: FC<PaginationPropsType> = ({count, onChange, t
             <span>
                 Show
             </span>
-            <Select value={countOnPage}
-                    options={[
-                        {id: 4, value: 4},
-                        {id: 7, value: 7},
-                        {id: 10, value: 10},
-                    ]}
-                    onChangeOption={onChangeSelect}
+            <Select
+                value={countOnPage}
+                options={[
+                    {id: 4, value: 4},
+                    {id: 7, value: 7},
+                    {id: 10, value: 10},
+                ]}
+                onChangeOption={onChangeSelect}
             />
             <span>
                 Cards per Page
