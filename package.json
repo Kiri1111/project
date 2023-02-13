@@ -4,6 +4,10 @@
   "private": true,
   "homepage": "https://Kiri1111.github.io/project",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.8",
+    "@mui/styled-engine-sc": "^5.11.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -14,6 +18,7 @@
     "axios": "^1.2.6",
     "formik": "^2.2.9",
     "gh-pages": "^5.0.0",
+    "mui": "^0.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
@@ -23,8 +28,10 @@
     "redux-thunk": "^2.4.2",
     "sass": "^1.57.1",
     "scss": "^0.2.4",
+    "styled-components": "^5.3.6",
     "typescript": "^4.4.2",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "yup": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
