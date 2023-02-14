@@ -1,4 +1,4 @@
-import { CardPacksType, instance, ResponsePackType } from './CardsApi';
+import {CardPacksType, instance, ResponsePackType} from './authApi';
 
 export const packApi = {
     getPacks(page: number, pageCount: number, sortPacks: string = '0updated') {
@@ -6,7 +6,7 @@ export const packApi = {
     },
     addPack() {
         return instance.post<CardPacksType>('cards/pack', {
-            cardsPack: {                
+            cardsPack: {
                 name: 'No name',
                 private: false
             }
@@ -20,7 +20,7 @@ export const packApi = {
             }
         });
     },
-    removePack(id:  string) {
+    removePack(id: string) {
         return instance.delete<CardPacksType>(`cards/pack?id=$`);
     },
 }

@@ -1,6 +1,6 @@
 import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
-import {cardsApi, LoginRequestType} from "../../dal/api/CardsApi";
+import {authApi, LoginRequestType} from "../../dal/api/authApi";
 import {deleteUserAC, setNewAvatarAC, setUserAC} from "./profile";
 
 const initialState = {
@@ -34,7 +34,7 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) =>
 export const initializeAppTC = (): RootThunkType => async (dispatch) => {
 
     try {
-        const res = await cardsApi.me()
+        const res = await authApi.me()
         dispatch(setIsLoggedInAC(true))
         dispatch(setUserAC(res.data))
         dispatch(setNewAvatarAC(res.data.avatar))
@@ -53,7 +53,7 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
 export const registerTC = (email: string, password: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
-        const response = await cardsApi.register(email, password);
+        const response = await authApi.register(email, password);
         dispatch(loginTC({email, password}))
         if (response.statusText === 'Created') {
             dispatch(setIsLoggedInAC(true));
@@ -72,7 +72,7 @@ export const registerTC = (email: string, password: string): RootThunkType => as
 export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
-        const res = await cardsApi.login(data)
+        const res = await authApi.login(data)
         if (res.status === 200) {
             dispatch(setIsLoggedInAC(true))
             dispatch(setUserAC(res.data))
@@ -91,7 +91,7 @@ export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatc
 
 export const logOutTC = (): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
-    const res = await cardsApi.logOut()
+    const res = await authApi.logOut()
 
     try {
         dispatch(setIsLoggedInAC(false))

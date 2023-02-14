@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {setCardsPacksTC} from "../../../bll/reducers/packList";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
-import {CardPacksType} from "../../../dal/api/CardsApi";
+import {CardPacksType} from "../../../dal/api/authApi";
 import {List} from "./List";
 import {PaginationComponent} from "./Pagination";
 import {SortComponent} from "./SortComponent";
-import { setPackTC } from '../../../bll/reducers/packList';
+import {setPackTC} from '../../../bll/reducers/packList';
 
 export const PackList = () => {
 

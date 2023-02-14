@@ -1,6 +1,5 @@
-import { number } from 'yup';
-import { instance } from './CardsApi';
-
+import {number} from 'yup';
+import {instance} from './authApi';
 
 
 export type CardType = {
@@ -32,7 +31,7 @@ export type ResponseCardType = {
 type RequestAddType = Omit<CardType, '_id' | 'user_id' | 'created' | 'updated'>
 type RequestFetchCard = {
     cardsPack_id: string
-    cardAnswer: string 
+    cardAnswer: string
     cardQuestion: string
     min: number
     max: number

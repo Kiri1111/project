@@ -1,5 +1,5 @@
 import React, {FC, memo} from 'react';
-import {CardPacksType} from "../../../dal/api/CardsApi";
+import {CardPacksType} from "../../../dal/api/authApi";
 
 type ListPropsType = {
     list: CardPacksType

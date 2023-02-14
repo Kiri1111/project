@@ -1,7 +1,7 @@
-import {cardsApi, ResponsePackType} from "../../dal/api/CardsApi";
+import {authApi, ResponsePackType} from "../../dal/api/authApi";
 import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
-import { packApi } from "../../dal/api/PackApi";
+import {packApi} from "../../dal/api/PackApi";
 
 const initialState = {
     cardPacks: [],
@@ -41,7 +41,7 @@ export const setCardsPacksAC = (data: ResponsePackType) => ({
 export const setCardsPacksTC = (page: number, pageCount: number, sortPacks?: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
-        const res = await cardsApi.getPacks(page, pageCount, sortPacks)
+        const res = await authApi.getPacks(page, pageCount, sortPacks)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
@@ -63,7 +63,7 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
         const response = await packApi.addPack();
         console.log(response);
         console.log("add new pack " + text);
-    } catch(e: any) {
+    } catch (e: any) {
         console.log(e);
     }
 }

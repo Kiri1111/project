@@ -1,5 +1,5 @@
 import {profile, setNewNameAC} from "../bll/reducers/profile";
-import {ResponseType} from "../dal/api/CardsApi";
+import {ResponseType} from "../dal/api/authApi";
 
 const startState: ResponseType = {
     _id: '1',
