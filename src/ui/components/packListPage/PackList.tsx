@@ -1,9 +1,9 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {ChangeEvent, memo, useEffect, useState} from 'react';
 import {
     setCardsPacksTC,
     setMyCardsPacksTC,
     setPageCountAC,
-    setPageNumberAC,
+    setPageNumberAC, setSearchValueAC,
     setSortPacksAC
 } from "../../../bll/reducers/packList";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
@@ -14,13 +14,22 @@ import {PaginationComponent} from "./Pagination";
 import {SortComponent} from "./SortComponent";
 import Button from "../../common/components/commonButton/Button";
 import {Debounce} from "./Debounce";
+import {useDebounce} from "usehooks-ts";
 
 export const PackList = () => {
-    console.log('HIIIII')
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.app.status)
     const packs = useAppSelector(state => state.packList)
     const user_id = useAppSelector(state => state.profile._id)
+
+
+    const [value, setValue] = useState<string>('')
+    const debouncedValue = useDebounce<string>(value, 1000)
+
+    useEffect(() => {
+
+        dispatch(setSearchValueAC(debouncedValue))
+    }, [debouncedValue])
 
 
     useEffect(() => {
@@ -58,7 +67,7 @@ export const PackList = () => {
     return (
         <div>
             <h3>Pack list</h3>
-            <Debounce pageCount={packs.pageCount}/>
+            <Debounce setValue={setValue} value={value}/>
             <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
             <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
             <table>
