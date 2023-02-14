@@ -6,6 +6,7 @@ import {CardPacksType} from "../../../dal/api/CardsApi";
 import {List} from "./List";
 import {PaginationComponent} from "./Pagination";
 import {SortComponent} from "./SortComponent";
+import { setPackTC } from '../../../bll/reducers/packList';
 
 export const PackList = () => {
 
@@ -34,6 +35,11 @@ export const PackList = () => {
         }
     }
 
+    const addPack = () => {
+        dispatch(setPackTC('ok'));
+        console.log("tset");
+    }
+
     if (status === 'loading') {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
@@ -44,6 +50,7 @@ export const PackList = () => {
     return (
         <div>
             <h3>Pack list</h3>
+            <button onClick={addPack}>Add</button>
             <table>
                 <thead>
                 <tr>

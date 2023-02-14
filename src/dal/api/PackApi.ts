@@ -6,7 +6,7 @@ export const packApi = {
     },
     addPack() {
         return instance.post<CardPacksType>('cards/pack', {
-            params: {
+            cardsPack: {                
                 name: 'No name',
                 private: false
             }
@@ -21,6 +21,6 @@ export const packApi = {
         });
     },
     removePack(id:  string) {
-        return instance.delete<CardPacksType>(`cards/pack?id=${id}`);
+        return instance.delete<CardPacksType>(`cards/pack?id=$`);
     },
 }
