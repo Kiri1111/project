@@ -73,7 +73,7 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
     dispatch(setAppStatus('loading'))
     const {page, pageCount, searchValue, sortPacks} = getState().packList
     try {
-        const res = await cardsApi.getPacks(page, pageCount, sortPacks, searchValue)
+        const res = await authApi.getPacks(page, pageCount, sortPacks, searchValue)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
@@ -94,7 +94,7 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
 export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: string, user_id?: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
-        const res = await cardsApi.getPacks(page, pageCount, sortPacks)
+        const res = await authApi.getPacks(page, pageCount, sortPacks, "kjljlj")
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {

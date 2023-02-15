@@ -70,7 +70,7 @@ export const PackList = () => {
             <Debounce setValue={setValue} value={value}/>
             <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
             <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
-            <button onClick={addPack}>Add</button>
+            <button onClick={()=> {alert("ok")}}>Add</button>
             <table>
                 <thead>
                 <tr>
