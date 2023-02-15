@@ -6,10 +6,12 @@ export const instance = axios.create({
     withCredentials: true,
 })
 
-
-export const authApi = {
-    getPacks(page: number, pageCount: number, sortPacks: string = '0updated') {
-        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}`)
+export const cardsApi = {
+    getPacks(page: number, pageCount: number, sortPacks: string = '0updated', searchValue: string) {
+        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&packName=${searchValue}`)
+    },
+    getMyPacks(page: number, pageCount: number, sortPacks: string = '0updated', user_id?: string) {
+        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&user_id=${user_id}`)
     },
     me() {
         return instance.post<ResponseType>('auth/me')
@@ -54,6 +56,8 @@ export type ResponsePackType = {
     minCardsCount: number
     page: number  //выбранная страница
     pageCount: number  //количество элементов на странице
+    searchValue: string
+    sortPacks: string
 }
 
 export type ResponseType = {

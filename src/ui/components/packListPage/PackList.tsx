@@ -1,43 +1,60 @@
-import React, {useEffect, useState} from 'react';
-import {setCardsPacksTC} from "../../../bll/reducers/packList";
+import React, {ChangeEvent, memo, useEffect, useState} from 'react';
+import {
+    setCardsPacksTC,
+    setMyCardsPacksTC,
+    setPageCountAC,
+    setPageNumberAC, setSearchValueAC,
+    setSortPacksAC
+} from "../../../bll/reducers/packList";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
 import {CardPacksType} from "../../../dal/api/authApi";
 import {List} from "./List";
 import {PaginationComponent} from "./Pagination";
 import {SortComponent} from "./SortComponent";
-import {setPackTC} from '../../../bll/reducers/packList';
+import Button from "../../common/components/commonButton/Button";
+import {Debounce} from "./Debounce";
+import {useDebounce} from "usehooks-ts";
 
 export const PackList = () => {
-
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.app.status)
     const packs = useAppSelector(state => state.packList)
+    const user_id = useAppSelector(state => state.profile._id)
 
-    const [count, setCount] = useState(10)
-    const [sort, setSort] = useState('0updated')
-    console.log(sort)
+
+    const [value, setValue] = useState<string>('')
+    const debouncedValue = useDebounce<string>(value, 1000)
+
     useEffect(() => {
-        dispatch(setCardsPacksTC(1, count))
-    }, [])
+
+        dispatch(setSearchValueAC(debouncedValue))
+    }, [debouncedValue])
+
+
+    useEffect(() => {
+        dispatch(setCardsPacksTC())
+    }, [packs.sortPacks, packs.searchValue, packs.pageCount, packs.page, packs.sortPacks])
 
     const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el}/>)
 
     const onChangePagination = (newPage: number, newCount: number) => {
-        setCount(newCount)
-        dispatch(setCardsPacksTC(newPage, newCount, sort))
+        dispatch(setPageCountAC(newCount))
+        dispatch(setPageNumberAC(newPage))
     }
 
     const onChangeSort = (newSort?: string) => {
         if (newSort) {
-            setSort(newSort)
-            dispatch(setCardsPacksTC(1, count, newSort))
+            dispatch(setSortPacksAC(newSort))
         }
     }
 
-    const addPack = () => {
-        dispatch(setPackTC('ok'));
-        console.log("tset");
+    const onClickMyPacksHandler = () => {
+        dispatch(setMyCardsPacksTC(1, packs.pageCount, packs.sortPacks, user_id))
+    }
+
+    const onClickAllPacksHandler = () => {
+        dispatch(setCardsPacksTC())
     }
 
     if (status === 'loading') {
@@ -50,6 +67,9 @@ export const PackList = () => {
     return (
         <div>
             <h3>Pack list</h3>
+            <Debounce setValue={setValue} value={value}/>
+            <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
+            <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
             <button onClick={addPack}>Add</button>
             <table>
                 <thead>
@@ -59,7 +79,7 @@ export const PackList = () => {
                     <td>
                         <SortComponent
                             value={'updated'}
-                            sort={sort}
+                            sort={packs.sortPacks}
                             title={'Last Updated'}
                             onChange={onChangeSort}
                         />
@@ -75,8 +95,9 @@ export const PackList = () => {
                 totalCount={packs.cardPacksTotalCount}
                 countOnPage={packs.pageCount}
                 page={packs.page}
-                count={count}/>
+                count={packs.pageCount}/>
         </div>
     )
 }
+
 

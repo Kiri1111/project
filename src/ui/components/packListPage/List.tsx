@@ -7,6 +7,7 @@ type ListPropsType = {
 
 export const List: FC<ListPropsType> = memo(({list}) => {
     return (
+
         <tr>
             <td>
                 {list.name}
