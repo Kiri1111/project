@@ -77,6 +77,7 @@ export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatc
             dispatch(setIsLoggedInAC(true))
             dispatch(setUserAC(res.data))
             dispatch(setAppError(null))
+            dispatch(setAppStatus('succeeded'))
         }
     } catch (e: any) {
         const error = e.response
@@ -84,16 +85,16 @@ export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatc
             : (e.message + ', more details in the console');
         dispatch(setAppError(error))
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus('idle'))
+        console.log('login in');
     }
 }
 
 
 export const logOutTC = (): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
-    const res = await authApi.logOut()
-
+    dispatch(setAppStatus('loading'))  
     try {
+        const res = await authApi.logOut()
         dispatch(setIsLoggedInAC(false))
         dispatch(setIsLoggedInAC(false))
         dispatch(deleteUserAC())
@@ -103,7 +104,8 @@ export const logOutTC = (): RootThunkType => async (dispatch) => {
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        console.log('log out');
+        dispatch(setAppStatus('idle'))
     }
 }
 //Types

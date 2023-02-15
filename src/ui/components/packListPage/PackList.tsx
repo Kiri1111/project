@@ -15,6 +15,7 @@ import {SortComponent} from "./SortComponent";
 import Button from "../../common/components/commonButton/Button";
 import {Debounce} from "./Debounce";
 import {useDebounce} from "usehooks-ts";
+import { setPackTC } from '../../../bll/reducers/packList';
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -22,19 +23,20 @@ export const PackList = () => {
     const packs = useAppSelector(state => state.packList)
     const user_id = useAppSelector(state => state.profile._id)
 
+    console.log(status);
+
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
 
     useEffect(() => {
-
         dispatch(setSearchValueAC(debouncedValue))
     }, [debouncedValue])
 
 
     useEffect(() => {
         dispatch(setCardsPacksTC())
-    }, [packs.sortPacks, packs.searchValue, packs.pageCount, packs.page, packs.sortPacks])
+    }, [packs.sortPacks, packs.pageCount, packs.page, packs.sortPacks])
 
     const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el}/>)
 
@@ -57,6 +59,10 @@ export const PackList = () => {
         dispatch(setCardsPacksTC())
     }
 
+    const addPack = () => {
+        dispatch(setPackTC('add'));
+    }
+
     if (status === 'loading') {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
@@ -67,10 +73,10 @@ export const PackList = () => {
     return (
         <div>
             <h3>Pack list</h3>
+            <Button onClickCallBack={addPack} title={'Add new Pack'}></Button>
             <Debounce setValue={setValue} value={value}/>
             <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
             <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
-            <button onClick={()=> {alert("ok")}}>Add</button>
             <table>
                 <thead>
                 <tr>
@@ -99,5 +105,3 @@ export const PackList = () => {
         </div>
     )
 }
-
-

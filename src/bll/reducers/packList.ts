@@ -1,4 +1,4 @@
-import {authApi, ResponsePackType} from "../../dal/api/authApi";
+import {CardPacksType, ResponsePackType} from "../../dal/api/authApi";
 import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
 import {setIsInitialized} from "./auth";
@@ -27,6 +27,8 @@ export const packList = (state: InitialStatePackListType = initialState, action:
                 page: action.payload.data.page,
                 pageCount: action.payload.data.pageCount,
             }
+        case 'PACK-LIST/SET-PACK':
+            return {...state, cardPacks: [...state.cardPacks, action.payload.pack]}
         case "PACK-LIST/SET-PAGE-COUNT-PACKS":
             return {...state, pageCount: action.payload.pageCount}
         case "PACK-LIST/SET-PAGE-NUMBER-PACKS":
@@ -67,13 +69,18 @@ export const setSortPacksAC = (sortPacks: string) => ({
     payload: {sortPacks}
 } as const)
 
+export const setPackAC = (pack: CardPacksType) => ({
+    type: 'PACK-LIST/SET-PACK',
+    payload: {pack}
+} as const) 
+
 //-------------thunks-----------------
 
 export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus('loading'))
     const {page, pageCount, searchValue, sortPacks} = getState().packList
     try {
-        const res = await authApi.getPacks(page, pageCount, sortPacks, searchValue)
+        const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
@@ -94,7 +101,7 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
 export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: string, user_id?: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus('loading'))
     try {
-        const res = await authApi.getPacks(page, pageCount, sortPacks, "kjljlj")
+        const res = await packApi.getMyPacks(page, pageCount, sortPacks, user_id)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
@@ -114,8 +121,12 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
 export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
     try {
         const response = await packApi.addPack();
-        console.log(response);
-        console.log("add new pack " + text);
+        if(response.statusText === 'Created') {
+            dispatch(setPackAC(response.data.newCardsPack));
+            console.log(response.data.newCardsPack);
+        } else {
+            dispatch(setAppError('Network Error'))
+        }
     } catch (e: any) {
         console.log(e);
     }
@@ -131,3 +142,4 @@ export type PackListActionsType =
     | ReturnType<typeof setPageNumberAC>
     | ReturnType<typeof setSearchValueAC>
     | ReturnType<typeof setSortPacksAC>
+    | ReturnType<typeof setPackAC>

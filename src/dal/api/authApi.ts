@@ -7,12 +7,6 @@ export const instance = axios.create({
 })
 
 export const authApi = {
-    getPacks(page: number, pageCount: number, sortPacks: string = '0updated', searchValue: string) {
-        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&packName=${searchValue}`)
-    },
-    getMyPacks(page: number, pageCount: number, sortPacks: string = '0updated', user_id?: string) {
-        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&user_id=${user_id}`)
-    },
     me() {
         return instance.post<ResponseType>('auth/me')
     },
@@ -29,7 +23,6 @@ export const authApi = {
         return instance.delete('auth/me')
     },
     changeNewName(newName: string) {
-        console.log('alalala')
         return instance.put('auth/me', {name: newName})
     },
     changeNewAvatar(newAvatar: string) {
@@ -43,9 +36,17 @@ export const authApi = {
 export type CardPacksType = {
     _id: string
     user_id: string
-    name: string
+    user_name: string
     cardsCount: number
     created: string
+    grade: number
+    more_id: string
+    name: string
+    path: string
+    private: false
+    rating: number
+    shots: number
+    type: string
     updated: string
 }
 
