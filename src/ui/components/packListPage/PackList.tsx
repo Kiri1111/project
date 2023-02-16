@@ -27,6 +27,7 @@ export const PackList = () => {
 
 
     const [value, setValue] = useState<string>('')
+    const [render, setRender] = useState(true)
     const debouncedValue = useDebounce<string>(value, 1000)
 
     useEffect(() => {
@@ -35,8 +36,14 @@ export const PackList = () => {
 
 
     useEffect(() => {
-        dispatch(setCardsPacksTC())
-    }, [packs.sortPacks, packs.pageCount, packs.page, packs.sortPacks])
+        if (packs.sortPacks !== '0updated', packs.searchValue !== '', packs.pageCount !== 10, packs.page !== 1) {
+            dispatch(setCardsPacksTC())
+        }
+        if (render) {
+            dispatch(setCardsPacksTC())
+            setRender(false)
+        }
+    }, [packs.sortPacks, packs.searchValue, packs.pageCount, packs.page])
 
     const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el}/>)
 
@@ -77,31 +84,39 @@ export const PackList = () => {
             <Debounce setValue={setValue} value={value}/>
             <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
             <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
-            <table>
-                <thead>
-                <tr>
-                    <td>Name</td>
-                    <td>Cards</td>
-                    <td>
-                        <SortComponent
-                            value={'updated'}
-                            sort={packs.sortPacks}
-                            title={'Last Updated'}
-                            onChange={onChangeSort}
-                        />
-                    </td>
-                    <td>Created by</td>
-                    <td>Actions</td>
-                </tr>
-                </thead>
-                <tbody>{finalPackList}</tbody>
-            </table>
-            <PaginationComponent
-                onChange={onChangePagination}
-                totalCount={packs.cardPacksTotalCount}
-                countOnPage={packs.pageCount}
-                page={packs.page}
-                count={packs.pageCount}/>
+            {
+                status === 'loading'
+                    ? <div style={{position: 'fixed', top: '30%', left: '-00px', textAlign: 'center', width: '100%'}}>
+                        <Preloader width={'100px'}/>
+                    </div>
+                    : <div>
+                        <table>
+                            <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Cards</td>
+                                <td>
+                                    <SortComponent
+                                        value={'updated'}
+                                        sort={packs.sortPacks}
+                                        title={'Last Updated'}
+                                        onChange={onChangeSort}
+                                    />
+                                </td>
+                                <td>Created by</td>
+                                <td>Actions</td>
+                            </tr>
+                            </thead>
+                            <tbody>{finalPackList}</tbody>
+                        </table>
+                        <PaginationComponent
+                            onChange={onChangePagination}
+                            totalCount={packs.cardPacksTotalCount}
+                            countOnPage={packs.pageCount}
+                            page={packs.page}
+                            count={packs.pageCount}/>
+                    </div>
+            }
         </div>
     )
 }

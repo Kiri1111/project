@@ -11,7 +11,7 @@ const initialState = {
     minCardsCount: 0,
     page: 1,
     pageCount: 10,
-    searchValue: ' ',
+    searchValue: '',
     sortPacks: '0updated'
 } as ResponsePackType
 
