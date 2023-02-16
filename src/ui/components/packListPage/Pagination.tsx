@@ -1,6 +1,7 @@
 import React, {FC, useMemo} from 'react';
 import Pagination from '@mui/material/Pagination'
 import {Select} from "../../common/components/commonSelect/Select";
+import s from './Packlist.module.css'
 
 type PaginationPropsType = {
     onChange: (page: number, count: number) => void
@@ -23,7 +24,7 @@ export const PaginationComponent: FC<PaginationPropsType> = ({count, onChange, t
 
     }
     return (
-        <div>
+        <div className={s.divPaginationContainer} >
             <Pagination
                 color={'primary'}
                 shape={'rounded'}
@@ -31,6 +32,7 @@ export const PaginationComponent: FC<PaginationPropsType> = ({count, onChange, t
                 count={lastPage}
                 onChange={onChangePaginationCallBack}
             />
+            <div className={s.divPagination}>
             <span>
                 Show
             </span>
@@ -46,7 +48,8 @@ export const PaginationComponent: FC<PaginationPropsType> = ({count, onChange, t
             <span>
                 Cards per Page
             </span>
-        </div>
+            </div>
+                </div>
     );
 };
 
