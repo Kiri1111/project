@@ -1,13 +1,19 @@
 import React, {FC, memo} from 'react';
 import {CardPacksType} from "../../../dal/api/authApi";
+import Button from '../../common/components/commonButton/Button';
 
 type ListPropsType = {
     list: CardPacksType
+    callBack: (id: string, name: string) => void
 }
 
-export const List: FC<ListPropsType> = memo(({list}) => {
-    return (
+export const List: FC<ListPropsType> = memo(({list, callBack}) => {
 
+    const updatePack = (id: string, name: string) => {
+        callBack(id, name);
+    }
+
+    return (
         <tr>
             <td>
                 {list.name}
@@ -17,6 +23,10 @@ export const List: FC<ListPropsType> = memo(({list}) => {
             </td>
             <td>
                 {list.updated.slice(0, 10)}
+            </td>
+            <td>
+                <Button onClickCallBack={() => {updatePack(list._id, 'Hello my friend')}} title={'update'}/>
+                <Button onClickCallBack={() => {}} title={'delete'}/>
             </td>
         </tr>
     );

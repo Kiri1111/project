@@ -1,11 +1,12 @@
-import React, {ChangeEvent, memo, useEffect, useState} from 'react';
+import React, {ChangeEvent, memo, useEffect, useState, useCallback} from 'react';
 import {
     setCardsPacksTC,
     setMyCardsPacksTC,
     setPackTC,
     setPageCountAC,
     setPageNumberAC, setSearchValueAC,
-    setSortPacksAC
+    setSortPacksAC,
+    updatePackTC,
 } from "../../../bll/reducers/packList";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
@@ -43,7 +44,11 @@ export const PackList = () => {
         }
     }, [packs.sortPacks, packs.searchValue, packs.pageCount, packs.page])
 
-    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el}/>)
+    const updatePack = useCallback((id: string, name: string) => {
+        dispatch(updatePackTC(id, name));
+    }, [])
+
+    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el} callBack={updatePack}/>)
 
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
@@ -67,6 +72,8 @@ export const PackList = () => {
     const addPack = () => {
         dispatch(setPackTC('add'));
     }
+
+
 
     return (
         <div>

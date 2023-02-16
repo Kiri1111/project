@@ -1,8 +1,8 @@
-import {CardPacksType, ResponsePackType} from "../../dal/api/authApi";
-import {RootThunkType} from "../store/store";
-import {setAppError, setAppStatus} from "./app";
-import {setIsInitialized} from "./auth";
-import {packApi} from "../../dal/api/PackApi";
+import { CardPacksType, ResponsePackType } from "../../dal/api/authApi";
+import { RootThunkType } from "../store/store";
+import { setAppError, setAppStatus } from "./app";
+import { setIsInitialized } from "./auth";
+import { packApi } from "../../dal/api/PackApi";
 
 const initialState = {
     cardPacks: [],
@@ -17,7 +17,7 @@ const initialState = {
 
 export const packList = (state: InitialStatePackListType = initialState, action: PackListActionsType) => {
     switch (action.type) {
-        case'PACK-LIST/SET-CARDS-PACKS':
+        case 'PACK-LIST/SET-CARDS-PACKS':
             return {
                 ...state,
                 cardPacks: action.payload.data.cardPacks,
@@ -28,15 +28,21 @@ export const packList = (state: InitialStatePackListType = initialState, action:
                 pageCount: action.payload.data.pageCount,
             }
         case 'PACK-LIST/SET-PACK':
-            return {...state, cardPacks: [...state.cardPacks, action.payload.pack]}
+            return { ...state, cardPacks: [...state.cardPacks, action.payload.pack] }
         case "PACK-LIST/SET-PAGE-COUNT-PACKS":
-            return {...state, pageCount: action.payload.pageCount}
+            return { ...state, pageCount: action.payload.pageCount }
         case "PACK-LIST/SET-PAGE-NUMBER-PACKS":
-            return {...state, page: action.payload.pageNumber}
+            return { ...state, page: action.payload.pageNumber }
         case "PACK-LIST/SET-SEARCH-VALUE":
-            return {...state, searchValue: action.payload.searchValue}
+            return { ...state, searchValue: action.payload.searchValue }
         case "PACK-LIST/SET-SORT-PACKS":
-            return {...state, sortPacks: action.payload.sortPacks}
+            return { ...state, sortPacks: action.payload.sortPacks }
+        case "PACK-LIST/UPADTE-PACK":
+            return {...state, cardPacks: state.cardPacks.map(pack => {
+                return pack._id === action.payload.pack._id ? {...pack, name: action.payload.pack.name} : pack
+            })}
+        case "PACK-LIST/REMOVE-PACK":
+            return {...state, cardPacks: state.cardPacks.filter(pack => pack._id !== action.payload.id)}       
         default:
             return state
     }
@@ -46,39 +52,49 @@ export const packList = (state: InitialStatePackListType = initialState, action:
 
 export const setCardsPacksAC = (data: ResponsePackType) => ({
     type: 'PACK-LIST/SET-CARDS-PACKS',
-    payload: {data}
+    payload: { data }
 } as const)
 
 export const setPageCountAC = (pageCount: number) => ({
     type: 'PACK-LIST/SET-PAGE-COUNT-PACKS',
-    payload: {pageCount}
+    payload: { pageCount }
 } as const)
 
 export const setPageNumberAC = (pageNumber: number) => ({
     type: 'PACK-LIST/SET-PAGE-NUMBER-PACKS',
-    payload: {pageNumber}
+    payload: { pageNumber }
 } as const)
 
 export const setSearchValueAC = (searchValue: string) => ({
     type: 'PACK-LIST/SET-SEARCH-VALUE',
-    payload: {searchValue}
+    payload: { searchValue }
 } as const)
 
 export const setSortPacksAC = (sortPacks: string) => ({
     type: 'PACK-LIST/SET-SORT-PACKS',
-    payload: {sortPacks}
+    payload: { sortPacks }
 } as const)
 
 export const setPackAC = (pack: CardPacksType) => ({
     type: 'PACK-LIST/SET-PACK',
+    payload: { pack }
+} as const)
+
+export const setUpdatePackAC = (pack: CardPacksType) => ({
+    type: 'PACK-LIST/UPADTE-PACK',
     payload: {pack}
-} as const) 
+} as const)
+
+export const removePackAC = (id: string) => ({
+    type: 'PACK-LIST/REMOVE-PACK',
+    payload: {id}
+} as const)
 
 //-------------thunks-----------------
 
 export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus('loading'))
-    const {page, pageCount, searchValue, sortPacks} = getState().packList
+    const { page, pageCount, searchValue, sortPacks } = getState().packList
     try {
         const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue)
         if (res.status === 200) {
@@ -121,16 +137,55 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
 export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
     try {
         const response = await packApi.addPack();
-        if(response.statusText === 'Created') {
+        if (response.statusText === 'Created') {
             dispatch(setPackAC(response.data.newCardsPack));
-            console.log(response.data.newCardsPack);
         } else {
             dispatch(setAppError('Network Error'))
         }
     } catch (e: any) {
-        console.log(e);
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console')
+        dispatch(setAppError(error))
     }
 }
+
+export const updatePackTC = (_id: string, name: string): RootThunkType => async (dispatch) => {
+    try {
+        const response = await packApi.updatePack(_id, name);
+        if(response.status === 200) {
+            dispatch(setUpdatePackAC(response.data.updatedCardsPack))
+        } else {
+            dispatch(setAppError('Network Error'));
+            console.log('Network Error');
+        }
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console') 
+        dispatch(setAppError(error))
+    }
+}
+
+export const removePackTC = (_id: string): RootThunkType => async (dispatch) => {
+    try {
+        const response = await packApi.removePack(_id);
+        if(response.status === 200) {
+            dispatch(removePackAC(response.data.deletedCardsPack._id));
+        } else {
+            dispatch(setAppError('Network Error'));
+            console.log('Network Error');
+        }
+    } catch (e: any) {
+        const error = e.response
+            ? e.response.data.error
+            : (e.message + ', more details in the console') 
+        dispatch(setAppError(error))
+    }
+}
+
+
+
 
 //-------------types----------
 
@@ -143,3 +198,5 @@ export type PackListActionsType =
     | ReturnType<typeof setSearchValueAC>
     | ReturnType<typeof setSortPacksAC>
     | ReturnType<typeof setPackAC>
+    | ReturnType<typeof setUpdatePackAC>
+    | ReturnType<typeof removePackAC>
