@@ -25,7 +25,7 @@ export const packApi = {
         });
     },
     removePack(id: string) {
-        return instance.delete<RemovePackType>(`cards/pack?id=$`);
+        return instance.delete<RemovePackType>(`cards/pack?id=${id}`);
     },
 }
 

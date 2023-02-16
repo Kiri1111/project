@@ -5,9 +5,10 @@ import Button from '../../common/components/commonButton/Button';
 type ListPropsType = {
     list: CardPacksType
     callBack: (id: string, name: string) => void
+    remCallBack:(id:string)=>void
 }
 
-export const List: FC<ListPropsType> = memo(({list, callBack}) => {
+export const List: FC<ListPropsType> = memo(({remCallBack,list, callBack}) => {
 
     const updatePack = (id: string, name: string) => {
         callBack(id, name);
@@ -26,7 +27,7 @@ export const List: FC<ListPropsType> = memo(({list, callBack}) => {
             </td>
             <td>
                 <Button onClickCallBack={() => {updatePack(list._id, 'Hello my friend')}} title={'update'}/>
-                <Button onClickCallBack={() => {}} title={'delete'}/>
+                <Button onClickCallBack={() => {remCallBack(list._id)}} title={'delete'}/>
             </td>
         </tr>
     );

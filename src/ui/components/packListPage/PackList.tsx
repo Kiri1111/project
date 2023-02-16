@@ -1,5 +1,6 @@
 import React, {ChangeEvent, memo, useEffect, useState, useCallback} from 'react';
 import {
+    removePackTC,
     setCardsPacksTC,
     setMyCardsPacksTC,
     setPackTC,
@@ -48,7 +49,11 @@ export const PackList = () => {
         dispatch(updatePackTC(id, name));
     }, [])
 
-    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el} callBack={updatePack}/>)
+    const remPack=useCallback((id:string)=>{
+        dispatch(removePackTC(id))
+    },[])
+
+    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el} remCallBack={remPack} callBack={updatePack}/>)
 
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
