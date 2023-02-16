@@ -1,5 +1,5 @@
-import { type } from 'os';
-import { CardPacksType, instance, ResponsePackType } from './authApi';
+import {type} from 'os';
+import {CardPacksType, instance, ResponsePackType} from './authApi';
 
 export const packApi = {
     getPacks(page: number, pageCount: number, sortPacks: string = '0updated', searchValue: string) {
@@ -11,7 +11,7 @@ export const packApi = {
     addPack() {
         return instance.post<AddPackType>('cards/pack', {
             cardsPack: {
-                name: 'So name',
+                name: 'hei',
                 private: false
             }
         })

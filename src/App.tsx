@@ -12,7 +12,7 @@ import {ErrorNotFound} from "./ui/components/errorNotFoundPage/ErrorNotFound";
 import {useAppDispatch, useAppSelector} from "./hooks/redux";
 import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
-// import {PackList} from "./ui/components/packListPage/LLLLLList";
+import {PackList} from "./ui/components/packListPage/PackList";
 
 export const App = () => {
     const dispatch = useAppDispatch()
@@ -35,7 +35,7 @@ export const App = () => {
             <Header/>
             <Routes>
                 <Route path={'/project'} element={<Demo/>}/>
-                {/*<Route path={'/packList'} element={<PackList/>}/>*/}
+                <Route path={'/packList'} element={<PackList/>}/>
                 <Route path={'/*'} element={<Navigate to={'/404'}/>}/>
                 <Route path={'/404'} element={<ErrorNotFound/>}/>
                 <Route path={'/login'} element={<Login/>}/>

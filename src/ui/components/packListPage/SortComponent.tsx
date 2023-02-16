@@ -1,6 +1,6 @@
 import React, {FC} from 'react'
-// import sortDown from '../../common/assets/images/sortDown.png'
-// import sortUp from '../../common/assets/images/sortUp.png'
+import sortDown from '../../common/assets/images/sortDown.png'
+import sortUp from '../../common/assets/images/sortUp.png'
 
 type SortPropsType = {
     title: string
@@ -9,8 +9,8 @@ type SortPropsType = {
     value: string
 }
 
-// const downIcon = sortDown
-// const upIcon = sortUp
+const downIcon = sortDown
+const upIcon = sortUp
 
 export const changeSort = (sort: string, up: string, down: string) => {
     switch (sort) {
@@ -27,7 +27,7 @@ export const SortComponent: FC<SortPropsType> = ({value, sort, title, onChange})
     const up = '0' + value
     const down = '1' + value
 
-    // const icon = sort === down ? downIcon : upIcon
+    const icon = sort === down ? downIcon : upIcon
 
 
     const onclickHandler = () => {
@@ -37,7 +37,7 @@ export const SortComponent: FC<SortPropsType> = ({value, sort, title, onChange})
     return (
         <div onClick={onclickHandler}>
             {title}
-            <img style={{width: '15px'}} alt={'sort icon'}/>
+            <img src={icon} style={{width: '15px'}} alt={'sort icon'}/>
         </div>
     );
 };

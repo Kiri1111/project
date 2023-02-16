@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
+    removePackTC,
     setCardsPacksTC,
-    setMyCardsPacksTC,
+    setMyCardsPacksTC, setPackTC,
     setPageCountAC,
     setPageNumberAC,
     setSearchValueAC,
-    setSortPacksAC
+    setSortPacksAC, updatePackTC
 } from "../../../bll/reducers/packList";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
-import {CardPacksType} from "../../../dal/api/CardsApi";
+import {CardPacksType} from "../../../dal/api/authApi";
 import {List} from "./List";
 import {PaginationComponent} from "./Pagination";
 import {SortComponent} from "./SortComponent";
@@ -39,7 +40,17 @@ export const PackList = () => {
         dispatch(setCardsPacksTC())
     }, [packs.sortPacks, packs.searchValue, packs.pageCount, packs.page, packs.sortPacks])
 
-    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} list={el}/>)
+    const updatePack = useCallback((id: string, name: string) => {
+        dispatch(updatePackTC(id, name));
+    }, [])
+
+    const remPack = useCallback((id: string) => {
+        dispatch(removePackTC(id))
+    }, [])
+
+
+    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} remCallBack={remPack}
+                                                                           callBack={updatePack} list={el}/>)
 
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
@@ -60,6 +71,11 @@ export const PackList = () => {
         dispatch(setCardsPacksTC())
     }
 
+    const addPack = () => {
+        dispatch(setPackTC('add'));
+    }
+
+    console.log(status)
     if (status === 'loading') {
         return <div
             style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
@@ -68,25 +84,25 @@ export const PackList = () => {
     }
 
     return (
-        <div>
+        <div style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
             <div className={s.div1}>
-            <h4 className={s.packList}>Packs list</h4>
-                <Button style={{marginTop:"20px"}} onClickCallBack={()=>{}} title={'Add new pack'}/>
+                <h4 className={s.packList}>Packs list</h4>
+                <Button style={{marginTop: "20px"}} onClickCallBack={addPack} title={'Add new pack'}/>
             </div>
             <div className={s.div2}>
                 <div>
-            <Debounce setValue={setValue} value={value}/>
+                    <Debounce setValue={setValue} value={value}/>
                 </div>
                 <div>
                     <h4 className={s.h4}>Show packs cards</h4>
-            <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
-            <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
+                    <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
+                    <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
                 </div>
                 <div>
                     <h4 className={s.h4}>Number of cards</h4>
                     <RangeSlider/>
                 </div>
-                </div>
+            </div>
             <table className={s.table}>
                 <thead className={s.blockOne}>
                 <tr>

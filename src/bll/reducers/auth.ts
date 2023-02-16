@@ -47,6 +47,7 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
         dispatch(setAppError(error))
     } finally {
         dispatch(setIsInitialized(true))
+        setAppStatus('succeeded')
     }
 }
 
@@ -92,7 +93,7 @@ export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatc
 
 
 export const logOutTC = (): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))  
+    dispatch(setAppStatus('loading'))
     try {
         const res = await authApi.logOut()
         dispatch(setIsLoggedInAC(false))
