@@ -2,6 +2,7 @@ import React, {ChangeEvent, memo, useEffect, useState} from 'react';
 import {
     setCardsPacksTC,
     setMyCardsPacksTC,
+    setPackTC,
     setPageCountAC,
     setPageNumberAC, setSearchValueAC,
     setSortPacksAC
@@ -15,15 +16,12 @@ import {SortComponent} from "./SortComponent";
 import Button from "../../common/components/commonButton/Button";
 import {Debounce} from "./Debounce";
 import {useDebounce} from "usehooks-ts";
-import { setPackTC } from '../../../bll/reducers/packList';
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.app.status)
     const packs = useAppSelector(state => state.packList)
     const user_id = useAppSelector(state => state.profile._id)
-
-    console.log(status);
 
 
     const [value, setValue] = useState<string>('')
@@ -68,13 +66,6 @@ export const PackList = () => {
 
     const addPack = () => {
         dispatch(setPackTC('add'));
-    }
-
-    if (status === 'loading') {
-        return <div
-            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <Preloader width={'300px'}/>
-        </div>
     }
 
     return (
