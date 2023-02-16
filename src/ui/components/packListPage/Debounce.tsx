@@ -1,19 +1,19 @@
-import {ChangeEvent, FC, memo, useEffect, useState} from 'react'
-import {useDebounce} from 'usehooks-ts'
+import React, {FC} from 'react'
 import {useAppDispatch} from "../../../hooks/redux";
-import {setSearchValueAC} from "../../../bll/reducers/packList";
+import s from './Packlist.module.css'
 
 /*type DebouncePropsType = {
     pageCount: number
 }*/
 
 export const Debounce: FC<any> = ({value, setValue}) => {
-    console.log('kjkjkj')
+
     const dispatch = useAppDispatch()
 
     return (
         <div>
-            <input type="text" value={value} onChange={(e) => setValue(e.currentTarget.value)}/>
+<h4 className={s.h4}>Search</h4>
+            <input placeholder={'Provide your text'} className={s.input} type="text" value={value} onChange={(e) => setValue(e.currentTarget.value)}/>
         </div>
     )
 }

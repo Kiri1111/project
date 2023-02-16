@@ -3,6 +3,8 @@ import React, {
     DetailedHTMLProps,
     ChangeEvent,
 } from 'react'
+import s from '../../../../ui/components/packListPage/Packlist.module.css'
+
 
 type DefaultSelectPropsType = DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>,
     HTMLSelectElement>
@@ -38,7 +40,7 @@ export const Select: React.FC<SuperSelectPropsType> = (
 
 
     return (
-        <select
+        <select className={s.sliderPagination}
             onChange={onChangeCallback}
             {...restProps}
         >
