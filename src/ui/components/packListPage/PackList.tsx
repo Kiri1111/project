@@ -70,7 +70,7 @@ export const PackList = () => {
     return (
         <div>
             <div className={s.div1}>
-            <h4 className={s.packList}>Pack list</h4>
+            <h4 className={s.packList}>Packs list</h4>
                 <Button style={{marginTop:"20px"}} onClickCallBack={()=>{}} title={'Add new pack'}/>
             </div>
             <div className={s.div2}>
