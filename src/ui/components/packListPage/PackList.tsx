@@ -106,7 +106,7 @@ export const PackList = () => {
                                         onChange={onChangeSort}
                                     />
                                 </td>
-                                <td>Created by</td>
+                                <td>Create by</td>
                                 <td>Actions</td>
                             </tr>
                             </thead>
