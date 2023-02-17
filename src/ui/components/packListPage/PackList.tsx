@@ -75,13 +75,13 @@ export const PackList = () => {
         dispatch(setPackTC('add'));
     }
 
-    console.log(status)
-    if (status === 'loading') {
-        return <div
-            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <Preloader width={'300px'}/>
-        </div>
-    }
+    // console.log(status)
+    // if (status === 'loading') {
+    //     return <div
+    //         style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+    //         <Preloader width={'300px'}/>
+    //     </div>
+    // }
 
     return (
         <div style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
@@ -103,31 +103,41 @@ export const PackList = () => {
                     <RangeSlider/>
                 </div>
             </div>
-            <table className={s.table}>
-                <thead className={s.blockOne}>
-                <tr>
-                    <td>Name</td>
-                    <td>Cards</td>
-                    <td>
-                        <SortComponent
-                            value={'updated'}
-                            sort={packs.sortPacks}
-                            title={'Last Updated'}
-                            onChange={onChangeSort}
-                        />
-                    </td>
-                    <td>Created by</td>
-                    <td>Actions</td>
-                </tr>
-                </thead>
-                <tbody>{finalPackList}</tbody>
-            </table>
-            <PaginationComponent
-                onChange={onChangePagination}
-                totalCount={packs.cardPacksTotalCount}
-                countOnPage={packs.pageCount}
-                page={packs.page}
-                count={packs.pageCount}/>
+
+            {
+                status === 'loading'
+                    ? <div
+                        style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+                        <Preloader width={'300px'}/>
+                    </div>
+                    : <div>
+                        <table className={s.table}>
+                            <thead className={s.blockOne}>
+                            <tr>
+                                <td>Name</td>
+                                <td>Cards</td>
+                                <td>
+                                    <SortComponent
+                                        value={'updated'}
+                                        sort={packs.sortPacks}
+                                        title={'Last Updated'}
+                                        onChange={onChangeSort}
+                                    />
+                                </td>
+                                <td>Created by</td>
+                                <td>Actions</td>
+                            </tr>
+                            </thead>
+                            <tbody>{finalPackList}</tbody>
+                        </table>
+                        <PaginationComponent
+                            onChange={onChangePagination}
+                            totalCount={packs.cardPacksTotalCount}
+                            countOnPage={packs.pageCount}
+                            page={packs.page}
+                            count={packs.pageCount}/>
+                    </div>
+            }
         </div>
     )
 }
