@@ -1,3 +1,4 @@
+import { type } from 'os';
 import {number} from 'yup';
 import {instance} from './authApi';
 
@@ -29,31 +30,45 @@ export type ResponseCardType = {
 }
 
 type RequestAddType = Omit<CardType, '_id' | 'user_id' | 'created' | 'updated'>
+
 type RequestFetchCard = {
     cardsPack_id: string
-    cardAnswer: string
-    cardQuestion: string
-    min: number
-    max: number
-    sortCards: number
+    min?: number
+    max?: number
+    cardAnswer?: string
+    cardQuestion?: string
     page?: number
     pageCount?: number
 }
 
+type ResponseAddCardType = {
+    newCard: CardType
+}
+
+type UpdateCardType = {
+    updatedCard: CardType
+}
+
+type RmoveCardType = {
+    deletedCard: CardType
+}
 
 export const cardApi = {
     getCards(cardRequest: RequestFetchCard) {
         return instance.get<ResponseCardType>(`cards/card?cardsPack_id=${cardRequest.cardsPack_id}`)
     },
-    addCard(card: RequestAddType) {
-        return instance.post('cards/card', {
+    addCard(id: string, question: string) {
+        return instance.post<ResponseAddCardType>('cards/card', {
             params: {
-                card: card
+                card: {
+                    cardsPack_id: id,
+                    question: question
+                }
             }
         })
     },
     updateCard(id: string, question: string) {
-        return instance.put('cards/card', {
+        return instance.put<UpdateCardType>('cards/card', {
             params: {
                 _id: id,
                 question
@@ -61,6 +76,6 @@ export const cardApi = {
         });
     },
     removeCard(id: string) {
-        return instance.delete(`cards/card?id=${id}`);
+        return instance.delete<RmoveCardType>(`cards/card?id=${id}`);
     },
 }
