@@ -84,15 +84,12 @@ export const PackList = () => {
             </div>
             <div className={style.searchBlock}>
                 <Debounce setValue={setValue} value={value}/>
-                <h4>Show packs cards</h4>
                 <div>
+                    <h4>Show packs cards</h4>
                     <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
                     <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
                 </div>
-
-                <h4>Number of cards</h4>
                 <RangeSlider/>
-
             </div>
             <div className={style.table}>
                 <TableCards

@@ -1,0 +1,17 @@
+.sliderBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  width: 28vw;
+
+  .title {
+    width: 26vw;
+    padding: 0 10px 0 10px;
+  }
+
+  .span {
+    padding: 0 10px 0 10px;
+    font-weight: bold;
+  }
+}

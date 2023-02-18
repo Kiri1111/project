@@ -1,6 +1,8 @@
 import React, {FC, memo} from 'react';
 import {CardPacksType} from "../../../dal/api/authApi";
 import Button from '../../common/components/commonButton/Button';
+import style from "./List.module.scss"
+
 
 type ListPropsType = {
     list: CardPacksType
@@ -17,16 +19,20 @@ export const List: FC<ListPropsType> = memo(({remCallBack, list, callBack}) => {
     return (
 
         <tr>
-            <td>
+            <td className={style.td}>
                 {list.name}
             </td>
-            <td>
+            <td className={style.td}>
                 {list.cardsCount}
             </td>
-            <td>
+            <td className={style.td}>
                 {list.updated.slice(0, 10)}
             </td>
-            <td>
+            <td className={style.td}>
+                Elon Musk
+            </td>
+
+            <td className={style.td}>
                 <Button onClickCallBack={() => {
                     updatePack(list._id, 'Hello my friend')
                 }} title={'update'}/>

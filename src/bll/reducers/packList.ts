@@ -45,6 +45,8 @@ export const packList = (state: InitialStatePackListType = initialState, action:
             }
         case "PACK-LIST/REMOVE-PACK":
             return {...state, cardPacks: state.cardPacks.filter(pack => pack._id !== action.payload.id)}
+        case "PACK-LIST/MIN-MAX-PACK-QUANTITY":
+            return {...state, minCardsCount: action.payload.min, maxCardsCount: action.payload.max}
         default:
             return state
     }
@@ -92,13 +94,18 @@ export const removePackAC = (id: string) => ({
     payload: {id}
 } as const)
 
+export const setMinMaxCardsQuantityAC = (min: number, max: number) => ({
+    type: 'PACK-LIST/MIN-MAX-PACK-QUANTITY',
+    payload: {min, max}
+} as const)
+
 //-------------thunks-----------------
 
 export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus('loading'))
-    const {page, pageCount, searchValue, sortPacks} = getState().packList
+    const {page, pageCount, searchValue, sortPacks, minCardsCount, maxCardsCount} = getState().packList
     try {
-        const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue)
+        const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue, minCardsCount, maxCardsCount)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
@@ -200,3 +207,4 @@ export type PackListActionsType =
     | ReturnType<typeof setPackAC>
     | ReturnType<typeof setUpdatePackAC>
     | ReturnType<typeof removePackAC>
+    | ReturnType<typeof setMinMaxCardsQuantityAC>

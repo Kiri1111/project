@@ -2,8 +2,8 @@ import {type} from 'os';
 import {CardPacksType, instance, ResponsePackType} from './authApi';
 
 export const packApi = {
-    getPacks(page: number, pageCount: number, sortPacks: string = '0updated', searchValue: string) {
-        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&packName=${searchValue}`)
+    getPacks(page: number, pageCount: number, sortPacks: string = '0updated', searchValue: string, min: number, max: number) {
+        return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&packName=${searchValue}&min=${min}&max=${max}`)
     },
     getMyPacks(page: number, pageCount: number, sortPacks: string = '0updated', user_id?: string) {
         return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&user_id=${user_id}`)

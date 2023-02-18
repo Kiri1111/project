@@ -1,31 +1,44 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
+import {useEffect, useState} from "react";
+import style from "./SliderComponent.module.scss"
+import {setCardsPacksTC, setMinMaxCardsQuantityAC, setPackTC} from "../../../bll/reducers/packList";
 
-function valuetext(value: number) {
-    return `${value}°C`;
-}
 
 export const RangeSlider = () => {
-    const [value, setValue] = React.useState<number[]>([20, 37]);
+
+    const dispatch = useAppDispatch()
+    const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
+
+    const [value1, setValue1] = useState(0)
+    const [value2, setValue2] = useState(maxCardsCount)
+
+    useEffect(() => {
+        dispatch(setCardsPacksTC())
+    }, [maxCardsCount])
 
     const handleChange = (event: Event, newValue: number | number[]) => {
-        setValue(newValue as number[]);
+        if (Array.isArray(newValue)) {
+            setValue1(newValue[0])
+            setValue2(newValue[1])
+            dispatch(setMinMaxCardsQuantityAC(value1, value2))
+        } else {
+            setValue1(newValue)
+        }
     };
 
     return (
-        <div>
-            <input type="text"/>
-            <Box sx={{width: 156}}>
-                <Slider
-                    getAriaLabel={() => 'Temperature range'}
-                    value={value}
-                    onChange={handleChange}
-                    valueLabelDisplay="auto"
-                    getAriaValueText={valuetext}
-                />
-            </Box>
-            <input type="text"/>
+        <div className={style.sliderBlock}>
+            <h4 className={style.title}>Number of cards</h4>
+            <span className={style.span}>{value1}</span>
+            <Slider
+                value={[value1, value2]}
+                onChange={handleChange}
+
+            />
+            <span className={style.span}>{maxCardsCount}</span>
+
         </div>
     );
 }
