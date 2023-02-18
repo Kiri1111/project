@@ -35,7 +35,7 @@ export const App = () => {
             <Header/>
             <Routes>
                 <Route path={'/project'} element={<Demo/>}/>
-                <Route path={'/packList'} element={<PackList/>}/>
+                <Route path={'/packList'} element={<PackList/>}/>a
                 <Route path={'/*'} element={<Navigate to={'/404'}/>}/>
                 <Route path={'/404'} element={<ErrorNotFound/>}/>
                 <Route path={'/login'} element={<Login/>}/>

@@ -1,7 +1,6 @@
 import React, {FC, memo} from 'react';
 import {CardPacksType} from "../../../dal/api/authApi";
 import Button from '../../common/components/commonButton/Button';
-import s from './Packlist.module.css'
 
 type ListPropsType = {
     list: CardPacksType
@@ -18,13 +17,13 @@ export const List: FC<ListPropsType> = memo(({remCallBack, list, callBack}) => {
     return (
 
         <tr>
-            <td className={s.blockTwo}>
+            <td>
                 {list.name}
             </td>
-            <td className={s.blockTwo}>
+            <td>
                 {list.cardsCount}
             </td>
-            <td className={s.blockTwo}>
+            <td>
                 {list.updated.slice(0, 10)}
             </td>
             <td>

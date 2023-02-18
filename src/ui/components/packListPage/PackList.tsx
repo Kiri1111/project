@@ -9,21 +9,24 @@ import {
     setSortPacksAC, updatePackTC
 } from "../../../bll/reducers/packList";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {Preloader} from "../../common/components/preloader/Preloader";
 import {CardPacksType} from "../../../dal/api/authApi";
 import {List} from "./List";
-import {PaginationComponent} from "./Pagination";
-import {SortComponent} from "./SortComponent";
 import Button from "../../common/components/commonButton/Button";
 import {Debounce} from "./Debounce";
 import {useDebounce} from "usehooks-ts";
-import s from './Packlist.module.css'
-import RangeSlider from "./SliderComponent";
+import style from './Packlist.module.scss'
+import {RangeSlider} from "./SliderComponent";
+import {TableCards} from "./TableCards";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.app.status)
-    const packs = useAppSelector(state => state.packList)
+    const sortPacks = useAppSelector(state => state.packList.sortPacks)
+    const searchValue = useAppSelector(state => state.packList.searchValue)
+    const pageCount = useAppSelector(state => state.packList.pageCount)
+    const page = useAppSelector(state => state.packList.page)
+    const cardPacks = useAppSelector(state => state.packList.cardPacks)
+    const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const user_id = useAppSelector(state => state.profile._id)
 
 
@@ -38,7 +41,7 @@ export const PackList = () => {
 
     useEffect(() => {
         dispatch(setCardsPacksTC())
-    }, [packs.sortPacks, packs.searchValue, packs.pageCount, packs.page, packs.sortPacks])
+    }, [sortPacks, searchValue, pageCount, page])
 
     const updatePack = useCallback((id: string, name: string) => {
         dispatch(updatePackTC(id, name));
@@ -48,10 +51,8 @@ export const PackList = () => {
         dispatch(removePackTC(id))
     }, [])
 
-
-    const finalPackList = packs.cardPacks.map((el: CardPacksType) => <List key={el._id} remCallBack={remPack}
-                                                                           callBack={updatePack} list={el}/>)
-
+    const finalPackList = cardPacks.map((el: CardPacksType) => <List key={el._id} remCallBack={remPack}
+                                                                     callBack={updatePack} list={el}/>)
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
         dispatch(setPageNumberAC(newPage))
@@ -64,7 +65,7 @@ export const PackList = () => {
     }
 
     const onClickMyPacksHandler = () => {
-        dispatch(setMyCardsPacksTC(1, packs.pageCount, packs.sortPacks, user_id))
+        dispatch(setMyCardsPacksTC(1, pageCount, sortPacks, user_id))
     }
 
     const onClickAllPacksHandler = () => {
@@ -75,69 +76,30 @@ export const PackList = () => {
         dispatch(setPackTC('add'));
     }
 
-    // console.log(status)
-    // if (status === 'loading') {
-    //     return <div
-    //         style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-    //         <Preloader width={'300px'}/>
-    //     </div>
-    // }
-
     return (
-        <div style={{width: '100%', display: 'flex', flexDirection: 'column'}}>
-            <div className={s.div1}>
-                <h4 className={s.packList}>Packs list</h4>
-                <Button style={{marginTop: "20px"}} onClickCallBack={addPack} title={'Add new pack'}/>
+        <div className={style.packsContainer}>
+            <div className={style.headBlock}>
+                <h4>Packs list</h4>
+                <Button onClickCallBack={addPack} title={'Add new pack'}/>
             </div>
-            <div className={s.div2}>
+            <div className={style.searchBlock}>
+                <Debounce setValue={setValue} value={value}/>
+                <h4>Show packs cards</h4>
                 <div>
-                    <Debounce setValue={setValue} value={value}/>
-                </div>
-                <div>
-                    <h4 className={s.h4}>Show packs cards</h4>
                     <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
                     <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
                 </div>
-                <div>
-                    <h4 className={s.h4}>Number of cards</h4>
-                    <RangeSlider/>
-                </div>
-            </div>
 
-            {
-                status === 'loading'
-                    ? <div
-                        style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-                        <Preloader width={'300px'}/>
-                    </div>
-                    : <div>
-                        <table className={s.table}>
-                            <thead className={s.blockOne}>
-                            <tr>
-                                <td>Name</td>
-                                <td>Cards</td>
-                                <td>
-                                    <SortComponent
-                                        value={'updated'}
-                                        sort={packs.sortPacks}
-                                        title={'Last Updated'}
-                                        onChange={onChangeSort}
-                                    />
-                                </td>
-                                <td>Created by</td>
-                                <td>Actions</td>
-                            </tr>
-                            </thead>
-                            <tbody>{finalPackList}</tbody>
-                        </table>
-                        <PaginationComponent
-                            onChange={onChangePagination}
-                            totalCount={packs.cardPacksTotalCount}
-                            countOnPage={packs.pageCount}
-                            page={packs.page}
-                            count={packs.pageCount}/>
-                    </div>
-            }
+                <h4>Number of cards</h4>
+                <RangeSlider/>
+
+            </div>
+            <div className={style.table}>
+                <TableCards
+                    sortPacks={sortPacks} page={page} pageCount={pageCount}
+                    cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
+                    onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
+            </div>
         </div>
     )
 }
