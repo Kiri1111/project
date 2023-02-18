@@ -13,9 +13,16 @@ export const RangeSlider = () => {
 
     const [value1, setValue1] = useState(0)
     const [value2, setValue2] = useState(maxCardsCount)
+    const [request, setRequest] = useState(true)
 
     useEffect(() => {
-        dispatch(setCardsPacksTC())
+        if (maxCardsCount !== 0) {
+            dispatch(setCardsPacksTC())
+        }
+        if (request) {
+            dispatch(setCardsPacksTC())
+            setRequest(false)
+        }
     }, [maxCardsCount])
 
     const handleChange = (event: Event, newValue: number | number[]) => {

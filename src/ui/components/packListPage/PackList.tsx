@@ -32,15 +32,21 @@ export const PackList = () => {
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
+    const [request, setRequest] = useState(true)
 
     useEffect(() => {
-
         dispatch(setSearchValueAC(debouncedValue))
     }, [debouncedValue])
 
 
     useEffect(() => {
-        dispatch(setCardsPacksTC())
+        if (sortPacks !== '0updated' && searchValue !== '' && pageCount !== 10 && page !== 1) {
+            dispatch(setCardsPacksTC())
+        }
+        if (request) {
+            dispatch(setCardsPacksTC())
+            setRequest(false)
+        }
     }, [sortPacks, searchValue, pageCount, page])
 
     const updatePack = useCallback((id: string, name: string) => {
