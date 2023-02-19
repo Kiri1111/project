@@ -37,7 +37,7 @@ export const packList = (state: InitialStatePackListType = initialState, action:
             return {...state, searchValue: action.payload.searchValue}
         case "PACK-LIST/SET-SORT-PACKS":
             return {...state, sortPacks: action.payload.sortPacks}
-        case "PACK-LIST/UPADTE-PACK":
+        case "PACK-LIST/UPDATE-PACK":
             return {
                 ...state, cardPacks: state.cardPacks.map(pack => {
                     return pack._id === action.payload.pack._id ? {...pack, name: action.payload.pack.name} : pack
@@ -85,7 +85,7 @@ export const setPackAC = (pack: CardPacksType) => ({
 } as const)
 
 export const setUpdatePackAC = (pack: CardPacksType) => ({
-    type: 'PACK-LIST/UPADTE-PACK',
+    type: 'PACK-LIST/UPDATE-PACK',
     payload: {pack}
 } as const)
 

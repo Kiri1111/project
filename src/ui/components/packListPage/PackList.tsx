@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
     removePackTC,
-    setCardsPacksTC,
+    setCardsPacksTC, setMinMaxCardsQuantityAC,
     setMyCardsPacksTC, setPackTC,
     setPageCountAC,
     setPageNumberAC,
@@ -15,7 +15,7 @@ import Button from "../../common/components/commonButton/Button";
 import {Debounce} from "./Debounce";
 import {useDebounce} from "usehooks-ts";
 import style from './Packlist.module.scss'
-import {RangeSlider} from "./SliderComponent";
+import {SliderComponent} from "./SliderComponent";
 import {TableCards} from "./TableCards";
 
 export const PackList = () => {
@@ -27,27 +27,37 @@ export const PackList = () => {
     const page = useAppSelector(state => state.packList.page)
     const cardPacks = useAppSelector(state => state.packList.cardPacks)
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
+    const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
+    const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
     const user_id = useAppSelector(state => state.profile._id)
 
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
+    const [min, setMin] = useState(minCardsCount)
+    const [max, setMax] = useState(maxCardsCount)
+    const debounceMin = useDebounce(min, 1000)
+    const debounceMax = useDebounce(max, 1000)
     const [request, setRequest] = useState(true)
+
+    useEffect(() => {
+        dispatch(setMinMaxCardsQuantityAC(min, max))
+    }, [debounceMin, debounceMax])
 
     useEffect(() => {
         dispatch(setSearchValueAC(debouncedValue))
     }, [debouncedValue])
 
-
     useEffect(() => {
-        if (sortPacks !== '0updated' && searchValue !== '' && pageCount !== 10 && page !== 1) {
-            dispatch(setCardsPacksTC())
-        }
-        if (request) {
-            dispatch(setCardsPacksTC())
-            setRequest(false)
-        }
-    }, [sortPacks, searchValue, pageCount, page])
+        // if (sortPacks !== '0updated' && searchValue !== '' && pageCount !== 10 && page !== 1) {
+        //     dispatch(setCardsPacksTC())
+        // }
+        // if (request) {
+        //     dispatch(setCardsPacksTC())
+        //     setRequest(false)
+        // }
+        dispatch(setCardsPacksTC())
+    }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
 
     const updatePack = useCallback((id: string, name: string) => {
         dispatch(updatePackTC(id, name));
@@ -95,7 +105,7 @@ export const PackList = () => {
                     <Button onClickCallBack={onClickMyPacksHandler} title={'My'}/>
                     <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
                 </div>
-                <RangeSlider/>
+                <SliderComponent setMin={setMin} setMax={setMax} min={min} max={max}/>
             </div>
             <div className={style.table}>
                 <TableCards

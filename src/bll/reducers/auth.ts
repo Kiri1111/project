@@ -45,6 +45,8 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
             ? e.response.data.error
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
+        dispatch(setIsLoggedInAC(false))
+
     } finally {
         dispatch(setIsInitialized(true))
         setAppStatus('succeeded')

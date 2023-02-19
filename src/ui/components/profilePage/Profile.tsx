@@ -33,7 +33,7 @@ export const Profile = () => {
     }
 
     return (
-        <>
+        <div className={style.profilePage}>
             <div className={style.linkPackList}>
                 <NavLink className={style.link} to={'/packList'}>&#8656; Back to Pack list </NavLink>
             </div>
@@ -62,6 +62,6 @@ export const Profile = () => {
                         </>
                 }
             </div>
-        </>
+        </div>
     );
 };
