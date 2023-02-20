@@ -144,6 +144,7 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
 }
 
 export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
     try {
         const response = await packApi.addPack();
         if (response.statusText === 'Created') {
@@ -156,6 +157,8 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
             ? e.response.data.error
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
+    } finally {
+        dispatch(setAppStatus('succeeded'))
     }
 }
 

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
     removePackTC,
     setCardsPacksTC, setMinMaxCardsQuantityAC,
-    setMyCardsPacksTC, setPackTC,
+    setPackTC,
     setPageCountAC,
     setPageNumberAC,
     setSearchValueAC,
@@ -30,7 +30,6 @@ export const PackList = () => {
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
-    const user_id = useAppSelector(state => state.profile._id)
 
 
     const [value, setValue] = useState<string>('')
@@ -74,10 +73,6 @@ export const PackList = () => {
         }
     }
 
-    const onClickMyPacksHandler = () => {
-        dispatch(setMyCardsPacksTC(1, pageCount, sortPacks, user_id))
-    }
-
     const onClickAllPacksHandler = () => {
         dispatch(setCardsPacksTC())
     }
@@ -111,9 +106,7 @@ export const PackList = () => {
                             sortPacks={sortPacks} page={page} pageCount={pageCount}
                             cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
                             onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
-
                 }
-
             </div>
         </div>
     )

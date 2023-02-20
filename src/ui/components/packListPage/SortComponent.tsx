@@ -12,15 +12,6 @@ type SortPropsType = {
 const downIcon = sortDown
 const upIcon = sortUp
 
-export const changeSort = (sort: string, up: string, down: string) => {
-    switch (sort) {
-        case'0updated':
-            return down
-        case '1updated':
-            return up
-    }
-}
-
 
 export const SortComponent: FC<SortPropsType> = ({value, sort, title, onChange}) => {
 
@@ -29,6 +20,14 @@ export const SortComponent: FC<SortPropsType> = ({value, sort, title, onChange})
 
     const icon = sort === down ? downIcon : upIcon
 
+    const changeSort = (sort: string, up: string, down: string) => {
+        switch (sort) {
+            case`0${value}`:
+                return down
+            case `1${value}`:
+                return up
+        }
+    }
 
     const onclickHandler = () => {
         onChange(changeSort(sort, up, down))
