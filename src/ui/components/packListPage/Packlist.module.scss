@@ -14,6 +14,19 @@
     justify-content: space-between;
     align-items: center;
     margin-top: -10px;
+
+    .divLink {
+      width: 132px;
+      height: 30px;
+      background: #9A8665;
+      border-radius: 50px;
+      margin-left: 5px;
+
+      .link {
+        text-decoration: none;
+        color: #FFFFFF;
+      }
+    }
   }
 
   .table {

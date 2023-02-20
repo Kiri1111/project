@@ -19,7 +19,7 @@
 .default {
     width: 132px;
     height: 30px;
-    background: #0066CC;
+    background: #9A8665;
     border: none;
     color: #FFFFFF;;
     left: 77.89%;
@@ -65,7 +65,7 @@
 .default:active {
     width: 132px;
     height: 30px;
-    opacity: 70%;
+    opacity: 50%;
 }
 
 .secondary:active {
@@ -85,8 +85,8 @@
 .button:disabled {
     width: 167px;
     height: 30px;
-    color: #002E5C;
-    background-color: #004D99;
+    color: black;
+    background-color: #9A8665;
     opacity: 0.5;
     border-radius: 3px;
     border: none;

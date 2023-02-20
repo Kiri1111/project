@@ -1,12 +1,22 @@
 .registerBlock {
-  height: 82vh;
+  //width: 413px;
+  //background: #FFFFFF;
+  //box-shadow: 5px 5px 30px lightgray;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  width: 413px;
+  height: 400px;
+  background: #FFFFFF;
+  box-shadow: 5px 5px 30px lightgray;
+  margin-top: 60px;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
 
   .wrapper {
-    margin: 90px auto;
-    max-width: 413px;
-    background-color: #B0E0E6;
-    padding: 25px 33px 30px;
-    border-radius: 15px;
+
 
     .button {
       display: inline-block;
@@ -14,6 +24,7 @@
       max-width: 266px;
       border-radius: 15px;
       font-size: 16px;
+      background: #9A8665;
     }
   }
 }

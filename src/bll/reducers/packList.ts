@@ -160,6 +160,7 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
 }
 
 export const updatePackTC = (_id: string, name: string): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
     try {
         const response = await packApi.updatePack(_id, name);
         if (response.status === 200) {
@@ -173,10 +174,13 @@ export const updatePackTC = (_id: string, name: string): RootThunkType => async 
             ? e.response.data.error
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
+    } finally {
+        dispatch(setAppStatus('succeeded'))
     }
 }
 
 export const removePackTC = (_id: string): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus('loading'))
     try {
         const response = await packApi.removePack(_id);
         if (response.status === 200) {
@@ -190,6 +194,8 @@ export const removePackTC = (_id: string): RootThunkType => async (dispatch) => 
             ? e.response.data.error
             : (e.message + ', more details in the console')
         dispatch(setAppError(error))
+    } finally {
+        dispatch(setAppStatus('succeeded'))
     }
 }
 

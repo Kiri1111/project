@@ -1,8 +1,10 @@
 import React, {FC, memo} from 'react';
 import {CardPacksType} from "../../../dal/api/authApi";
-import Button from '../../common/components/commonButton/Button';
 import style from "./List.module.scss"
-
+import update from "../../common/assets/images/update.png"
+import del from "../../common/assets/images/delete.png"
+import {useAppSelector} from "../../../hooks/redux";
+import {Preloader} from "../../common/components/preloader/Preloader";
 
 type ListPropsType = {
     list: CardPacksType
@@ -11,6 +13,8 @@ type ListPropsType = {
 }
 
 export const List: FC<ListPropsType> = memo(({remCallBack, list, callBack}) => {
+
+    const status = useAppSelector(state => state.app.status)
 
     const updatePack = (id: string, name: string) => {
         callBack(id, name);
@@ -33,12 +37,23 @@ export const List: FC<ListPropsType> = memo(({remCallBack, list, callBack}) => {
             </td>
 
             <td className={style.td}>
-                <Button onClickCallBack={() => {
-                    updatePack(list._id, 'Hello my friend')
-                }} title={'update'}/>
-                <Button onClickCallBack={() => {
-                    remCallBack(list._id)
-                }} title={'delete'}/>
+                {
+                    status === 'loading'
+                        ? <Preloader width={'15px'}/>
+                        : <div className={style.icons}>
+                            <div onClick={() => {
+                                updatePack(list._id, 'Hello my friend')
+                            }}>
+                                <img style={{width: '15px'}} src={update} alt={'update'}/>
+                            </div>
+                            <div onClick={() => {
+                                remCallBack(list._id)
+                            }}>
+                                <img src={del} alt={'delete'} style={{width: '15px'}}/>
+                            </div>
+                        </div>
+                }
+
             </td>
         </tr>
     );

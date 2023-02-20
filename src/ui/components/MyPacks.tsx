@@ -1,25 +1,24 @@
 import React, {useCallback, useEffect, useState} from 'react';
+import style from "./packListPage/Packlist.module.scss";
+import Button from "../common/components/commonButton/Button";
+import {Debounce} from "./packListPage/Debounce";
+import {NavLink} from "react-router-dom";
+import {SliderComponent} from "./packListPage/SliderComponent";
+import {TableCards} from "./packListPage/TableCards";
 import {
     removePackTC,
-    setCardsPacksTC, setMinMaxCardsQuantityAC,
-    setMyCardsPacksTC, setPackTC,
-    setPageCountAC,
-    setPageNumberAC,
-    setSearchValueAC,
-    setSortPacksAC, updatePackTC
-} from "../../../bll/reducers/packList";
-import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {CardPacksType} from "../../../dal/api/authApi";
-import {List} from "./List";
-import Button from "../../common/components/commonButton/Button";
-import {Debounce} from "./Debounce";
+    setCardsPacksTC,
+    setMinMaxCardsQuantityAC, setMyCardsPacksTC,
+    setPackTC, setPageCountAC, setPageNumberAC,
+    setSearchValueAC, setSortPacksAC,
+    updatePackTC
+} from "../../bll/reducers/packList";
+import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {useDebounce} from "usehooks-ts";
-import style from './Packlist.module.scss'
-import {SliderComponent} from "./SliderComponent";
-import {TableCards} from "./TableCards";
-import {NavLink} from "react-router-dom";
+import {CardPacksType} from "../../dal/api/authApi";
+import {List} from "./packListPage/List";
 
-export const PackList = () => {
+export const MyPacks = () => {
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.app.status)
     const sortPacks = useAppSelector(state => state.packList.sortPacks)
@@ -28,21 +27,11 @@ export const PackList = () => {
     const page = useAppSelector(state => state.packList.page)
     const cardPacks = useAppSelector(state => state.packList.cardPacks)
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
-    const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
-    const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
     const user_id = useAppSelector(state => state.profile._id)
 
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
-    const [min, setMin] = useState(minCardsCount)
-    const [max, setMax] = useState(maxCardsCount)
-    const debounceMin = useDebounce(min, 1000)
-    const debounceMax = useDebounce(max, 1000)
-
-    useEffect(() => {
-        dispatch(setMinMaxCardsQuantityAC(min, max))
-    }, [debounceMin, debounceMax])
 
 
     useEffect(() => {
@@ -50,8 +39,9 @@ export const PackList = () => {
     }, [debouncedValue])
 
     useEffect(() => {
-        dispatch(setCardsPacksTC())
-    }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
+        dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, user_id))
+
+    }, [sortPacks, searchValue, pageCount, page])
 
     const updatePack = useCallback((id: string, name: string) => {
         dispatch(updatePackTC(id, name));
@@ -63,6 +53,7 @@ export const PackList = () => {
 
     const finalPackList = cardPacks.map((el: CardPacksType) => <List key={el._id} remCallBack={remPack}
                                                                      callBack={updatePack} list={el}/>)
+
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
         dispatch(setPageNumberAC(newPage))
@@ -74,14 +65,6 @@ export const PackList = () => {
         }
     }
 
-    const onClickMyPacksHandler = () => {
-        dispatch(setMyCardsPacksTC(1, pageCount, sortPacks, user_id))
-    }
-
-    const onClickAllPacksHandler = () => {
-        dispatch(setCardsPacksTC())
-    }
-
     const addPack = () => {
         dispatch(setPackTC('add'));
     }
@@ -89,19 +72,11 @@ export const PackList = () => {
     return (
         <div className={style.packsContainer}>
             <div className={style.headBlock}>
-                <h4>Packs list</h4>
+                <NavLink className={style.link} to={'/packList'}>&#8656; Back to Pack list </NavLink>
                 <Button onClickCallBack={addPack} title={'Add new pack'}/>
             </div>
             <div className={style.searchBlock}>
                 <Debounce setValue={setValue} value={value}/>
-                <div>
-                    <h4>Show packs cards</h4>
-                    <div className={style.divLink}>
-                        <NavLink className={style.link} to={'/myPack'}>My</NavLink>
-                    </div>
-                    <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
-                </div>
-                <SliderComponent setMin={setMin} setMax={setMax} min={min} max={max}/>
             </div>
             <div className={style.table}>
                 {
@@ -111,12 +86,9 @@ export const PackList = () => {
                             sortPacks={sortPacks} page={page} pageCount={pageCount}
                             cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
                             onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
-
                 }
-
             </div>
         </div>
     )
-}
-
+};
 
