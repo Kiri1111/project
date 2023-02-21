@@ -1,4 +1,3 @@
-import {number} from 'yup';
 import {instance} from './authApi';
 
 

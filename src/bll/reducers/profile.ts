@@ -1,6 +1,7 @@
 import {RootThunkType} from "../store/store";
 import {authApi, ResponseType} from "../../dal/api/authApi";
 import {setAppError, setAppStatus} from "./app";
+import {handleServerAppError} from "../../utils/errorUtil";
 
 const initialState = {} as ResponseType
 
@@ -55,10 +56,7 @@ export const setNewNameTC = (newName: string): RootThunkType => async (dispatch)
             dispatch(setAppError('Error'))
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('succeeded'))
     }
@@ -74,10 +72,7 @@ export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch
             dispatch(setAppError('Error'))
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('succeeded'))
 

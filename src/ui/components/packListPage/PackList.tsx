@@ -30,8 +30,7 @@ export const PackList = () => {
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
-
-
+    console.log(maxCardsCount)
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
     const [min, setMin] = useState(minCardsCount)
@@ -42,7 +41,6 @@ export const PackList = () => {
     useEffect(() => {
         dispatch(setMinMaxCardsQuantityAC(min, max))
     }, [debounceMin, debounceMax])
-
 
     useEffect(() => {
         dispatch(setSearchValueAC(debouncedValue))
@@ -60,8 +58,14 @@ export const PackList = () => {
         dispatch(removePackTC(id))
     }, [])
 
-    const finalPackList = cardPacks.map((el: CardPacksType) => <List key={el._id} remCallBack={remPack}
-                                                                     callBack={updatePack} list={el}/>)
+    const finalPackList = cardPacks.map((el: CardPacksType) =>
+        <List
+            key={el._id}
+            remCallBack={remPack}
+            callBack={updatePack}
+            list={el}
+        />)
+
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
         dispatch(setPageNumberAC(newPage))
@@ -96,8 +100,10 @@ export const PackList = () => {
                     </div>
                     <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
                 </div>
-                <SliderComponent setMin={setMin} setMax={setMax} min={min} max={max}/>
+                <SliderComponent maxCardsCount={maxCardsCount} setMin={setMin} setMax={setMax} min={min} max={max}/>
             </div>
+
+
             <div className={style.table}>
                 {
                     cardPacks.length === 0

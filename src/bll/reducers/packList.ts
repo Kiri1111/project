@@ -3,6 +3,7 @@ import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
 import {setIsInitialized} from "./auth";
 import {packApi} from "../../dal/api/PackApi";
+import {handleServerAppError} from "../../utils/errorUtil";
 
 const initialState = {
     cardPacks: [],
@@ -112,10 +113,7 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
             dispatch(setAppError('Network Error'))
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
         dispatch(setIsInitialized(false))
     } finally {
         dispatch(setAppStatus('idle'))
@@ -133,10 +131,7 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
             dispatch(setAppError('Network Error'))
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('idle'))
 
@@ -153,10 +148,7 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
             dispatch(setAppError('Network Error'))
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('succeeded'))
     }
@@ -170,13 +162,9 @@ export const updatePackTC = (_id: string, name: string): RootThunkType => async 
             dispatch(setUpdatePackAC(response.data.updatedCardsPack))
         } else {
             dispatch(setAppError('Network Error'));
-            console.log('Network Error');
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('succeeded'))
     }
@@ -193,10 +181,7 @@ export const removePackTC = (_id: string): RootThunkType => async (dispatch) => 
             console.log('Network Error');
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('succeeded'))
     }

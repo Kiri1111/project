@@ -33,7 +33,7 @@ export const List: FC<ListPropsType> = memo(({remCallBack, list, callBack}) => {
                 {list.updated.slice(0, 10)}
             </td>
             <td className={style.td}>
-                Elon Musk
+                {list.user_name}
             </td>
 
             <td className={style.td}>

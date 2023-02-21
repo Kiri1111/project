@@ -2,6 +2,7 @@ import {RootThunkType} from "../store/store";
 import {setAppError, setAppStatus} from "./app";
 import {authApi, LoginRequestType} from "../../dal/api/authApi";
 import {deleteUserAC, setNewAvatarAC, setUserAC} from "./profile";
+import {handleServerAppError} from "../../utils/errorUtil";
 
 const initialState = {
     isLoggedIn: false,
@@ -32,7 +33,7 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) =>
 ////////Thunks
 
 export const initializeAppTC = (): RootThunkType => async (dispatch) => {
-
+    setAppStatus('loading')
     try {
         const res = await authApi.me()
         dispatch(setIsLoggedInAC(true))
@@ -41,10 +42,7 @@ export const initializeAppTC = (): RootThunkType => async (dispatch) => {
         dispatch(setIsInitialized(true))
 
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
         dispatch(setIsLoggedInAC(false))
 
     } finally {
@@ -63,10 +61,7 @@ export const registerTC = (email: string, password: string): RootThunkType => as
         }
         dispatch(setAppStatus('succeeded'));
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error));
+        handleServerAppError(e, dispatch)
         dispatch(setAppStatus('failed'));
         dispatch(setIsLoggedInAC(false))
     }
@@ -83,13 +78,9 @@ export const loginTC = (data: LoginRequestType): RootThunkType => async (dispatc
             dispatch(setAppStatus('succeeded'))
         }
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console');
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('idle'))
-        console.log('login in');
     }
 }
 
@@ -102,12 +93,8 @@ export const logOutTC = (): RootThunkType => async (dispatch) => {
         dispatch(setIsLoggedInAC(false))
         dispatch(deleteUserAC())
     } catch (e: any) {
-        const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console')
-        dispatch(setAppError(error))
+        handleServerAppError(e, dispatch)
     } finally {
-        console.log('log out');
         dispatch(setAppStatus('idle'))
     }
 }

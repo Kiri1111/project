@@ -1,20 +1,17 @@
 import * as React from 'react';
 import Slider from '@mui/material/Slider';
-import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {FC, useEffect, useState} from "react";
+import {FC} from "react";
 import style from "./SliderComponent.module.scss"
-import {useDebounce} from "usehooks-ts";
 
 type SliderPropsType = {
     setMin: (min: number) => void
     setMax: (max: number) => void
     min: number
     max: number
+    maxCardsCount: number
 }
 
-export const SliderComponent: FC<SliderPropsType> = ({setMin, setMax, min, max}) => {
-    const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
-    const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
+export const SliderComponent: FC<SliderPropsType> = ({maxCardsCount, setMin, setMax, min, max}) => {
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         if (Array.isArray(newValue)) {
