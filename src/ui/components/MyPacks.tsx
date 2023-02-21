@@ -3,13 +3,11 @@ import style from "./packListPage/Packlist.module.scss";
 import Button from "../common/components/commonButton/Button";
 import {Debounce} from "./packListPage/Debounce";
 import {NavLink} from "react-router-dom";
-import {SliderComponent} from "./packListPage/SliderComponent";
 import {TableCards} from "./packListPage/TableCards";
 import {
     removePackTC,
-    setCardsPacksTC,
-    setMinMaxCardsQuantityAC, setMyCardsPacksTC,
-    setPackTC, setPageCountAC, setPageNumberAC,
+    setMyCardsPacksTC, setMyPackTC,
+    setPageCountAC, setPageNumberAC,
     setSearchValueAC, setSortPacksAC,
     updatePackTC
 } from "../../bll/reducers/packList";
@@ -17,6 +15,7 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {useDebounce} from "usehooks-ts";
 import {CardPacksType} from "../../dal/api/authApi";
 import {List} from "./packListPage/List";
+import {Preloader} from "../common/components/preloader/Preloader";
 
 export const MyPacks = () => {
     const dispatch = useAppDispatch()
@@ -40,7 +39,6 @@ export const MyPacks = () => {
 
     useEffect(() => {
         dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, user_id))
-
     }, [sortPacks, searchValue, pageCount, page])
 
     const updatePack = useCallback((id: string, name: string) => {
@@ -66,7 +64,7 @@ export const MyPacks = () => {
     }
 
     const addPack = () => {
-        dispatch(setPackTC('add'));
+        dispatch(setMyPackTC('add'));
     }
 
     return (
@@ -78,16 +76,22 @@ export const MyPacks = () => {
             <div className={style.searchBlock}>
                 <Debounce setValue={setValue} value={value}/>
             </div>
-            <div className={style.table}>
-                {
-                    cardPacks.length === 0
-                        ? <h2>'Add new packs'</h2>
-                        : <TableCards
-                            sortPacks={sortPacks} page={page} pageCount={pageCount}
-                            cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
-                            onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
-                }
-            </div>
+            {
+                status === 'loading'
+                    ? <Preloader width={'250px'}/>
+                    : <div className={style.table}>
+                        {
+                            cardPacks.length === 0
+                                ? <h2>'Add new packs'</h2>
+                                : <TableCards
+                                    sortPacks={sortPacks} page={page} pageCount={pageCount}
+                                    cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
+                                    onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
+                        }
+                    </div>
+            }
+
+
         </div>
     )
 };

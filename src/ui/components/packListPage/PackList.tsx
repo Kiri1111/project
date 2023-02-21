@@ -17,7 +17,7 @@ import {useDebounce} from "usehooks-ts";
 import style from './Packlist.module.scss'
 import {SliderComponent} from "./SliderComponent";
 import {TableCards} from "./TableCards";
-import {NavLink} from "react-router-dom";
+import {NavLink, useSearchParams} from "react-router-dom";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -30,6 +30,9 @@ export const PackList = () => {
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
+    const [searchParams, setSearchParams] = useSearchParams()
+
+
     console.log(maxCardsCount)
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
@@ -39,11 +42,25 @@ export const PackList = () => {
     const debounceMax = useDebounce(max, 1000)
 
     useEffect(() => {
+        if (max === 0) {
+            setMax(maxCardsCount)
+        }
+    }, [maxCardsCount])
+
+    useEffect(() => {
         dispatch(setMinMaxCardsQuantityAC(min, max))
+        setMax(debounceMax)
+        setMin(debounceMin)
     }, [debounceMin, debounceMax])
 
     useEffect(() => {
         dispatch(setSearchValueAC(debouncedValue))
+        setSearchParams({
+            page: page.toString(),
+            pageCount: pageCount.toString(),
+            sortPacks: sortPacks,
+            packName: debouncedValue
+        })
     }, [debouncedValue])
 
     useEffect(() => {
@@ -69,11 +86,13 @@ export const PackList = () => {
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
         dispatch(setPageNumberAC(newPage))
+        setSearchParams({page: page.toString(), pageCount: pageCount.toString(), sortPacks: sortPacks})
     }
 
     const onChangeSort = (newSort?: string) => {
         if (newSort) {
             dispatch(setSortPacksAC(newSort))
+            setSearchParams({page: page.toString(), pageCount: pageCount.toString(), sortPacks: sortPacks})
         }
     }
 

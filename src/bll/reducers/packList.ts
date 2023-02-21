@@ -117,7 +117,6 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
         dispatch(setIsInitialized(false))
     } finally {
         dispatch(setAppStatus('idle'))
-
     }
 }
 
@@ -134,7 +133,6 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
         handleServerAppError(e, dispatch)
     } finally {
         dispatch(setAppStatus('idle'))
-
     }
 }
 
@@ -144,6 +142,24 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
         const response = await packApi.addPack();
         if (response.statusText === 'Created') {
             dispatch(setCardsPacksTC())
+        } else {
+            dispatch(setAppError('Network Error'))
+        }
+    } catch (e: any) {
+        handleServerAppError(e, dispatch)
+    } finally {
+        dispatch(setAppStatus('succeeded'))
+    }
+}
+
+export const setMyPackTC = (text: string): RootThunkType => async (dispatch, getState) => {
+    dispatch(setAppStatus('loading'))
+    const {page, pageCount, sortPacks} = getState().packList
+    const userId = getState().profile._id
+    try {
+        const response = await packApi.addPack();
+        if (response.statusText === 'Created') {
+            dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
         } else {
             dispatch(setAppError('Network Error'))
         }
@@ -170,15 +186,16 @@ export const updatePackTC = (_id: string, name: string): RootThunkType => async 
     }
 }
 
-export const removePackTC = (_id: string): RootThunkType => async (dispatch) => {
+export const removePackTC = (_id: string): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus('loading'))
+    const {page, pageCount, sortPacks} = getState().packList
+    const userId = getState().profile._id
     try {
         const response = await packApi.removePack(_id);
+        console.log(response)
         if (response.status === 200) {
-            dispatch(removePackAC(response.data.deletedCardsPack._id));
-        } else {
+            dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
             dispatch(setAppError('Network Error'));
-            console.log('Network Error');
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)

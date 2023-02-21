@@ -64,6 +64,8 @@ export const registerTC = (email: string, password: string): RootThunkType => as
         handleServerAppError(e, dispatch)
         dispatch(setAppStatus('failed'));
         dispatch(setIsLoggedInAC(false))
+    } finally {
+        dispatch(setAppStatus('idle'))
     }
 }
 

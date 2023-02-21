@@ -13,6 +13,8 @@ type SliderPropsType = {
 
 export const SliderComponent: FC<SliderPropsType> = ({maxCardsCount, setMin, setMax, min, max}) => {
 
+
+    console.log("MAX", max)
     const handleChange = (event: Event, newValue: number | number[]) => {
         if (Array.isArray(newValue)) {
             setMin(newValue[0])
