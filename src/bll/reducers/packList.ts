@@ -26,7 +26,7 @@ export const packList = (state: InitialStatePackListType = initialState, action:
                 maxCardsCount: action.payload.data.maxCardsCount,
                 minCardsCount: action.payload.data.minCardsCount,
                 page: action.payload.data.page,
-                pageCount: action.payload.data.pageCount,
+                pageCount: action.payload.data.pageCount
             }
         case 'PACK-LIST/SET-PACK':
             return {...state, cardPacks: [action.payload.pack, ...state.cardPacks]}
