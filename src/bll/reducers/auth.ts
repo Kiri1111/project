@@ -9,7 +9,7 @@ const initialState = {
     isInitialized: false
 }
 export const logOutTC = createAsyncThunk('auth/logOut', async (_, {dispatch}) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authApi.logOut()
         dispatch(setIsLoggedInAC({isLoggedIn: false}))
@@ -17,48 +17,48 @@ export const logOutTC = createAsyncThunk('auth/logOut', async (_, {dispatch}) =>
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 })
 
 export const loginTC = createAsyncThunk('auth/login', async (data: LoginRequestType, {dispatch}) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authApi.login(data)
         if (res.status === 200) {
             dispatch(setIsLoggedInAC({isLoggedIn: true}))
             dispatch(setUserAC(res.data))
         } else {
-            dispatch(setAppError('Network error'))
+            dispatch(setAppError({error: 'Network error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 })
 
 export const registerTC = createAsyncThunk('auth/register', async (data: RegistrationRequestType, {dispatch}) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await authApi.register(data);
         if (response.statusText === 'Created') {
             dispatch(loginTC(data))
             dispatch(setIsLoggedInAC({isLoggedIn: true}));
         } else {
-            dispatch(setAppError('Network error'))
+            dispatch(setAppError({error: 'Network error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
         dispatch(setIsLoggedInAC({isLoggedIn: false}))
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 })
 
 export const initializeAppTC = createAsyncThunk('auth/initializeApp', async (_, {dispatch}) => {
     dispatch(setIsInitialized({isInitialized: false}))
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authApi.me()
         dispatch(setIsLoggedInAC({isLoggedIn: true}))
@@ -72,7 +72,7 @@ export const initializeAppTC = createAsyncThunk('auth/initializeApp', async (_, 
 
     } finally {
         dispatch(setIsInitialized({isInitialized: true}))
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 })
 
