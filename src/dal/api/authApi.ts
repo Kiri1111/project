@@ -16,11 +16,8 @@ export const authApi = {
     login(data: LoginRequestType) {
         return instance.post<ResponseType>('auth/login', data)
     },
-    register(email: string, password: string) {
-        return instance.post<ResponseType>('auth/register', {
-            email: email,
-            password: password
-        });
+    register(data: RegistrationRequestType) {
+        return instance.post<ResponseType>('auth/register', data);
     },
     logOut() {
         return instance.delete('auth/me')
@@ -35,6 +32,7 @@ export const authApi = {
 
 
 //------------------types-----------------------
+
 
 export type CardPacksType = {
     _id: string
@@ -82,6 +80,10 @@ export type LoginRequestType = {
     email: string
     password: string
     rememberMe?: boolean
+}
+export type RegistrationRequestType = {
+    email: string
+    password: string
 }
 
 

@@ -114,9 +114,9 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
-        dispatch(setIsInitialized(false))
+        dispatch(setIsInitialized({isInitialized: false}))
     } finally {
-        dispatch(setAppStatus('idle'))
+        dispatch(setAppStatus('succeeded'))
     }
 }
 
@@ -132,7 +132,7 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('idle'))
+        dispatch(setAppStatus('succeeded'))
     }
 }
 

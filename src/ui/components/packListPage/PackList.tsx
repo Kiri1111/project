@@ -33,7 +33,6 @@ export const PackList = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
 
-    console.log(maxCardsCount)
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
     const [min, setMin] = useState(minCardsCount)
@@ -121,8 +120,6 @@ export const PackList = () => {
                 </div>
                 <SliderComponent maxCardsCount={maxCardsCount} setMin={setMin} setMax={setMax} min={min} max={max}/>
             </div>
-
-
             <div className={style.table}>
                 {
                     cardPacks.length === 0

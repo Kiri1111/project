@@ -15,7 +15,6 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {useDebounce} from "usehooks-ts";
 import {CardPacksType} from "../../dal/api/authApi";
 import {List} from "./packListPage/List";
-import {Preloader} from "../common/components/preloader/Preloader";
 
 export const MyPacks = () => {
     const dispatch = useAppDispatch()
@@ -76,20 +75,16 @@ export const MyPacks = () => {
             <div className={style.searchBlock}>
                 <Debounce setValue={setValue} value={value}/>
             </div>
-            {
-                status === 'loading'
-                    ? <Preloader width={'250px'}/>
-                    : <div className={style.table}>
-                        {
-                            cardPacks.length === 0
-                                ? <h2>'Add new packs'</h2>
-                                : <TableCards
-                                    sortPacks={sortPacks} page={page} pageCount={pageCount}
-                                    cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
-                                    onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
-                        }
-                    </div>
-            }
+            <div className={style.table}>
+                {
+                    cardPacks.length === 0
+                        ? <h2>'Add new packs'</h2>
+                        : <TableCards
+                            sortPacks={sortPacks} page={page} pageCount={pageCount}
+                            cardPacksTotalCount={cardPacksTotalCount} finalPackList={finalPackList} status={status}
+                            onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
+                }
+            </div>
 
 
         </div>

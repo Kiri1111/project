@@ -36,7 +36,7 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Navigate to={'/profile'}/>
     }
-
+    console.log(status)
     return (
         <div className={style.loginContainer}>
             <Grid container justifyContent={'center'}>
