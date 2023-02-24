@@ -14,6 +14,8 @@ import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
 import {PackList} from "./ui/components/packListPage/PackList";
 import {Footer} from "./ui/components/footer/Footer";
+import AddEditPackList from './ui/components/packModal/AddEditPackList';
+import DeletePack from './ui/components/packModal/DeletePack';
 import {MyPacks} from "./ui/components/MyPacks";
 
 export const App = () => {
@@ -47,6 +49,7 @@ export const App = () => {
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
             </Routes>
+            <DeletePack/>
             <div>
                 <Footer/>
             </div>
