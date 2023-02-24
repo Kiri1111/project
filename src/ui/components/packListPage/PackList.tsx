@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
     removePackTC,
     setCardsPacksTC, setMinMaxCardsQuantityAC,
-    setPackTC,
     setPageCountAC,
     setPageNumberAC,
     setSearchValueAC,
@@ -18,6 +17,8 @@ import style from './Packlist.module.scss'
 import {SliderComponent} from "./SliderComponent";
 import {TableCards} from "./TableCards";
 import {NavLink, useSearchParams} from "react-router-dom";
+import AddEditPackList from "../modalPages/packModal/AddEditPackList";
+import RemovePackCard from "../modalPages/RemovePackCard";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -39,6 +40,9 @@ export const PackList = () => {
     const [max, setMax] = useState(maxCardsCount)
     const debounceMin = useDebounce(min, 1000)
     const debounceMax = useDebounce(max, 1000)
+    const [openModalAddPack, setOpenModalAddPack] = useState(false);
+    const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
+
 
     useEffect(() => {
         if (max === 0) {
@@ -65,7 +69,7 @@ export const PackList = () => {
     useEffect(() => {
         dispatch(setCardsPacksTC())
     }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
-
+    const [currentList, setCurrentList] = useState<CardPacksType>()
     const updatePack = useCallback((id: string, name: string) => {
         dispatch(updatePackTC(id, name));
     }, [])
@@ -73,14 +77,23 @@ export const PackList = () => {
     const remPack = useCallback((id: string) => {
         dispatch(removePackTC(id))
     }, [])
+    const testHandler = (list: CardPacksType) => {
+        setOpenModalRemovePack(true)
+        setCurrentList(list)
+    }
 
-    const finalPackList = cardPacks.map((el: CardPacksType) =>
-        <List
-            key={el._id}
-            remCallBack={remPack}
-            callBack={updatePack}
-            list={el}
-        />)
+    const finalPackList = cardPacks.map((el: CardPacksType) => {
+            return <List
+                testHandler={testHandler}
+                key={el._id}
+                remCallBack={remPack}
+                callBack={updatePack}
+                list={el}
+                setOpenModalRemovePack={setOpenModalRemovePack}
+                openModalRemovePack={openModalRemovePack}
+            />
+        }
+    )
 
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
@@ -100,7 +113,7 @@ export const PackList = () => {
     }
 
     const addPack = () => {
-        dispatch(setPackTC('add'));
+        setOpenModalAddPack(!openModalAddPack)
     }
 
     return (
@@ -130,6 +143,11 @@ export const PackList = () => {
                             onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
                 }
             </div>
+            {openModalAddPack && <AddEditPackList openModal={openModalAddPack} setOpenModal={setOpenModalAddPack}
+                                                  text={"Add New Pack"}/>}
+            {openModalRemovePack &&
+                <RemovePackCard list={currentList} openModal={openModalRemovePack}
+                                setOpenModal={setOpenModalRemovePack}/>}
         </div>
     )
 }

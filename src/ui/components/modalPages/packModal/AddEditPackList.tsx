@@ -1,33 +1,39 @@
-import React, { useCallback, useState, ChangeEvent } from 'react';
+import React, {useCallback, useState, ChangeEvent} from 'react';
 import TemplateModal from '../../../common/components/templateModal/TemplateModal';
 import Checkbox from '../../../common/components/commonCheckbox/Checkbox';
-import { FormControl, FormControlLabel, FormLabel, TextField, Typography, Stack } from '@mui/material';
+import {FormControl, FormControlLabel, FormLabel, TextField, Typography, Stack} from '@mui/material';
 import Button from '../../../common/components/commonButton/Button'
+import {useAppDispatch} from "../../../../hooks/redux";
+import {setPackTC} from "../../../../bll/reducers/packList";
 
 
 type AddEditPackListType = {
     text?: string
+    openModal: boolean
+    setOpenModal: (value: boolean) => void
+
 }
 
-const AddEditPackList: React.FC<AddEditPackListType> = ({ text }) => {
-    const [open, setOpen] = useState(false);
+const AddEditPackList: React.FC<AddEditPackListType> = ({openModal, setOpenModal, text}) => {
+
+    const dispatch = useAppDispatch()
+
     const [checked, setChecked] = useState(true);
     const [inputValue, setInputValue] = useState('');
-    const handleOpen = useCallback(() => setOpen(true), []);
-    const handleClose = useCallback(() => setOpen(false), []);
+    const handleClose = useCallback(() => setOpenModal(false), []);
     const checkedCallBack = useCallback((check: boolean) => setChecked(check), []);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
-      };
-    
+    };
+
     const handleSave = () => {
-        console.log("Close");
         handleClose();
+        dispatch(setPackTC(inputValue))
     }
 
     return (
-        <TemplateModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
+        <TemplateModal open={openModal} handleClose={handleClose}>
             <FormControl>
                 <Typography variant="h5">{text}</Typography>
                 <FormLabel>Name pack</FormLabel>
@@ -39,10 +45,10 @@ const AddEditPackList: React.FC<AddEditPackListType> = ({ text }) => {
                 />
                 <FormControlLabel label={'Private pack'} control={<Checkbox
                     checked={checked} onChangeChecked={checkedCallBack}
-                />} />
+                />}/>
                 <Stack direction="row" spacing={12}>
-                    <Button title='cansel' onClickCallBack={handleClose} />
-                    <Button title='save' onClickCallBack={handleSave} />
+                    <Button title='cancel' onClickCallBack={handleClose}/>
+                    <Button title='save' onClickCallBack={handleSave}/>
                 </Stack>
             </FormControl>
         </TemplateModal>

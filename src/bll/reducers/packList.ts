@@ -139,7 +139,7 @@ export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: s
 export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus({status: 'loading'}))
     try {
-        const response = await packApi.addPack();
+        const response = await packApi.addPack(text);
         if (response.statusText === 'Created') {
             dispatch(setCardsPacksTC())
         } else {
@@ -157,7 +157,7 @@ export const setMyPackTC = (text: string): RootThunkType => async (dispatch, get
     const {page, pageCount, sortPacks} = getState().packList
     const userId = getState().profile._id
     try {
-        const response = await packApi.addPack();
+        const response = await packApi.addPack(text);
         if (response.statusText === 'Created') {
             dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
         } else {

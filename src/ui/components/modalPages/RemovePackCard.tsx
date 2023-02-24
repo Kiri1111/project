@@ -1,38 +1,33 @@
-import { Typography, Stack } from '@mui/material'
-import React, { useCallback } from 'react'
+import {Stack, Typography} from '@mui/material'
+import React, {useCallback} from 'react'
 import Button from '../../common/components/commonButton/Button'
 import TemplateModal from '../../common/components/templateModal/TemplateModal'
-
+import {CardPacksType} from "../../../dal/api/authApi";
 
 
 type DeletePackType = {
-    headline?: string
-    name?: string
-    remove?: () => void
+    list?: CardPacksType
+    openModal: boolean
+    setOpenModal: (value: boolean) => void
 }
 
-const DeletePack: React.FC<DeletePackType> = ({headline, name}) => {
-
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = useCallback(() => setOpen(true), []);
-    const handleClose = useCallback(() => setOpen(false), []);
+const RemovePackCard: React.FC<DeletePackType> = ({openModal, list, setOpenModal}) => {
+    const handleClose = useCallback(() => setOpenModal(false), []);
 
     const handleRemove = () => {
-        console.log("Remove");
         handleClose();
     }
 
     return (
-        <TemplateModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
-            <Typography variant="h5">{headline}</Typography>
-            <p>Do you really want to remove {name}?
-                All cards will be deleted.</p>
+        <TemplateModal open={openModal} handleClose={handleClose}>
+            <Typography variant="h5">Delete pack?</Typography>
+            <p>Do you really want to remove {list?.name} pack?</p>
             <Stack direction="row" spacing={12}>
-                <Button title='cansel' onClickCallBack={handleClose} />
-                <Button title='Delete' onClickCallBack={handleRemove} />
+                <Button title='Cancel' onClickCallBack={handleClose}/>
+                <Button title='Delete' onClickCallBack={handleRemove}/>
             </Stack>
         </TemplateModal>
     )
 }
 
-export default DeletePack;
+export default RemovePackCard;

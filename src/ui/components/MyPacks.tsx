@@ -15,6 +15,8 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux";
 import {useDebounce} from "usehooks-ts";
 import {CardPacksType} from "../../dal/api/authApi";
 import {List} from "./packListPage/List";
+import AddEditPackList from "./modalPages/packModal/AddEditPackList";
+import RemovePackCard from "./modalPages/RemovePackCard";
 
 export const MyPacks = () => {
     const dispatch = useAppDispatch()
@@ -30,6 +32,9 @@ export const MyPacks = () => {
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
+    const [openModalAddPack, setOpenModalAddPack] = useState(false);
+    const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
+    const [currentList, setCurrentList] = useState<CardPacksType>()
 
 
     useEffect(() => {
@@ -48,8 +53,12 @@ export const MyPacks = () => {
         dispatch(removePackTC(id))
     }, [])
 
-    const finalPackList = cardPacks.map((el: CardPacksType) => <List key={el._id} remCallBack={remPack}
-                                                                     callBack={updatePack} list={el}/>)
+    const finalPackList = cardPacks.map((el: CardPacksType) => <List openModalRemovePack={true}
+                                                                     setOpenModalRemovePack={() => {
+                                                                     }} key={el._id} remCallBack={remPack}
+                                                                     callBack={updatePack} list={el}
+                                                                     testHandler={() => {
+                                                                     }}/>)
 
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
@@ -85,7 +94,11 @@ export const MyPacks = () => {
                             onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
                 }
             </div>
-
+            {openModalAddPack && <AddEditPackList openModal={openModalAddPack} setOpenModal={setOpenModalAddPack}
+                                                  text={"Add New Pack"}/>}
+            {openModalRemovePack &&
+                <RemovePackCard list={currentList} openModal={openModalRemovePack}
+                                setOpenModal={setOpenModalRemovePack}/>}
 
         </div>
     )

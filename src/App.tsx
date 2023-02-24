@@ -14,12 +14,8 @@ import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
 import {PackList} from "./ui/components/packListPage/PackList";
 import {Footer} from "./ui/components/footer/Footer";
-
-
 import {MyPacks} from "./ui/components/MyPacks";
 
-import AddEditCard from './ui/components/modalPages/cardModal/AddEditCard';
-import DeletePack from './ui/components/modalPages/RemovePackCard';
 
 export const App = () => {
     const dispatch = useAppDispatch()
@@ -52,7 +48,7 @@ export const App = () => {
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
             </Routes>
-            <DeletePack/>
+
             <div>
                 <Footer/>
             </div>
