@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PropsWithChildren } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -17,13 +17,13 @@ const style = {
 
 
 type TemplateModalType = {
-    children: React.ReactNode
+    open: boolean
+    handleOpen: () => void
+    handleClose: () => void
 }
 
-const TemplateModal: React.FC<TemplateModalType> = ({children}) => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
+const TemplateModal: React.FC<PropsWithChildren<TemplateModalType>> = ({children, open, handleOpen, handleClose}) => {
 
   return (
     <div>
