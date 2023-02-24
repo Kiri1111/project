@@ -17,8 +17,6 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
   const handleOpen = useCallback(() => setOpen(true), []);
   const handleClose = useCallback(() => setOpen(false), []);
 
-
-
   const formik = useFormik({
     initialValues: {
       question: '',
@@ -26,7 +24,7 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
       select: 'Text',
     },
     onSubmit: () => {
-
+      handleClose();
     }
   });
 
@@ -59,7 +57,7 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
         />
         <Stack direction="row" spacing={12}>
           <Button title='cansel' onClickCallBack={handleClose} />
-          <Button title='save' onClickCallBack={() => { }} />
+          <Button title='save' onClickCallBack={formik.handleSubmit} />
         </Stack>
       </FormControl>
     </TemplateModal>
