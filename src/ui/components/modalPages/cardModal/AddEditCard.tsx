@@ -1,8 +1,8 @@
-import { FormControl, FormLabel, TextField, Typography, FormControlLabel, Stack } from '@mui/material';
+import { FormControl, FormLabel, TextField, Typography, FormControlLabel, Stack, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import React, { useCallback } from 'react';
-import TemplateModal from '../../common/components/templateModal/TemplateModal';
-import Button from '../../common/components/commonButton/Button';
-import {useFormik} from "formik";
+import TemplateModal from '../../../common/components/templateModal/TemplateModal';
+import Button from '../../../common/components/commonButton/Button';
+import { useFormik } from "formik";
 
 
 
@@ -18,21 +18,31 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
   const handleClose = useCallback(() => setOpen(false), []);
 
 
-  
+
   const formik = useFormik({
     initialValues: {
       question: '',
       answer: '',
+      select: 'Text',
     },
     onSubmit: () => {
-      
+
     }
-});
+  });
 
   return (
     <TemplateModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
       <FormControl>
         <Typography variant="h5">{text}</Typography>
+        <FormLabel>Choose a question format</FormLabel>
+        <Select
+          id="select"
+          value={formik.values.select}
+          onChange={(event: SelectChangeEvent) => formik.setFieldValue('select', event.target.value)}
+        >
+          <MenuItem value={'Text'}>Text</MenuItem>
+          <MenuItem value={'Number'}>Number</MenuItem>
+        </Select>
         <FormLabel>Question</FormLabel>
         <TextField
           type='text'

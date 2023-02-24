@@ -14,8 +14,8 @@ import {initializeAppTC} from "./bll/reducers/auth";
 import {Preloader} from "./ui/common/components/preloader/Preloader";
 import {PackList} from "./ui/components/packListPage/PackList";
 import {Footer} from "./ui/components/footer/Footer";
-import AddEditCard from './ui/components/cardModal/AddEditCard';
-import DeletePack from './ui/components/packModal/DeletePack';
+import AddEditCard from './ui/components/modalPages/cardModal/AddEditCard';
+import DeletePack from './ui/components/modalPages/RemovePackCard';
 
 export const App = () => {
     const dispatch = useAppDispatch()

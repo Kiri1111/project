@@ -1,8 +1,8 @@
 import React, { useCallback, useState, ChangeEvent } from 'react';
-import TemplateModal from '../../common/components/templateModal/TemplateModal';
-import Checkbox from '../../common/components/commonCheckbox/Checkbox';
+import TemplateModal from '../../../common/components/templateModal/TemplateModal';
+import Checkbox from '../../../common/components/commonCheckbox/Checkbox';
 import { FormControl, FormControlLabel, FormLabel, TextField, Typography, Stack } from '@mui/material';
-import Button from '../../common/components/commonButton/Button'
+import Button from '../../../common/components/commonButton/Button'
 
 
 type AddEditPackListType = {

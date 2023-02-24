@@ -6,11 +6,12 @@ import TemplateModal from '../../common/components/templateModal/TemplateModal'
 
 
 type DeletePackType = {
-    packName?: string
+    headline?: string
+    name?: string
     remove?: () => void
 }
 
-const DeletePack: React.FC<DeletePackType> = ({packName}) => {
+const DeletePack: React.FC<DeletePackType> = ({headline, name}) => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = useCallback(() => setOpen(true), []);
@@ -23,8 +24,8 @@ const DeletePack: React.FC<DeletePackType> = ({packName}) => {
 
     return (
         <TemplateModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
-            <Typography variant="h5">Delete Pack</Typography>
-            <p>Do you really want to remove {packName}?
+            <Typography variant="h5">{headline}</Typography>
+            <p>Do you really want to remove {name}?
                 All cards will be deleted.</p>
             <Stack direction="row" spacing={12}>
                 <Button title='cansel' onClickCallBack={handleClose} />
