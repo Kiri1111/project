@@ -186,15 +186,14 @@ export const updatePackTC = (_id: string, name: string): RootThunkType => async 
     }
 }
 
-export const removePackTC = (_id: string): RootThunkType => async (dispatch, getState) => {
+export const removePackTC = (_id: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus({status: 'loading'}))
-    const {page, pageCount, sortPacks} = getState().packList
-    const userId = getState().profile._id
+
     try {
         const response = await packApi.removePack(_id);
         console.log(response)
         if (response.status === 200) {
-            dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
+            dispatch(setCardsPacksTC())
             dispatch(setAppError({error: 'Network Error'}));
         }
     } catch (e: any) {

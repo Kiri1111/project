@@ -69,6 +69,7 @@ export const PackList = () => {
     useEffect(() => {
         dispatch(setCardsPacksTC())
     }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
+
     const [currentList, setCurrentList] = useState<CardPacksType>()
     const updatePack = useCallback((id: string, name: string) => {
         dispatch(updatePackTC(id, name));
@@ -77,9 +78,11 @@ export const PackList = () => {
     const remPack = useCallback((id: string) => {
         dispatch(removePackTC(id))
     }, [])
+
     const testHandler = (list: CardPacksType) => {
         setOpenModalRemovePack(true)
         setCurrentList(list)
+        remPack(list._id)
     }
 
     const finalPackList = cardPacks.map((el: CardPacksType) => {
