@@ -19,6 +19,7 @@ import {TableCards} from "./TableCards";
 import {NavLink, useSearchParams} from "react-router-dom";
 import AddEditPackList from "../modalPages/packModal/AddEditPackList";
 import {RemovePackCard} from "../modalPages/RemovePackCard";
+import {setMyOrAllCards} from "../../../bll/reducers/app";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -32,7 +33,7 @@ export const PackList = () => {
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
     const myOrAllCards = useAppSelector(state => state.app.myOrAllCards)
-
+    console.log(myOrAllCards)
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [value, setValue] = useState<string>('')
@@ -45,6 +46,9 @@ export const PackList = () => {
     const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
     const [currentList, setCurrentList] = useState<CardPacksType>()
 
+    useEffect(() => {
+        dispatch(setMyOrAllCards({value: 'all'}))
+    }, [])
 
     useEffect(() => {
         if (max === 0) {
@@ -109,7 +113,6 @@ export const PackList = () => {
     }
 
     const onClickAllPacksHandler = () => {
-
         dispatch(setCardsPacksTC())
     }
 
