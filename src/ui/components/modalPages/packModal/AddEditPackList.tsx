@@ -4,7 +4,7 @@ import Checkbox from '../../../common/components/commonCheckbox/Checkbox';
 import {FormControl, FormControlLabel, FormLabel, TextField, Typography, Stack} from '@mui/material';
 import Button from '../../../common/components/commonButton/Button'
 import {useAppDispatch} from "../../../../hooks/redux";
-import {setMyCardsPacksTC, setPackTC} from "../../../../bll/reducers/packList";
+import {setMyCardsPacksTC, setMyPackTC, setPackTC} from "../../../../bll/reducers/packList";
 
 
 type AddEditPackListType = {
@@ -32,7 +32,7 @@ const AddEditPackList: React.FC<AddEditPackListType> = ({myOrAllCards, openModal
         if (myOrAllCards === 'all') {
             dispatch(setPackTC(inputValue))
         } else {
-            dispatch(setMyCardsPacksTC())
+            dispatch(setMyPackTC(inputValue))
         }
     }
 
