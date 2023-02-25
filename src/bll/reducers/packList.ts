@@ -8,7 +8,7 @@ import {handleServerAppError} from "../../utils/errorUtil";
 const initialState = {
     cardPacks: [],
     cardPacksTotalCount: 0,
-    maxCardsCount: 0,
+    maxCardsCount: 78,
     minCardsCount: 0,
     page: 1,
     pageCount: 10,

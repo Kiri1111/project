@@ -3,24 +3,24 @@ import React, {useCallback} from 'react'
 import Button from '../../common/components/commonButton/Button'
 import TemplateModal from '../../common/components/templateModal/TemplateModal'
 import {CardPacksType} from "../../../dal/api/authApi";
-import {removePackTC} from "../../../bll/reducers/packList";
-import {useAppDispatch} from "../../../hooks/redux";
 
 
 type DeletePackType = {
     list?: CardPacksType
     openModal: boolean
     setOpenModal: (value: boolean) => void
+    removeCallBack: (listId: string) => void
 }
 
-const RemovePackCard: React.FC<DeletePackType> = ({openModal, list, setOpenModal}) => {
-
-    const dispatch = useAppDispatch()
+export const RemovePackCard: React.FC<DeletePackType> = ({removeCallBack, openModal, list, setOpenModal}) => {
 
     const handleClose = useCallback(() => setOpenModal(false), []);
 
     const handleRemove = () => {
         handleClose();
+        if (list) {
+            removeCallBack(list._id)
+        }
     }
 
     return (
@@ -34,5 +34,3 @@ const RemovePackCard: React.FC<DeletePackType> = ({openModal, list, setOpenModal
         </TemplateModal>
     )
 }
-
-export default RemovePackCard;

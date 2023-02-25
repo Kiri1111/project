@@ -18,7 +18,7 @@ import {SliderComponent} from "./SliderComponent";
 import {TableCards} from "./TableCards";
 import {NavLink, useSearchParams} from "react-router-dom";
 import AddEditPackList from "../modalPages/packModal/AddEditPackList";
-import RemovePackCard from "../modalPages/RemovePackCard";
+import {RemovePackCard} from "../modalPages/RemovePackCard";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -82,7 +82,7 @@ export const PackList = () => {
     const testHandler = (list: CardPacksType) => {
         setOpenModalRemovePack(true)
         setCurrentList(list)
-        remPack(list._id)
+        // remPack(list._id)
     }
 
     const finalPackList = cardPacks.map((el: CardPacksType) => {
@@ -150,9 +150,7 @@ export const PackList = () => {
                                                   text={"Add New Pack"}/>}
             {openModalRemovePack &&
                 <RemovePackCard list={currentList} openModal={openModalRemovePack}
-                                setOpenModal={setOpenModalRemovePack}/>}
+                                setOpenModal={setOpenModalRemovePack} removeCallBack={remPack}/>}
         </div>
     )
 }
-
-

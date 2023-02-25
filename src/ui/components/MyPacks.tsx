@@ -16,7 +16,7 @@ import {useDebounce} from "usehooks-ts";
 import {CardPacksType} from "../../dal/api/authApi";
 import {List} from "./packListPage/List";
 import AddEditPackList from "./modalPages/packModal/AddEditPackList";
-import RemovePackCard from "./modalPages/RemovePackCard";
+import {RemovePackCard} from "./modalPages/RemovePackCard";
 
 export const MyPacks = () => {
     const dispatch = useAppDispatch()
@@ -98,7 +98,7 @@ export const MyPacks = () => {
                                                   text={"Add New Pack"}/>}
             {openModalRemovePack &&
                 <RemovePackCard list={currentList} openModal={openModalRemovePack}
-                                setOpenModal={setOpenModalRemovePack}/>}
+                                setOpenModal={setOpenModalRemovePack} removeCallBack={remPack}/>}
 
         </div>
     )
