@@ -11,7 +11,6 @@ import {loginTC} from "../../../bll/reducers/auth";
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const error = useAppSelector(state => state.app.error)
     const status = useAppSelector(state => state.app.status)
 
     const formik = useFormik({
@@ -36,7 +35,6 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Navigate to={'/profile'}/>
     }
-    console.log(status)
     return (
         <div className={style.loginContainer}>
             <Grid container justifyContent={'center'}>
@@ -68,10 +66,9 @@ export const Login = () => {
                                         />}/>
                                         <Button type={'submit'}
                                                 variant={'contained'}
-                                                color={'secondary'}>
+                                        >
                                             Login
                                         </Button>
-                                        {error && <span style={{color: 'red', fontSize: '15px'}}>{error}</span>}
                                     </FormGroup>
                                 </form>
                             }

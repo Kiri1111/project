@@ -9,15 +9,11 @@ import {Preloader} from "../../common/components/preloader/Preloader";
 type ListPropsType = {
     list: CardPacksType
     callBack: (id: string, name: string) => void
-    remCallBack: (id: string) => void
-    setOpenModalRemovePack: (value: boolean) => void
-    openModalRemovePack: boolean
     testHandler: (list: any) => void
 }
 
 export const List: FC<ListPropsType> = ({
-                                            setOpenModalRemovePack,
-                                            remCallBack,
+
                                             list,
                                             callBack,
                                             testHandler

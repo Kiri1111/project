@@ -31,8 +31,9 @@ export const PackList = () => {
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
-    const [searchParams, setSearchParams] = useSearchParams()
+    const myOrAllCards = useAppSelector(state => state.app.myOrAllCards)
 
+    const [searchParams, setSearchParams] = useSearchParams()
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
@@ -42,6 +43,7 @@ export const PackList = () => {
     const debounceMax = useDebounce(max, 1000)
     const [openModalAddPack, setOpenModalAddPack] = useState(false);
     const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
+    const [currentList, setCurrentList] = useState<CardPacksType>()
 
 
     useEffect(() => {
@@ -70,7 +72,6 @@ export const PackList = () => {
         dispatch(setCardsPacksTC())
     }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
 
-    const [currentList, setCurrentList] = useState<CardPacksType>()
     const updatePack = useCallback((id: string, name: string) => {
         dispatch(updatePackTC(id, name));
     }, [])
@@ -82,18 +83,14 @@ export const PackList = () => {
     const testHandler = (list: CardPacksType) => {
         setOpenModalRemovePack(true)
         setCurrentList(list)
-        // remPack(list._id)
     }
 
     const finalPackList = cardPacks.map((el: CardPacksType) => {
             return <List
                 testHandler={testHandler}
                 key={el._id}
-                remCallBack={remPack}
                 callBack={updatePack}
                 list={el}
-                setOpenModalRemovePack={setOpenModalRemovePack}
-                openModalRemovePack={openModalRemovePack}
             />
         }
     )
@@ -112,6 +109,7 @@ export const PackList = () => {
     }
 
     const onClickAllPacksHandler = () => {
+
         dispatch(setCardsPacksTC())
     }
 
@@ -146,11 +144,22 @@ export const PackList = () => {
                             onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
                 }
             </div>
-            {openModalAddPack && <AddEditPackList openModal={openModalAddPack} setOpenModal={setOpenModalAddPack}
-                                                  text={"Add New Pack"}/>}
-            {openModalRemovePack &&
-                <RemovePackCard list={currentList} openModal={openModalRemovePack}
-                                setOpenModal={setOpenModalRemovePack} removeCallBack={remPack}/>}
+            {
+                openModalAddPack && <AddEditPackList
+                    myOrAllCards={myOrAllCards}
+                    openModal={openModalAddPack}
+                    setOpenModal={setOpenModalAddPack}
+                    text={"Add New Pack"}
+                />
+            }
+            {
+                openModalRemovePack && <RemovePackCard
+                    list={currentList}
+                    openModal={openModalRemovePack}
+                    setOpenModal={setOpenModalRemovePack}
+                    removeCallBack={remPack}
+                />
+            }
         </div>
     )
 }

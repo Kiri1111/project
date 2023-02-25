@@ -3,6 +3,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 const initialState = {
     status: 'idle' as RequestStatusType,
     error: null as string | null,
+    myOrAllCards: 'all'
 }
 
 
@@ -16,13 +17,19 @@ const slice = createSlice({
         setAppError(state, action: PayloadAction<{ error: string | null }>) {
             state.error = action.payload.error
         },
+        setMyOrAllCards(state, action: PayloadAction<{ value: "my" | 'all' }>) {
+            state.myOrAllCards = action.payload.value
+        },
 
     }
 })
 
 export const app = slice.reducer
 
-export const {setAppError, setAppStatus} = slice.actions
+export const {setMyOrAllCards, setAppError, setAppStatus} = slice.actions
 
-export type AppActionsType = ReturnType<typeof setAppStatus> | ReturnType<typeof setAppError>
+export type AppActionsType =
+    ReturnType<typeof setAppStatus>
+    | ReturnType<typeof setAppError>
+    | ReturnType<typeof setMyOrAllCards>
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

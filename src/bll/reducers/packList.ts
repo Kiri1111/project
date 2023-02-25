@@ -8,7 +8,7 @@ import {handleServerAppError} from "../../utils/errorUtil";
 const initialState = {
     cardPacks: [],
     cardPacksTotalCount: 0,
-    maxCardsCount: 78,
+    maxCardsCount: 0,
     minCardsCount: 0,
     page: 1,
     pageCount: 10,
@@ -120,8 +120,10 @@ export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) =
     }
 }
 
-export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: string, user_id?: string): RootThunkType => async (dispatch) => {
+export const setMyCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
+    const {page, pageCount, sortPacks} = getState().packList
+    const user_id = getState().profile._id
     try {
         const res = await packApi.getMyPacks(page, pageCount, sortPacks, user_id)
         if (res.status === 200) {
@@ -154,12 +156,10 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
 
 export const setMyPackTC = (text: string): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
-    const {page, pageCount, sortPacks} = getState().packList
-    const userId = getState().profile._id
     try {
         const response = await packApi.addPack(text);
         if (response.statusText === 'Created') {
-            dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
+            dispatch(setMyCardsPacksTC())
         } else {
             dispatch(setAppError({error: 'Network Error'}))
         }
@@ -186,15 +186,24 @@ export const updatePackTC = (_id: string, name: string): RootThunkType => async 
     }
 }
 
-export const removePackTC = (_id: string): RootThunkType => async (dispatch) => {
+export const removePackTC = (_id: string): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
-
+    const myOrAllCards = getState().app.myOrAllCards
     try {
-        const response = await packApi.removePack(_id);
-        console.log(response)
-        if (response.status === 200) {
-            dispatch(setCardsPacksTC())
-            dispatch(setAppError({error: 'Network Error'}));
+        if (myOrAllCards === 'all') {
+            const response = await packApi.removePack(_id);
+            if (response.status === 200) {
+                dispatch(setCardsPacksTC())
+            } else {
+                dispatch(setAppError({error: 'Network Error'}))
+            }
+        } else {
+            const response = await packApi.removePack(_id);
+            if (response.status === 200) {
+                dispatch(setMyCardsPacksTC())
+            } else {
+                dispatch(setAppError({error: 'Network Error'}))
+            }
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
