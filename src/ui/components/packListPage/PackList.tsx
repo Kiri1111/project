@@ -20,6 +20,7 @@ import {NavLink, useSearchParams} from "react-router-dom";
 import AddEditPackList from "../modalPages/packModal/AddEditPackList";
 import {RemovePackCard} from "../modalPages/RemovePackCard";
 import {setMyOrAllCards} from "../../../bll/reducers/app";
+import {ResetFilter} from "./resetFilter";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -134,6 +135,7 @@ export const PackList = () => {
                     <Button onClickCallBack={onClickAllPacksHandler} title={'All'}/>
                 </div>
                 <SliderComponent maxCardsCount={maxCardsCount} setMin={setMin} setMax={setMax} min={min} max={max}/>
+                <ResetFilter/>
             </div>
             <div className={style.table}>
                 {
@@ -161,6 +163,8 @@ export const PackList = () => {
                     removeCallBack={remPack}
                 />
             }
+
         </div>
+
     )
 }
