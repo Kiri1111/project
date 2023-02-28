@@ -15,6 +15,8 @@ import {Preloader} from "./ui/common/components/preloader/Preloader";
 import {PackList} from "./ui/components/packListPage/PackList";
 import {Footer} from "./ui/components/footer/Footer";
 import {MyPacks} from "./ui/components/MyPacks";
+import {ErrorSnackbar} from "./ui/common/components/errorSnackBar/ErrorSnackbar";
+
 
 export const App = () => {
     const dispatch = useAppDispatch()
@@ -35,6 +37,7 @@ export const App = () => {
     return (
         <div className={style.app}>
             <Header/>
+            <ErrorSnackbar/>
             <Routes>
                 <Route path={'/project'} element={<Demo/>}/>
                 <Route path={'/myPack'} element={<MyPacks/>}/>
@@ -47,6 +50,7 @@ export const App = () => {
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
             </Routes>
+
             <div>
                 <Footer/>
             </div>

@@ -103,104 +103,112 @@ export const setMinMaxCardsQuantityAC = (min: number, max: number) => ({
 //-------------thunks-----------------
 
 export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     const {page, pageCount, searchValue, sortPacks, minCardsCount, maxCardsCount} = getState().packList
     try {
         const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue, minCardsCount, maxCardsCount)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
-            dispatch(setAppError('Network Error'))
+            dispatch(setAppError({error: 'Network Error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
-        dispatch(setIsInitialized(false))
+        dispatch(setIsInitialized({isInitialized: false}))
     } finally {
-        dispatch(setAppStatus('idle'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 
-export const setMyCardsPacksTC = (page: number, pageCount: number, sortPacks?: string, user_id?: string): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
+export const setMyCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
+    dispatch(setAppStatus({status: 'loading'}))
+    const {page, pageCount, sortPacks} = getState().packList
+    const user_id = getState().profile._id
     try {
         const res = await packApi.getMyPacks(page, pageCount, sortPacks, user_id)
         if (res.status === 200) {
             dispatch(setCardsPacksAC(res.data))
         } else {
-            dispatch(setAppError('Network Error'))
+            dispatch(setAppError({error: 'Network Error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('idle'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 
 export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
-        const response = await packApi.addPack();
+        const response = await packApi.addPack(text);
         if (response.statusText === 'Created') {
             dispatch(setCardsPacksTC())
         } else {
-            dispatch(setAppError('Network Error'))
+            dispatch(setAppError({error: 'Network Error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 
 export const setMyPackTC = (text: string): RootThunkType => async (dispatch, getState) => {
-    dispatch(setAppStatus('loading'))
-    const {page, pageCount, sortPacks} = getState().packList
-    const userId = getState().profile._id
+    dispatch(setAppStatus({status: 'loading'}))
     try {
-        const response = await packApi.addPack();
+        const response = await packApi.addPack(text);
         if (response.statusText === 'Created') {
-            dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
+            dispatch(setMyCardsPacksTC())
         } else {
-            dispatch(setAppError('Network Error'))
+            dispatch(setAppError({error: 'Network Error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 
 export const updatePackTC = (_id: string, name: string): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await packApi.updatePack(_id, name);
         if (response.status === 200) {
             dispatch(setUpdatePackAC(response.data.updatedCardsPack))
         } else {
-            dispatch(setAppError('Network Error'));
+            dispatch(setAppError({error: 'Network Error'}));
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 
 export const removePackTC = (_id: string): RootThunkType => async (dispatch, getState) => {
-    dispatch(setAppStatus('loading'))
-    const {page, pageCount, sortPacks} = getState().packList
-    const userId = getState().profile._id
+    dispatch(setAppStatus({status: 'loading'}))
+    const myOrAllCards = getState().app.myOrAllCards
     try {
-        const response = await packApi.removePack(_id);
-        console.log(response)
-        if (response.status === 200) {
-            dispatch(setMyCardsPacksTC(page, pageCount, sortPacks, userId))
-            dispatch(setAppError('Network Error'));
+        if (myOrAllCards === 'all') {
+            const response = await packApi.removePack(_id);
+            if (response.status === 200) {
+                dispatch(setCardsPacksTC())
+            } else {
+                dispatch(setAppError({error: 'Network Error'}))
+            }
+        } else {
+            const response = await packApi.removePack(_id);
+            if (response.status === 200) {
+                dispatch(setMyCardsPacksTC())
+            } else {
+                dispatch(setAppError({error: 'Network Error'}))
+            }
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 

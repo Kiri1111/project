@@ -47,34 +47,34 @@ export const setNewAvatarAC = (newAvatar: any | null) => ({
 //------------------thunks-----------------------
 
 export const setNewNameTC = (newName: string): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authApi.changeNewName(newName)
         if (res.status === 200) {
             dispatch(setNewNameAC(res.data.updatedUser.name))
         } else {
-            dispatch(setAppError('Error'))
+            dispatch(setAppError({error: 'Error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
     }
 }
 
 export const setNewAvatarTC = (newAvatar: any): RootThunkType => async (dispatch) => {
-    dispatch(setAppStatus('loading'))
+    dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await authApi.changeNewAvatar(newAvatar)
         if (res.status === 200) {
             dispatch(setNewAvatarAC(res.data.updatedUser.avatar))
         } else {
-            dispatch(setAppError('Error'))
+            dispatch(setAppError({error: 'Error'}))
         }
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
 
     }
 }

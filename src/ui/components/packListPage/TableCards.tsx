@@ -39,12 +39,7 @@ export const TableCards: FC<TableCardsPropsType> = ({
                             <tr>
                                 <td className={style.td}>Name</td>
                                 <td className={style.td}>
-                                    <SortComponent
-                                        value={'cardsCount'}
-                                        sort={sortPacks}
-                                        title={'Cards'}
-                                        onChange={onChangeSort}
-                                    />
+                                    <td className={style.td}>Cards</td>
                                 </td>
                                 <td className={style.td}>
                                     <SortComponent

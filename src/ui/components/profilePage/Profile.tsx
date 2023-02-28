@@ -15,7 +15,6 @@ export const Profile = () => {
 
     const user = useAppSelector(state => state.profile)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const error = useAppSelector(state => state.app.error)
     const status = useAppSelector(state => state.app.status)
     const dispatch = useAppDispatch()
 
@@ -53,7 +52,6 @@ export const Profile = () => {
                             <div className={style.cardsCounts}>
                                 Number of cards: {user.publicCardPacksCount}
                             </div>
-                            {error && <span style={{color: 'red', fontSize: '15px'}}>{error}</span>}
                             <EditName callBack={setNewNameHandler} userName={user.name}/>
                             <div className={style.emailText}>
                                 Email: {user.email}

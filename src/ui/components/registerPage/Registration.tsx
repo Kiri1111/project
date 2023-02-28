@@ -45,7 +45,7 @@ export const Registration: React.FC = () => {
         },
         validationSchema: chema,
         onSubmit: (values: FormValuesType) => {
-            dispatch(registerTC(values.email, values.password));
+            dispatch(registerTC({email: values.email, password: values.password}));
             formik.resetForm();
         }
     });

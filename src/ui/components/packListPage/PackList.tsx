@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
     removePackTC,
     setCardsPacksTC, setMinMaxCardsQuantityAC,
-    setPackTC,
     setPageCountAC,
     setPageNumberAC,
     setSearchValueAC,
@@ -18,6 +17,9 @@ import style from './Packlist.module.scss'
 import {SliderComponent} from "./SliderComponent";
 import {TableCards} from "./TableCards";
 import {NavLink, useSearchParams} from "react-router-dom";
+import AddEditPackList from "../modalPages/packModal/AddEditPackList";
+import {RemovePackCard} from "../modalPages/RemovePackCard";
+import {setMyOrAllCards} from "../../../bll/reducers/app";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -30,16 +32,23 @@ export const PackList = () => {
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
+    const myOrAllCards = useAppSelector(state => state.app.myOrAllCards)
+    console.log(myOrAllCards)
     const [searchParams, setSearchParams] = useSearchParams()
 
-
-    console.log(maxCardsCount)
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
     const [min, setMin] = useState(minCardsCount)
     const [max, setMax] = useState(maxCardsCount)
     const debounceMin = useDebounce(min, 1000)
     const debounceMax = useDebounce(max, 1000)
+    const [openModalAddPack, setOpenModalAddPack] = useState(false);
+    const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
+    const [currentList, setCurrentList] = useState<CardPacksType>()
+
+    useEffect(() => {
+        dispatch(setMyOrAllCards({value: 'all'}))
+    }, [])
 
     useEffect(() => {
         if (max === 0) {
@@ -75,13 +84,20 @@ export const PackList = () => {
         dispatch(removePackTC(id))
     }, [])
 
-    const finalPackList = cardPacks.map((el: CardPacksType) =>
-        <List
-            key={el._id}
-            remCallBack={remPack}
-            callBack={updatePack}
-            list={el}
-        />)
+    const testHandler = (list: CardPacksType) => {
+        setOpenModalRemovePack(true)
+        setCurrentList(list)
+    }
+
+    const finalPackList = cardPacks.map((el: CardPacksType) => {
+            return <List
+                testHandler={testHandler}
+                key={el._id}
+                callBack={updatePack}
+                list={el}
+            />
+        }
+    )
 
     const onChangePagination = (newPage: number, newCount: number) => {
         dispatch(setPageCountAC(newCount))
@@ -101,7 +117,7 @@ export const PackList = () => {
     }
 
     const addPack = () => {
-        dispatch(setPackTC('add'));
+        setOpenModalAddPack(!openModalAddPack)
     }
 
     return (
@@ -121,8 +137,6 @@ export const PackList = () => {
                 </div>
                 <SliderComponent maxCardsCount={maxCardsCount} setMin={setMin} setMax={setMax} min={min} max={max}/>
             </div>
-
-
             <div className={style.table}>
                 {
                     cardPacks.length === 0
@@ -133,8 +147,22 @@ export const PackList = () => {
                             onChangePagination={onChangePagination} onChangeSort={onChangeSort}/>
                 }
             </div>
+            {
+                openModalAddPack && <AddEditPackList
+                    myOrAllCards={myOrAllCards}
+                    openModal={openModalAddPack}
+                    setOpenModal={setOpenModalAddPack}
+                    text={"Add New Pack"}
+                />
+            }
+            {
+                openModalRemovePack && <RemovePackCard
+                    list={currentList}
+                    openModal={openModalRemovePack}
+                    setOpenModal={setOpenModalRemovePack}
+                    removeCallBack={remPack}
+                />
+            }
         </div>
     )
 }
-
-
