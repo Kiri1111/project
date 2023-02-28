@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
     removePackTC,
     setCardsPacksTC, setMinMaxCardsQuantityAC,
@@ -28,32 +28,30 @@ export const PackList = () => {
     const searchValue = useAppSelector(state => state.packList.searchValue)
     const pageCount = useAppSelector(state => state.packList.pageCount)
     const page = useAppSelector(state => state.packList.page)
-    const cardPacks = useAppSelector(state => state.packList.cardPacks)
+    const cardPacks = useAppSelector(state => state.packList)
     const cardPacksTotalCount = useAppSelector(state => state.packList.cardPacksTotalCount)
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
     const myOrAllCards = useAppSelector(state => state.app.myOrAllCards)
-    console.log(myOrAllCards)
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [value, setValue] = useState<string>('')
     const debouncedValue = useDebounce<string>(value, 1000)
     const [min, setMin] = useState(minCardsCount)
-    const [max, setMax] = useState(maxCardsCount)
+    const [max, setMax] = useState(cardPacks.maxCardsCount)
     const debounceMin = useDebounce(min, 1000)
     const debounceMax = useDebounce(max, 1000)
     const [openModalAddPack, setOpenModalAddPack] = useState(false);
     const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
     const [currentList, setCurrentList] = useState<CardPacksType>()
-
+    console.log(max)
+    console.log(cardPacks.maxCardsCount)
     useEffect(() => {
         dispatch(setMyOrAllCards({value: 'all'}))
     }, [])
-
+    console.log('currentList', currentList)
     useEffect(() => {
-        if (max === 0) {
-            setMax(maxCardsCount)
-        }
+        setMax(maxCardsCount)
     }, [maxCardsCount])
 
     useEffect(() => {
@@ -89,7 +87,7 @@ export const PackList = () => {
         setCurrentList(list)
     }
 
-    const finalPackList = cardPacks.map((el: CardPacksType) => {
+    const finalPackList = cardPacks.cardPacks.map((el: CardPacksType) => {
             return <List
                 testHandler={testHandler}
                 key={el._id}
@@ -139,7 +137,7 @@ export const PackList = () => {
             </div>
             <div className={style.table}>
                 {
-                    cardPacks.length === 0
+                    cardPacks.cardPacks.length === 0
                         ? <h2>'Add new packs'</h2>
                         : <TableCards
                             sortPacks={sortPacks} page={page} pageCount={pageCount}

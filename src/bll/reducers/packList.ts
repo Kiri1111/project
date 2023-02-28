@@ -105,9 +105,11 @@ export const setMinMaxCardsQuantityAC = (min: number, max: number) => ({
 export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
     const {page, pageCount, searchValue, sortPacks, minCardsCount, maxCardsCount} = getState().packList
+    console.log('maxCardsCount', maxCardsCount)
     try {
         const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue, minCardsCount, maxCardsCount)
         if (res.status === 200) {
+            console.log(res.data)
             dispatch(setCardsPacksAC(res.data))
         } else {
             dispatch(setAppError({error: 'Network Error'}))
