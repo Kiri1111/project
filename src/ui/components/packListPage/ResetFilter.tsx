@@ -1,9 +1,14 @@
 import React from 'react';
 import iconResetFilter from '../../common/assets/images/resetFilter.png'
+import {useAppDispatch} from "../../../hooks/redux";
+import {resetCardsFilter} from "../../../bll/reducers/packList";
 
 export const ResetFilter = () => {
 
+    const dispatch = useAppDispatch()
+
     const onClickHandler = () => {
+        dispatch(resetCardsFilter())
     }
 
     return (

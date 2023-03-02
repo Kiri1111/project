@@ -20,7 +20,7 @@ import {NavLink, useSearchParams} from "react-router-dom";
 import AddEditPackList from "../modalPages/packModal/AddEditPackList";
 import {RemovePackCard} from "../modalPages/RemovePackCard";
 import {setMyOrAllCards} from "../../../bll/reducers/app";
-import {ResetFilter} from "./resetFilter";
+import {ResetFilter} from "./ResetFilter";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -45,12 +45,11 @@ export const PackList = () => {
     const [openModalAddPack, setOpenModalAddPack] = useState(false);
     const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
     const [currentList, setCurrentList] = useState<CardPacksType>()
-    console.log(max)
-    console.log(cardPacks.maxCardsCount)
+
     useEffect(() => {
         dispatch(setMyOrAllCards({value: 'all'}))
     }, [])
-    console.log('currentList', currentList)
+    
     useEffect(() => {
         setMax(maxCardsCount)
     }, [maxCardsCount])

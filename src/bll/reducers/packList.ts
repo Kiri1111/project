@@ -102,14 +102,28 @@ export const setMinMaxCardsQuantityAC = (min: number, max: number) => ({
 
 //-------------thunks-----------------
 
+export const resetCardsFilter = (): RootThunkType => async (dispatch) => {
+    dispatch(setAppStatus({status: 'loading'}))
+    try {
+        const res = await packApi.getPacks(1, 10, '', '', 0, 100000)
+        if (res.status === 200) {
+            dispatch(setCardsPacksAC(res.data))
+        } else {
+            dispatch(setAppError({error: 'Network Error'}))
+        }
+    } catch (e: any) {
+        handleServerAppError(e, dispatch)
+    } finally {
+        dispatch(setAppStatus({status: 'succeeded'}))
+    }
+}
+
 export const setCardsPacksTC = (): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
     const {page, pageCount, searchValue, sortPacks, minCardsCount, maxCardsCount} = getState().packList
-    console.log('maxCardsCount', maxCardsCount)
     try {
         const res = await packApi.getPacks(page, pageCount, sortPacks, searchValue, minCardsCount, maxCardsCount)
         if (res.status === 200) {
-            console.log(res.data)
             dispatch(setCardsPacksAC(res.data))
         } else {
             dispatch(setAppError({error: 'Network Error'}))
