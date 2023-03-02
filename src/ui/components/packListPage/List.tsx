@@ -5,6 +5,7 @@ import update from "../../common/assets/images/update.png"
 import del from "../../common/assets/images/delete.png"
 import {useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
+import {NavLink} from "react-router-dom";
 
 type ListPropsType = {
     list: CardPacksType
@@ -28,10 +29,9 @@ export const List: FC<ListPropsType> = ({
 
 
     return (<>
-
             <tr>
                 <td className={style.td}>
-                    {list.name}
+                    <NavLink to={`/learn/${list._id}`}>{list.name}</NavLink>
                 </td>
                 <td className={style.td}>
                     {list.cardsCount}

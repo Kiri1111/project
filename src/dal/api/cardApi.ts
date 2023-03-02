@@ -28,6 +28,7 @@ export type ResponseCardType = {
 }
 
 type RequestAddType = Omit<CardType, '_id' | 'user_id' | 'created' | 'updated'>
+
 type RequestFetchCard = {
     cardsPack_id: string
     cardAnswer: string
@@ -41,8 +42,8 @@ type RequestFetchCard = {
 
 
 export const cardApi = {
-    getCards(cardRequest: RequestFetchCard) {
-        return instance.get<ResponseCardType>(`cards/card?cardsPack_id=${cardRequest.cardsPack_id}`)
+    getCards(id:string|undefined) {
+        return instance.get<ResponseCardType>(`cards/card?cardsPack_id=${id}`)
     },
     addCard(card: RequestAddType) {
         return instance.post('cards/card', {

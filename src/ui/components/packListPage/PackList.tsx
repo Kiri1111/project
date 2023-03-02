@@ -128,6 +128,7 @@ export const PackList = () => {
             </div>
             <div className={style.searchBlock}>
                 <Debounce setValue={setValue} value={value}/>
+
                 <div>
                     <h4>Show packs cards</h4>
                     <div className={style.divLink}>
