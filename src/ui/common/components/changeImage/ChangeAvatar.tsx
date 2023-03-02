@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {ChangeEvent, useEffect, useState} from "react";
-import {useAppDispatch} from "../../../hooks/redux";
-import {setNewAvatarTC} from "../../../bll/reducers/profile";
-import button from "../../common/components/commonButton/Button";
-import style from "./Profile.module.scss";
-import photoIcon from "../../common/assets/images/photoIcon.png";
+import button from "../commonButton/Button";
+import style from "../../../components/profilePage/Profile.module.scss";
+import photoIcon from "../../assets/images/photoIcon.png";
 
 const getBase64 = (file: FileList): Promise<string | ArrayBuffer | null> => {
     return new Promise((resolve, reject) => {
@@ -15,9 +13,11 @@ const getBase64 = (file: FileList): Promise<string | ArrayBuffer | null> => {
     });
 };
 
-export const ChangeAvatar = () => {
+type PropsType = {
+    callBack: (base64: string | ArrayBuffer | null) => void
+}
 
-    const dispatch = useAppDispatch()
+export const ChangeAvatar: FC<PropsType> = ({callBack}) => {
 
     const [file, setFile] = useState<FileList | null>(null);
     const [base64, setBase64] = useState<string | ArrayBuffer | null>(null);
@@ -38,11 +38,10 @@ export const ChangeAvatar = () => {
         };
     }, [file]);
 
-    const sendNewAvatar = () => {
-        dispatch(setNewAvatarTC(base64))
-        setEditMode(false)
-    }
+    const sendNewImage = () => {
+        callBack(base64)
 
+    }
     const setAvatarBackground = {
         backgroundImage: `url(${photoIcon})`
     }
@@ -60,7 +59,7 @@ export const ChangeAvatar = () => {
                         />
                         <label style={setAvatarBackground} className={style.label} htmlFor="file"></label>
                         <button
-                            onClick={sendNewAvatar}>send
+                            onClick={sendNewImage}>send
                         </button>
                     </div>
                     : <div>
@@ -71,7 +70,6 @@ export const ChangeAvatar = () => {
                                 setEditMode(true)
                             }}
                         />
-
                     </div>
             }
         </div>

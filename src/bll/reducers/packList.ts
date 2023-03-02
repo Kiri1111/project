@@ -156,10 +156,10 @@ export const setMyCardsPacksTC = (): RootThunkType => async (dispatch, getState)
     }
 }
 
-export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
+export const setPackTC = (text: string, deckCover?: string | ArrayBuffer | null): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus({status: 'loading'}))
     try {
-        const response = await packApi.addPack(text);
+        const response = await packApi.addPack(text, deckCover);
         if (response.statusText === 'Created') {
             dispatch(setCardsPacksTC())
         } else {

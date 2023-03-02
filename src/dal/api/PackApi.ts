@@ -7,10 +7,11 @@ export const packApi = {
     getMyPacks(page: number, pageCount: number, sortPacks: string = '0updated', user_id?: string) {
         return instance.get<ResponsePackType>(`cards/pack?page=${page}&pageCount=${pageCount}&sortPacks=${sortPacks}&user_id=${user_id}`)
     },
-    addPack(text: string) {
+    addPack(text: string, deckCover: string | ArrayBuffer | null = null) {
         return instance.post<AddPackType>('cards/pack', {
             cardsPack: {
                 name: text,
+                deckCover,
                 private: false
             }
         })

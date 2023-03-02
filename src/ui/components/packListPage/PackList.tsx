@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     removePackTC,
     setCardsPacksTC, setMinMaxCardsQuantityAC,
@@ -16,7 +16,7 @@ import {useDebounce} from "usehooks-ts";
 import style from './Packlist.module.scss'
 import {SliderComponent} from "./SliderComponent";
 import {TableCards} from "./TableCards";
-import {NavLink, useSearchParams} from "react-router-dom";
+import {Navigate, NavLink, useSearchParams} from "react-router-dom";
 import AddEditPackList from "../modalPages/packModal/AddEditPackList";
 import {RemovePackCard} from "../modalPages/RemovePackCard";
 import {setMyOrAllCards} from "../../../bll/reducers/app";
@@ -25,6 +25,7 @@ import {ResetFilter} from "./ResetFilter";
 export const PackList = () => {
     const dispatch = useAppDispatch()
     const status = useAppSelector(state => state.app.status)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const sortPacks = useAppSelector(state => state.packList.sortPacks)
     const searchValue = useAppSelector(state => state.packList.searchValue)
     const pageCount = useAppSelector(state => state.packList.pageCount)
@@ -49,7 +50,7 @@ export const PackList = () => {
     useEffect(() => {
         dispatch(setMyOrAllCards({value: 'all'}))
     }, [])
-    
+
     useEffect(() => {
         setMax(maxCardsCount)
     }, [maxCardsCount])
@@ -116,6 +117,10 @@ export const PackList = () => {
 
     const addPack = () => {
         setOpenModalAddPack(!openModalAddPack)
+    }
+
+    if (!isLoggedIn) {
+        return <Navigate to={'/login'}/>
     }
 
     return (

@@ -6,8 +6,8 @@ import Button from "../../common/components/commonButton/Button";
 import {logOutTC} from "../../../bll/reducers/auth";
 import userPhoto from "../../common/assets/images/userPhoto.png"
 import {EditName} from "./EditName";
-import {setNewNameTC} from "../../../bll/reducers/profile";
-import {ChangeAvatar} from "./ChangeAvatar";
+import {setNewAvatarTC, setNewNameTC} from "../../../bll/reducers/profile";
+import {ChangeAvatar} from "../../common/components/changeImage/ChangeAvatar";
 import {Preloader} from "../../common/components/preloader/Preloader";
 
 
@@ -24,6 +24,11 @@ export const Profile = () => {
     const setNewNameHandler = useCallback((newName: string) => {
         dispatch(setNewNameTC(newName))
     }, [user.name])
+
+    const setNewAvatarHandler = useCallback((base64: string | ArrayBuffer | null) => {
+        dispatch(setNewAvatarTC(base64))
+    }, [user.name])
+
 
     const photo = user.avatar == null ? userPhoto : user.avatar
 
@@ -48,7 +53,7 @@ export const Profile = () => {
                                 alt={'img avatar'} className={style.userPhoto}
                                 src={photo}
                             />
-                            <ChangeAvatar/>
+                            <ChangeAvatar callBack={setNewAvatarHandler}/>
                             <div className={style.cardsCounts}>
                                 Number of cards: {user.publicCardPacksCount}
                             </div>
