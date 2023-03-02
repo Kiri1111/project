@@ -13,7 +13,9 @@ const initialState = {
     page: 1,
     pageCount: 10,
     searchValue: '',
-    sortPacks: '0updated'
+    sortPacks: '0updated',
+
+
 } as ResponsePackType
 
 export const packList = (state: InitialStatePackListType = initialState, action: PackListActionsType) => {
@@ -26,7 +28,7 @@ export const packList = (state: InitialStatePackListType = initialState, action:
                 maxCardsCount: action.payload.data.maxCardsCount,
                 minCardsCount: action.payload.data.minCardsCount,
                 page: action.payload.data.page,
-                pageCount: action.payload.data.pageCount
+                pageCount: action.payload.data.pageCount,
             }
         case 'PACK-LIST/SET-PACK':
             return {...state, cardPacks: [action.payload.pack, ...state.cardPacks]}
@@ -170,7 +172,7 @@ export const setPackTC = (text: string): RootThunkType => async (dispatch) => {
     }
 }
 
-export const setMyPackTC = (text: string): RootThunkType => async (dispatch, getState) => {
+export const setMyPackTC = (text: string): RootThunkType => async (dispatch) => {
     dispatch(setAppStatus({status: 'loading'}))
     try {
         const response = await packApi.addPack(text);

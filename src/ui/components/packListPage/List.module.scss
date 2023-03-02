@@ -1,9 +1,11 @@
 .td {
   border-bottom: 1px solid #ddd;
   font-size: 14px;
-  padding: 3px;
+  //padding: 3px;
   max-width: 300px;
   max-height: 10px;
+  text-align: left;
+  padding-left: 20px;
 
   .icons {
     display: flex;

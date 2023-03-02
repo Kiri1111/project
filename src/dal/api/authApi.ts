@@ -49,6 +49,7 @@ export type CardPacksType = {
     shots: number
     type: string
     updated: string
+    deckCover: string
 }
 
 export type ResponsePackType = {
@@ -60,6 +61,8 @@ export type ResponsePackType = {
     pageCount: number  //количество элементов на странице
     searchValue: string
     sortPacks: string
+    deckCover?: string | null
+
 }
 
 export type ResponseType = {

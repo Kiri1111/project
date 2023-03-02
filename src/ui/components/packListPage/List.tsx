@@ -5,6 +5,7 @@ import update from "../../common/assets/images/update.png"
 import del from "../../common/assets/images/delete.png"
 import {useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
+import noImage from "../../common/assets/images/noImageAavailable.svg.png";
 
 type ListPropsType = {
     list: CardPacksType
@@ -25,12 +26,17 @@ export const List: FC<ListPropsType> = ({
     const updatePack = (id: string, name: string) => {
         callBack(id, name);
     }
-
+    const label = list.deckCover == null ? noImage : list.deckCover
 
     return (<>
 
             <tr>
                 <td className={style.td}>
+                    <img
+                        style={{width: '30px', height: '30px', paddingRight: '20px'}}
+                        alt={'icon label'}
+                        src={label}
+                    />
                     {list.name}
                 </td>
                 <td className={style.td}>
@@ -58,7 +64,6 @@ export const List: FC<ListPropsType> = ({
                                 </div>
                             </div>
                     }
-
                 </td>
             </tr>
         </>
