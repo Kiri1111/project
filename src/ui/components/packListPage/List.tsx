@@ -32,6 +32,7 @@ export const List: FC<ListPropsType> = ({
 
             <tr>
                 <td className={style.td}>
+
                     <img
                         style={{width: '30px', height: '30px', paddingRight: '20px'}}
                         alt={'icon label'}

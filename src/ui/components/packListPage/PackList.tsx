@@ -71,6 +71,7 @@ export const PackList = () => {
         })
     }, [debouncedValue])
 
+
     useEffect(() => {
         dispatch(setCardsPacksTC())
     }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
