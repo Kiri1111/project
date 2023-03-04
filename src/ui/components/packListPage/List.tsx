@@ -4,7 +4,6 @@ import style from "./List.module.scss"
 import update from "../../common/assets/images/update.png"
 import del from "../../common/assets/images/delete.png"
 import {useAppSelector} from "../../../hooks/redux";
-import {Preloader} from "../../common/components/preloader/Preloader";
 import noImage from "../../common/assets/images/noImageAavailable.svg.png";
 
 type ListPropsType = {
@@ -19,12 +18,14 @@ export const List: FC<ListPropsType> = ({
                                             deleteHandler
                                         }) => {
 
-    const status = useAppSelector(state => state.app.status)
+    const userId = useAppSelector(state => state.profile._id)
 
     const label = list.deckCover == null ? noImage : list.deckCover
 
-    return (<>
+    const viewButtons = list.user_id === userId
 
+    return (
+        <>
             <tr>
                 <td className={style.td}>
 
@@ -47,9 +48,8 @@ export const List: FC<ListPropsType> = ({
 
                 <td className={style.td}>
                     {
-                        status === 'loading'
-                            ? <Preloader width={'15px'}/>
-                            : <div className={style.icons}>
+                        viewButtons
+                            ? <div className={style.icons}>
                                 <div onClick={() => updateHandler(list)}>
                                     <img style={{width: '15px'}} src={update} alt={'update'}/>
                                 </div>
@@ -57,6 +57,7 @@ export const List: FC<ListPropsType> = ({
                                     <img src={del} alt={'delete'} style={{width: '15px'}}/>
                                 </div>
                             </div>
+                            : null
                     }
                 </td>
             </tr>
