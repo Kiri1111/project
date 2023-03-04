@@ -54,6 +54,7 @@ export const ChangeAvatar: FC<PropsType> = ({callBack}) => {
                             className={style.inputFile}
                             id="file"
                             name="file"
+                            style={{display: 'none'}}
                             type="file"
                             onChange={(e: ChangeEvent<HTMLInputElement>) => setFile(e?.target.files)}
                         />

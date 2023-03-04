@@ -16,6 +16,7 @@ import {PackList} from "./ui/components/packListPage/PackList";
 import {Footer} from "./ui/components/footer/Footer";
 import {MyPacks} from "./ui/components/MyPacks";
 import {ErrorSnackbar} from "./ui/common/components/errorSnackBar/ErrorSnackbar";
+import {InputTypeFile} from "./ui/common/components/inputTypeFile/InputFile";
 
 
 export const App = () => {

@@ -61,7 +61,7 @@ export type ResponsePackType = {
     pageCount: number  //количество элементов на странице
     searchValue: string
     sortPacks: string
-    deckCover?: string | null
+    deckCover?: string
 
 }
 

@@ -3,10 +3,9 @@ import TemplateModal from '../../../common/components/templateModal/TemplateModa
 import Checkbox from '../../../common/components/commonCheckbox/Checkbox';
 import {FormControl, FormControlLabel, FormLabel, TextField, Typography, Stack} from '@mui/material';
 import Button from '../../../common/components/commonButton/Button'
-import {useAppDispatch} from "../../../../hooks/redux";
-import {setMyPackTC, setPackTC} from "../../../../bll/reducers/packList";
-import label from '../../../common/assets/images/noImageAavailable.svg.png'
-import {ChangeAvatar} from "../../../common/components/changeImage/ChangeAvatar";
+import {useAppDispatch, useAppSelector} from "../../../../hooks/redux";
+import {setDeckCoverAC, setMyPackTC, setPackTC} from "../../../../bll/reducers/packList";
+import {InputTypeFile} from "../../../common/components/inputTypeFile/InputFile";
 
 type AddEditPackListType = {
     text?: string
@@ -18,6 +17,7 @@ type AddEditPackListType = {
 const AddEditPackList: React.FC<AddEditPackListType> = ({myOrAllCards, openModal, setOpenModal, text}) => {
 
     const dispatch = useAppDispatch()
+    const uploadCover = useAppSelector(state => state.packList.deckCover)
 
     const [checked, setChecked] = useState(true);
     const [inputValue, setInputValue] = useState('');
@@ -28,18 +28,19 @@ const AddEditPackList: React.FC<AddEditPackListType> = ({myOrAllCards, openModal
         setInputValue(e.target.value);
     };
 
-    const handleSave = (base64?: string | ArrayBuffer | null) => {
+    const setImageBase64 = (base64: string) => {
+        dispatch(setDeckCoverAC(base64))
+    }
+
+    const handleSave = () => {
         handleClose();
         if (myOrAllCards === 'all') {
-            if (base64) {
-                dispatch(setPackTC(inputValue, base64))
-            } else {
-                dispatch(setPackTC(inputValue))
-            }
+            dispatch(setPackTC(inputValue))
         } else {
             dispatch(setMyPackTC(inputValue))
         }
     }
+
 
     return (
         <TemplateModal open={openModal} handleClose={handleClose}>
@@ -48,15 +49,13 @@ const AddEditPackList: React.FC<AddEditPackListType> = ({myOrAllCards, openModal
                 <hr style={{width: '100%'}}/>
                 <div>
                     <span>Cover</span>
-
-                    <ChangeAvatar callBack={handleSave}/>
-
+                    <InputTypeFile callBack={setImageBase64}/>
                 </div>
 
                 <img
                     style={{padding: '20px', width: '120px', height: '120px', paddingRight: '20px'}}
                     alt={'icon label'}
-                    src={label}
+                    src={uploadCover}
                 />
                 <FormLabel>Name pack</FormLabel>
                 <TextField

@@ -4,6 +4,7 @@ import {setAppError, setAppStatus} from "./app";
 import {setIsInitialized} from "./auth";
 import {packApi} from "../../dal/api/PackApi";
 import {handleServerAppError} from "../../utils/errorUtil";
+import label from '../../ui/common/assets/images/noImageAavailable.svg.png'
 
 const initialState = {
     cardPacks: [],
@@ -14,6 +15,7 @@ const initialState = {
     pageCount: 10,
     searchValue: '',
     sortPacks: '0updated',
+    deckCover: label
 
 
 } as ResponsePackType
@@ -50,6 +52,8 @@ export const packList = (state: InitialStatePackListType = initialState, action:
             return {...state, cardPacks: state.cardPacks.filter(pack => pack._id !== action.payload.id)}
         case "PACK-LIST/MIN-MAX-PACK-QUANTITY":
             return {...state, minCardsCount: action.payload.min, maxCardsCount: action.payload.max}
+        case "PACK-LIST/SET-DECK-COVER":
+            return {...state, deckCover: action.payload.imgBase64}
         default:
             return state
     }
@@ -100,6 +104,10 @@ export const removePackAC = (id: string) => ({
 export const setMinMaxCardsQuantityAC = (min: number, max: number) => ({
     type: 'PACK-LIST/MIN-MAX-PACK-QUANTITY',
     payload: {min, max}
+} as const)
+export const setDeckCoverAC = (imgBase64: string) => ({
+    type: 'PACK-LIST/SET-DECK-COVER',
+    payload: {imgBase64}
 } as const)
 
 //-------------thunks-----------------
@@ -157,10 +165,11 @@ export const setMyCardsPacksTC = (): RootThunkType => async (dispatch, getState)
     }
 }
 
-export const setPackTC = (text: string, deckCover?: string | ArrayBuffer | null): RootThunkType => async (dispatch) => {
+export const setPackTC = (text: string, deckCover?: string | ArrayBuffer | null): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
+    const cover = getState().packList.deckCover
     try {
-        const response = await packApi.addPack(text, deckCover);
+        const response = await packApi.addPack(text, cover);
         if (response.statusText === 'Created') {
             dispatch(setCardsPacksTC())
         } else {
@@ -246,3 +255,4 @@ export type PackListActionsType =
     | ReturnType<typeof setUpdatePackAC>
     | ReturnType<typeof removePackAC>
     | ReturnType<typeof setMinMaxCardsQuantityAC>
+    | ReturnType<typeof setDeckCoverAC>
