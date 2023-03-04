@@ -21,6 +21,7 @@ import AddEditPackList from "../modalPages/packModal/AddEditPackList";
 import {RemovePackCard} from "../modalPages/RemovePackCard";
 import {setMyOrAllCards} from "../../../bll/reducers/app";
 import {ResetFilter} from "./ResetFilter";
+import {UpdatePackCard} from "../modalPages/UpdatePackCard";
 
 export const PackList = () => {
     const dispatch = useAppDispatch()
@@ -45,6 +46,7 @@ export const PackList = () => {
     const debounceMax = useDebounce(max, 1000)
     const [openModalAddPack, setOpenModalAddPack] = useState(false);
     const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
+    const [openModalUpdatePack, setOpenModalUpdatePack] = useState(false);
     const [currentList, setCurrentList] = useState<CardPacksType>()
 
     useEffect(() => {
@@ -76,24 +78,29 @@ export const PackList = () => {
         dispatch(setCardsPacksTC())
     }, [sortPacks, searchValue, pageCount, page, debounceMin, debounceMax])
 
-    const updatePack = useCallback((id: string, name: string) => {
-        dispatch(updatePackTC(id, name));
-    }, [])
 
     const remPack = useCallback((id: string) => {
         dispatch(removePackTC(id))
     }, [])
 
-    const testHandler = (list: CardPacksType) => {
+    const updatePack = (id: string, title: string) => {
+        dispatch(updatePackTC(id, title))
+    }
+
+    const deleteHandler = (list: CardPacksType) => {
         setOpenModalRemovePack(true)
+        setCurrentList(list)
+    }
+    const updateHandler = (list: CardPacksType) => {
+        setOpenModalUpdatePack(true)
         setCurrentList(list)
     }
 
     const finalPackList = cardPacks.cardPacks.map((el: CardPacksType) => {
             return <List
-                testHandler={testHandler}
+                updateHandler={updateHandler}
+                deleteHandler={deleteHandler}
                 key={el._id}
-                callBack={updatePack}
                 list={el}
             />
         }
@@ -166,6 +173,14 @@ export const PackList = () => {
                     openModal={openModalRemovePack}
                     setOpenModal={setOpenModalRemovePack}
                     removeCallBack={remPack}
+                />
+            }
+            {
+                openModalUpdatePack && <UpdatePackCard
+                    list={currentList}
+                    openModal={openModalUpdatePack}
+                    setOpenModal={setOpenModalUpdatePack}
+                    updateCallBack={updatePack}
                 />
             }
 

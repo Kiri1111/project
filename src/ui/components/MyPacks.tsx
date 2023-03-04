@@ -48,10 +48,6 @@ export const MyPacks = () => {
         dispatch(setMyCardsPacksTC())
     }, [sortPacks, searchValue, pageCount, page])
 
-    const updatePack = useCallback((id: string, name: string) => {
-        dispatch(updatePackTC(id, name));
-    }, [])
-
     const remPack = useCallback((id: string) => {
         dispatch(removePackTC(id))
     }, [])
@@ -63,9 +59,10 @@ export const MyPacks = () => {
 
     const finalPackList = cardPacks.map((el: CardPacksType) => <List
         key={el._id}
-        callBack={updatePack}
         list={el}
-        testHandler={testHandler}
+        deleteHandler={testHandler}
+        updateHandler={() => {
+        }}
     />)
 
     const onChangePagination = (newPage: number, newCount: number) => {

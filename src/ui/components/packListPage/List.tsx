@@ -9,23 +9,18 @@ import noImage from "../../common/assets/images/noImageAavailable.svg.png";
 
 type ListPropsType = {
     list: CardPacksType
-    callBack: (id: string, name: string) => void
-    testHandler: (list: any) => void
+    deleteHandler: (list: CardPacksType) => void
+    updateHandler: (list: CardPacksType) => void
 }
 
 export const List: FC<ListPropsType> = ({
-
+                                            updateHandler,
                                             list,
-                                            callBack,
-                                            testHandler
+                                            deleteHandler
                                         }) => {
 
     const status = useAppSelector(state => state.app.status)
 
-
-    const updatePack = (id: string, name: string) => {
-        callBack(id, name);
-    }
     const label = list.deckCover == null ? noImage : list.deckCover
 
     return (<>
@@ -38,7 +33,7 @@ export const List: FC<ListPropsType> = ({
                         alt={'icon label'}
                         src={label}
                     />
-                    {list.name}
+                    {list.name.slice(0, 12)}
                 </td>
                 <td className={style.td}>
                     {list.cardsCount}
@@ -55,12 +50,10 @@ export const List: FC<ListPropsType> = ({
                         status === 'loading'
                             ? <Preloader width={'15px'}/>
                             : <div className={style.icons}>
-                                <div onClick={() => {
-                                    updatePack(list._id, 'Hello my friend')
-                                }}>
+                                <div onClick={() => updateHandler(list)}>
                                     <img style={{width: '15px'}} src={update} alt={'update'}/>
                                 </div>
-                                <div onClick={() => testHandler(list)}>
+                                <div onClick={() => deleteHandler(list)}>
                                     <img src={del} alt={'delete'} style={{width: '15px'}}/>
                                 </div>
                             </div>

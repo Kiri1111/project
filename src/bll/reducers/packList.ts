@@ -45,7 +45,11 @@ export const packList = (state: InitialStatePackListType = initialState, action:
         case "PACK-LIST/UPDATE-PACK":
             return {
                 ...state, cardPacks: state.cardPacks.map(pack => {
-                    return pack._id === action.payload.pack._id ? {...pack, name: action.payload.pack.name} : pack
+                    return pack._id === action.payload.pack._id ? {
+                        ...pack,
+                        name: action.payload.pack.name,
+                        deckCover: action.payload.pack.deckCover
+                    } : pack
                 })
             }
         case "PACK-LIST/REMOVE-PACK":
@@ -105,6 +109,7 @@ export const setMinMaxCardsQuantityAC = (min: number, max: number) => ({
     type: 'PACK-LIST/MIN-MAX-PACK-QUANTITY',
     payload: {min, max}
 } as const)
+
 export const setDeckCoverAC = (imgBase64: string) => ({
     type: 'PACK-LIST/SET-DECK-COVER',
     payload: {imgBase64}
@@ -198,11 +203,13 @@ export const setMyPackTC = (text: string): RootThunkType => async (dispatch) => 
     }
 }
 
-export const updatePackTC = (_id: string, name: string): RootThunkType => async (dispatch) => {
+export const updatePackTC = (_id: string, name: string): RootThunkType => async (dispatch, getState) => {
     dispatch(setAppStatus({status: 'loading'}))
+    const cover = getState().packList.deckCover
     try {
-        const response = await packApi.updatePack(_id, name);
+        const response = await packApi.updatePack(_id, name, cover);
         if (response.status === 200) {
+            console.log(response)
             dispatch(setUpdatePackAC(response.data.updatedCardsPack))
         } else {
             dispatch(setAppError({error: 'Network Error'}));
@@ -231,6 +238,7 @@ export const removePackTC = (_id: string): RootThunkType => async (dispatch, get
                 dispatch(setMyCardsPacksTC())
             } else {
                 dispatch(setAppError({error: 'Network Error'}))
+                dispatch(setDeckCoverAC(''))
             }
         }
     } catch (e: any) {

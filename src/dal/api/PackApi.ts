@@ -16,11 +16,12 @@ export const packApi = {
             }
         })
     },
-    updatePack(_id: string, name: string) {
+    updatePack(_id: string, name: string, avatar: string | undefined) {
         return instance.put<UpdatePackType>('cards/pack', {
             cardsPack: {
                 _id: _id,
-                name: name
+                name: name,
+                deckCover: avatar
             }
         });
     },
