@@ -18,6 +18,7 @@ import {List} from "./packListPage/List";
 import AddEditPackList from "./modalPages/packModal/AddEditPackList";
 import {RemovePackCard} from "./modalPages/RemovePackCard";
 import {setMyOrAllCards} from "../../bll/reducers/app";
+import {UpdatePackCard} from "./modalPages/UpdatePackCard";
 
 export const MyPacks = () => {
     const dispatch = useAppDispatch()
@@ -35,6 +36,7 @@ export const MyPacks = () => {
     const [openModalAddPack, setOpenModalAddPack] = useState(false);
     const [openModalRemovePack, setOpenModalRemovePack] = useState(false);
     const [currentList, setCurrentList] = useState<CardPacksType>()
+    const [openModalUpdatePack, setOpenModalUpdatePack] = useState(false);
 
     useEffect(() => {
         dispatch(setMyOrAllCards({value: 'my'}))
@@ -57,12 +59,20 @@ export const MyPacks = () => {
         setCurrentList(list)
     }
 
+    const updateHandler = (list: CardPacksType) => {
+        setOpenModalUpdatePack(true)
+        setCurrentList(list)
+    }
+
+    const updatePack = (id: string, title: string) => {
+        dispatch(updatePackTC(id, title))
+    }
+
     const finalPackList = cardPacks.map((el: CardPacksType) => <List
         key={el._id}
         list={el}
         deleteHandler={testHandler}
-        updateHandler={() => {
-        }}
+        updateHandler={updateHandler}
     />)
 
     const onChangePagination = (newPage: number, newCount: number) => {
@@ -116,6 +126,15 @@ export const MyPacks = () => {
                     removeCallBack={remPack}
                 />
             }
+            {
+                openModalUpdatePack && <UpdatePackCard
+                    list={currentList}
+                    openModal={openModalUpdatePack}
+                    setOpenModal={setOpenModalUpdatePack}
+                    updateCallBack={updatePack}
+                />
+            }
+
 
         </div>
     )

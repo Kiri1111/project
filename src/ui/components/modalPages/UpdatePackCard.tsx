@@ -56,6 +56,8 @@ export const UpdatePackCard: React.FC<UpdatePackType> = ({updateCallBack, openMo
                     margin="normal"
                     value={inputValue}
                     onChange={handleChange}
+                    placeholder={'Maximum 15 characters'}
+
                 />
                 <Stack direction="row" spacing={12}>
                     <Button title='Cancel' onClickCallBack={handleClose}/>

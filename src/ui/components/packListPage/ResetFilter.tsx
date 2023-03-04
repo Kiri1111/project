@@ -13,7 +13,8 @@ export const ResetFilter = () => {
 
     return (
         <div onClick={onClickHandler}>
-            <img style={{width: '30px'}} src={iconResetFilter} alt={'reset filter'}/>
+            <img style={{width: '30px', boxShadow: '5px 5px 30px lightgray'}} src={iconResetFilter}
+                 alt={'reset filter'}/>
         </div>
     );
 };

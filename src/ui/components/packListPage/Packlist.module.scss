@@ -20,11 +20,15 @@
       background: #9A8665;
       border-radius: 50px;
       margin-left: 5px;
-
+      
       .link {
         text-decoration: none;
         color: #FFFFFF;
       }
+    }
+
+    .divLink:hover {
+      opacity: 80%;
     }
   }
 

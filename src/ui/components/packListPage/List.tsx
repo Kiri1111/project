@@ -34,7 +34,7 @@ export const List: FC<ListPropsType> = ({
                         alt={'icon label'}
                         src={label}
                     />
-                    {list.name.slice(0, 12)}
+                    {list.name.slice(0, 15)}
                 </td>
                 <td className={style.td}>
                     {list.cardsCount}

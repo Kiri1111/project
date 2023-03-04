@@ -63,6 +63,7 @@ const AddEditPackList: React.FC<AddEditPackListType> = ({myOrAllCards, openModal
                     margin="normal"
                     value={inputValue}
                     onChange={handleChange}
+                    placeholder={'Maximum 15 characters'}
                 />
                 <FormControlLabel label={'Private pack'} control={<Checkbox
                     checked={checked} onChangeChecked={checkedCallBack}
