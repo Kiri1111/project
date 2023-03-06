@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import TemplateModal from '../../../common/components/templateModal/TemplateModal';
 import Button from '../../../common/components/commonButton/Button';
 import { useFormik } from "formik";
+import InputLoadFile from '../../../common/components/inputLoadFile/InputLoadFile';
 
 
 
@@ -14,19 +15,23 @@ type AddEditCardModalType = {
 const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = useCallback(() => setOpen(true), []);
-  const handleClose = useCallback(() => setOpen(false), []);
 
   const formik = useFormik({
     initialValues: {
       question: '',
       answer: '',
-      select: 'Text',
+      select: '',
     },
     onSubmit: () => {
       handleClose();
     }
   });
+
+  const handleOpen = useCallback(() => setOpen(true), []);
+  const handleClose = useCallback(() => { 
+    setOpen(false)
+    formik.resetForm()
+  }, []);
 
   return (
     <TemplateModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
@@ -38,16 +43,18 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
           value={formik.values.select}
           onChange={(event: SelectChangeEvent) => formik.setFieldValue('select', event.target.value)}
         >
-          <MenuItem value={'Text'}>Text</MenuItem>
-          <MenuItem value={'Number'}>Number</MenuItem>
+          <MenuItem value={'text'}>Text</MenuItem>
+          <MenuItem value={'image'}>Image</MenuItem>
         </Select>
-        <FormLabel>Question</FormLabel>
-        <TextField
-          type='text'
-          size='small'
-          margin="normal"
-          {...formik.getFieldProps('question')}
-        />
+        {formik.values.select === 'image'
+          ? <InputLoadFile />
+          : <><FormLabel>Question</FormLabel>
+            <TextField
+              type='text'
+              size='small'
+              margin="normal"
+              {...formik.getFieldProps('question')}
+            /></>}
         <FormLabel>Answer</FormLabel>
         <TextField
           type='text'

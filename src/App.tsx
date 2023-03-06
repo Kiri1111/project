@@ -47,7 +47,7 @@ export const App = () => {
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
             </Routes>
-            <DeletePack/>
+            <AddEditCard text={'Add new Card'}/>
             <div>
                 <Footer/>
             </div>
