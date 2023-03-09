@@ -1,18 +1,25 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import Button from '../commonButton/Button'
-// import { Button } from '@mui/material';
 import { Input } from '../commonInput/Input'
+import userPhoto from '../../assets/images/userPhoto.png';
 
-const InputLoadFile = () => {
+
+// type InputLoadFileType = {
+//     questionImg?: string
+// } 
+
+
+const InputLoadFile: React.FC = () => {
+
+    const [questionImg, setQuestionImg] = useState('');
 
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length) {
             const file = e.target.files[0]
-            console.log('file: ', file)
-            
+            console.log(file)
             if (file.size < 4000000) {
                 convertFileToBase64(file, (file64: string) => {
-                    console.log('file64: ', file64)
+                    setQuestionImg(file64);
                 })
             } else {
                 console.error('Error: ', 'Файл слишком большого размера')
@@ -22,21 +29,27 @@ const InputLoadFile = () => {
 
     const convertFileToBase64 = (file: File, callBack: (value: string) => void) => {
         const reader = new FileReader();
+        reader.readAsDataURL(file)
         reader.onloadend = () => {
             const file64 = reader.result as string
             callBack(file64)
         }
-        reader.readAsDataURL(file)
     }
 
     return (
-        <label style={{ position: 'relative', display: 'inline-block'}}>
-            <Input type="file"
-                onChange={uploadHandler}
-                style={{display: 'block', opacity: '0', position: 'absolute', width: '100%', height: '100%', cursor: 'pointer'}}
-            />
-            <Button style={{width: '100%'}} title='upload file' onClickCallBack={() => {}}/>
-        </label>
+        <div style={{width: '100%', paddingTop: '10px'}}>
+            <div style={{textAlign: 'center'}}>
+                <img style={{width: '80px', height: '80px'}} src={questionImg || userPhoto} alt="photo icon" />
+            </div>
+            <label style={{ position: 'relative', display: 'block' }}>
+                <Input type="file"
+                    onChange={uploadHandler}
+                    style={{ display: 'block', opacity: '0', position: 'absolute', width: '100%', height: '100%', cursor: 'pointer' }}
+                />
+                <Button style={{ width: '100%' }} title='upload file' onClickCallBack={() => { }} />
+            </label>
+        </div>
+
     )
 }
 

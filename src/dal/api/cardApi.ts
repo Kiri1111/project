@@ -60,6 +60,14 @@ export const cardApi = {
             }
         });
     },
+    updateQuestionImg(_id: string, questionImg: string) {
+        return instance.put('cards/card', {
+            params: {
+                _id,
+                questionImg
+            }
+        })
+    },
     removeCard(id: string) {
         return instance.delete(`cards/card?id=${id}`);
     },

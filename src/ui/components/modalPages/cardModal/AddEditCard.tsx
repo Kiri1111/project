@@ -21,6 +21,7 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
       question: '',
       answer: '',
       select: '',
+      questionImg: '',
     },
     onSubmit: () => {
       handleClose();
@@ -28,6 +29,7 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({ text }) => {
   });
 
   const handleOpen = useCallback(() => setOpen(true), []);
+  
   const handleClose = useCallback(() => { 
     setOpen(false)
     formik.resetForm()
