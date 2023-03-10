@@ -33,7 +33,7 @@ export const PackList = () => {
     const minCardsCount = useAppSelector(state => state.packList.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packList.maxCardsCount)
     const myOrAllCards = useAppSelector(state => state.app.myOrAllCards)
-    console.log(myOrAllCards)
+
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [value, setValue] = useState<string>('')

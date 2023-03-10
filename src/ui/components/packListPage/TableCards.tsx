@@ -5,6 +5,7 @@ import {PaginationComponent} from "./Pagination";
 import {RequestStatusType} from "../../../bll/reducers/app";
 import style from "./TableCards.module.scss"
 
+
 type TableCardsPropsType = {
     sortPacks: string
     status: RequestStatusType

@@ -1,42 +1,38 @@
-import {
-    FormControl,
-    FormLabel,
-    TextField,
-    Typography,
-    Stack,
-    Select,
-    MenuItem,
-    SelectChangeEvent
-} from '@mui/material';
-import React, {useCallback} from 'react';
+import {FormControl, FormLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField, Typography} from '@mui/material';
+import React from 'react';
 import TemplateModal from '../../../common/components/templateModal/TemplateModal';
 import Button from '../../../common/components/commonButton/Button';
 import {useFormik} from "formik";
+import {useAppDispatch} from "../../../../hooks/redux";
+import {addCardTC} from "../../../../bll/reducers/cards";
 
 
 type AddEditCardModalType = {
+    isVisible:boolean
+    close: () => void
     text?: string
+    cardId: string | undefined
 }
 
 
-const AddEditCard: React.FC<AddEditCardModalType> = ({text}) => {
-
-    const [open, setOpen] = React.useState(false);
-    const handleClose = useCallback(() => setOpen(false), []);
-
+const AddEditCard: React.FC<AddEditCardModalType> = ({isVisible,cardId, close, text}) => {
+    const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
             question: '',
             answer: '',
             select: 'Text',
         },
-        onSubmit: () => {
-            handleClose();
+        onSubmit: values => {
+            dispatch(addCardTC({...values, cardsPack_id: cardId ?? ''}))
+            close();
         }
     });
 
+
+
     return (
-        <TemplateModal open={open} handleClose={handleClose}>
+        <TemplateModal open={isVisible} handleClose={close}>
             <FormControl>
                 <Typography variant="h5">{text}</Typography>
                 <FormLabel>Choose a question format</FormLabel>
@@ -63,8 +59,8 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({text}) => {
                     {...formik.getFieldProps('answer')}
                 />
                 <Stack direction="row" spacing={12}>
-                    <Button title='cansel' onClickCallBack={handleClose}/>
-                    <Button title='save' onClickCallBack={formik.handleSubmit}/>
+                    <Button title='cancel' onClickCallBack={close}/>
+                    <Button title='save'  type={'submit'} onClickCallBack={formik.handleSubmit}/>
                 </Stack>
             </FormControl>
         </TemplateModal>

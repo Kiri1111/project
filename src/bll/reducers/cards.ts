@@ -1,6 +1,6 @@
 import {RootThunkType} from "../store/store";
-import {cardApi, ResponseCardType} from "../../dal/api/cardApi";
-import {setAppStatus} from "./app";
+import {cardApi, CardPostType, ResponseCardType} from "../../dal/api/cardApi";
+import {setAppError, setAppStatus} from "./app";
 import {handleServerAppError} from "../../utils/errorUtil";
 
 const initialState = {
@@ -18,14 +18,15 @@ export const userPackList = (state: InitialStatePackListType = initialState, act
         case "GET-USER-PACKS":
             return {
                 ...state,
-                cards:action.cards.cards,
-                packUserId:action.cards.packUserId,
-                page:action.cards.page,
-                pageCount:action.cards.pageCount,
-                cardsTotalCount:action.cards.cardsTotalCount,
-                maxGrade:action.cards.maxGrade,
-                minGrade:action.cards.minGrade
+                cards: action.cards.cards,
+                packUserId: action.cards.packUserId,
+                page: action.cards.page,
+                pageCount: action.cards.pageCount,
+                cardsTotalCount: action.cards.cardsTotalCount,
+                maxGrade: action.cards.maxGrade,
+                minGrade: action.cards.minGrade
             }
+
         default:
             return state
     }
@@ -38,7 +39,7 @@ export const getUserPacksAC = (cards: ResponseCardType) => {
     }
 }
 
-export const getUserPacksTC = (userId: string | undefined): RootThunkType => async (dispatch) => {
+export const getUserPacksTC = (userId: string | undefined): RootThunkType => async dispatch => {
     dispatch(setAppStatus({status: 'loading'}))
     try {
         const res = await cardApi.getCards(userId)
@@ -53,9 +54,38 @@ export const getUserPacksTC = (userId: string | undefined): RootThunkType => asy
 }
 
 
+export const removeCardTC = (id: string): RootThunkType => async (dispatch, getState) => {
+    dispatch(setAppStatus({status: 'loading'}))
+    try {
+        const response = await cardApi.removeCard(id);
+        if (response.status === 200) {
+           /* dispatch(getUserPacksTC(id))*/
+        } else {
+            dispatch(setAppError({error: 'Network Error'}))
+        }
+    } catch (e: any) {
+        handleServerAppError(e, dispatch)
+    } finally {
+        dispatch(setAppStatus({status: 'succeeded'}))
+    }
+}
+
+export const addCardTC = (card: CardPostType): RootThunkType => async (dispatch) => {
+    try {
+        const res = await cardApi.addCard(card)
+        if (res.status === 201) {
+            dispatch(getUserPacksTC(card.cardsPack_id))
+        }
+    } catch (e: any) {
+        handleServerAppError(e, dispatch)
+    } finally {
+        dispatch(setAppStatus({status: 'succeeded'}))
+    }
+}
+
 //-----types----
 type InitialStatePackListType = typeof initialState
 
-export type CardsListActionsType =
-    ReturnType<typeof getUserPacksAC>
+
+export type CardsListActionsType = ReturnType<typeof getUserPacksAC>
 

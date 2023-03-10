@@ -4,6 +4,7 @@ import {Input} from "../../common/components/commonInput/Input";
 import Button from "../../common/components/commonButton/Button";
 import Checkbox from "../../common/components/commonCheckbox/Checkbox";
 import {useAppSelector} from "../../../hooks/redux";
+import AddEditCard from "../modalPages/cardModal/AddEditCard";
 
 export const Demo = () => {
     const error = useAppSelector(state => state.app.error)

@@ -16,6 +16,7 @@ import {PackList} from "./ui/components/packListPage/PackList";
 import {Footer} from "./ui/components/footer/Footer";
 import {MyPacks} from "./ui/components/MyPacks";
 import {ErrorSnackbar} from "./ui/common/components/errorSnackBar/ErrorSnackbar";
+import CardsPage from "./ui/components/cardsPage/cardsPage";
 import LearnPage from "./ui/components/learnPage/learnPage";
 
 
@@ -50,7 +51,9 @@ export const App = () => {
                 <Route path={'/recoveryPassword'} element={<RecoveryPassword/>}/>
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
-                <Route path={`/learn/:id`} element={<LearnPage/>}/>
+                <Route path={`/cards/:id`} element={<CardsPage/>}/>
+                <Route path={'/learn'} element={<LearnPage/>}/>
+
             </Routes>
 
             <div>

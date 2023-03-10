@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import style from "../learnPage/learnPage.module.css"
+import style from "../cardsPage/cardsPage.module.css"
 import loop from "../../common/assets/images/loop.png"
 
 export const Debounce: FC<any> = ({value, setValue}) => {

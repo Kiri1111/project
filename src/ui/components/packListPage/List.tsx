@@ -3,6 +3,7 @@ import {CardPacksType} from "../../../dal/api/authApi";
 import style from "./List.module.scss"
 import update from "../../common/assets/images/update.png"
 import del from "../../common/assets/images/delete.png"
+import learn from "../../common/assets/images/learn.png"
 import {useAppSelector} from "../../../hooks/redux";
 import {Preloader} from "../../common/components/preloader/Preloader";
 import {NavLink} from "react-router-dom";
@@ -21,17 +22,13 @@ export const List: FC<ListPropsType> = ({
                                         }) => {
 
     const status = useAppSelector(state => state.app.status)
-
-
     const updatePack = (id: string, name: string) => {
         callBack(id, name);
     }
-
-
     return (<>
             <tr>
                 <td className={style.td}>
-                    <NavLink to={`/learn/${list._id}`}>{list.name}</NavLink>
+                    <NavLink to={`/cards/${list._id}`}>{list.name}</NavLink>
                 </td>
                 <td className={style.td}>
                     {list.cardsCount}
@@ -48,6 +45,10 @@ export const List: FC<ListPropsType> = ({
                         status === 'loading'
                             ? <Preloader width={'15px'}/>
                             : <div className={style.icons}>
+                                <div>
+                                   <NavLink to={'/learn'} ><img src={learn} alt={"learn"} style={{width: '50px'}}/>
+                                   </NavLink>
+                                </div>
                                 <div onClick={() => {
                                     updatePack(list._id, 'Hello my friend')
                                 }}>
@@ -56,6 +57,7 @@ export const List: FC<ListPropsType> = ({
                                 <div onClick={() => testHandler(list)}>
                                     <img src={del} alt={'delete'} style={{width: '15px'}}/>
                                 </div>
+
                             </div>
                     }
 

@@ -39,17 +39,26 @@ type RequestFetchCard = {
     page?: number
     pageCount?: number
 }
+export type CardPostType = {
+        cardsPack_id: string
+        question?: string
+        answer?: string
+        grade?: number
+        shots?: number
+        answerImg?: string
+        questionImg?: string
+        questionVideo?: string
+        answerVideo?: string
+}
 
 
 export const cardApi = {
     getCards(id:string|undefined) {
         return instance.get<ResponseCardType>(`cards/card?cardsPack_id=${id}`)
     },
-    addCard(card: RequestAddType) {
+    addCard(card:CardPostType) {
         return instance.post('cards/card', {
-            params: {
-                card: card
-            }
+           card
         })
     },
     updateCard(id: string, question: string) {
