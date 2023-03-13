@@ -1,5 +1,5 @@
 import {RootThunkType} from "../store/store";
-import {cardApi, CardPostType, ResponseCardType} from "../../dal/api/cardApi";
+import {cardApi, CardPostType, CardType,  ResponseCardType} from "../../dal/api/cardApi";
 import {setAppError, setAppStatus} from "./app";
 import {handleServerAppError} from "../../utils/errorUtil";
 
@@ -73,9 +73,17 @@ export const removeCardTC = (id: string): RootThunkType => async (dispatch, getS
 export const addCardTC = (card: CardPostType): RootThunkType => async (dispatch) => {
     try {
         const res = await cardApi.addCard(card)
-        if (res.status === 201) {
             dispatch(getUserPacksTC(card.cardsPack_id))
-        }
+    } catch (e: any) {
+        handleServerAppError(e, dispatch)
+    } finally {
+        dispatch(setAppStatus({status: 'succeeded'}))
+    }
+}
+export const updateCardTC = (card:CardType) :RootThunkType=> async (dispatch) => {
+    try {
+        const res = await cardApi.updateCard(card)
+            dispatch(getUserPacksTC(card.cardsPack_id))
     } catch (e: any) {
         handleServerAppError(e, dispatch)
     } finally {
@@ -83,6 +91,15 @@ export const addCardTC = (card: CardPostType): RootThunkType => async (dispatch)
     }
 }
 
+export const gradeCardTC = (card: {card_id:string, grade: number}) : RootThunkType => async (dispatch) => {
+    try {
+        const res = await cardApi.gradeCard(card)
+    }  catch (e: any) {
+    handleServerAppError(e, dispatch)
+} finally {
+    dispatch(setAppStatus({status: 'succeeded'}))
+}
+}
 //-----types----
 type InitialStatePackListType = typeof initialState
 

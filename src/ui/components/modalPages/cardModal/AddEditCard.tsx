@@ -4,18 +4,21 @@ import TemplateModal from '../../../common/components/templateModal/TemplateModa
 import Button from '../../../common/components/commonButton/Button';
 import {useFormik} from "formik";
 import {useAppDispatch} from "../../../../hooks/redux";
-import {addCardTC} from "../../../../bll/reducers/cards";
+import {addCardTC, updateCardTC} from "../../../../bll/reducers/cards";
+import {CardType} from "../../../../dal/api/cardApi";
 
 
 type AddEditCardModalType = {
     isVisible:boolean
     close: () => void
     text?: string
-    cardId: string | undefined
+    packId?: string | undefined
+    userId?:string | undefined
+    dataEditCard?:CardType | undefined
 }
 
 
-const AddEditCard: React.FC<AddEditCardModalType> = ({isVisible,cardId, close, text}) => {
+const AddEditCard: React.FC<AddEditCardModalType> = ({isVisible,packId, userId,close, text,dataEditCard}) => {
     const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
@@ -24,7 +27,13 @@ const AddEditCard: React.FC<AddEditCardModalType> = ({isVisible,cardId, close, t
             select: 'Text',
         },
         onSubmit: values => {
-            dispatch(addCardTC({...values, cardsPack_id: cardId ?? ''}))
+            if (!dataEditCard) {
+                dispatch(addCardTC({...values, cardsPack_id: packId ?? ''}))
+            } else {
+                dispatch(updateCardTC({...values,_id:dataEditCard._id,cardsPack_id: packId,user_id:userId ?? ''}))
+            }
+
+
             close();
         }
     });

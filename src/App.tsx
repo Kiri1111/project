@@ -52,7 +52,7 @@ export const App = () => {
                 <Route path={'/profile'} element={<Profile/>}/>
                 <Route path={'/registration'} element={<Registration/>}/>
                 <Route path={`/cards/:id`} element={<CardsPage/>}/>
-                <Route path={'/learn'} element={<LearnPage/>}/>
+                <Route path={`/learn/:id`} element={<LearnPage/>}/>
 
             </Routes>
 

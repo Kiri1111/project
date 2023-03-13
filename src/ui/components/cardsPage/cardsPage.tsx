@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import style from "./cardsPage.module.css";
-import {NavLink, useParams} from "react-router-dom";
+import {Navigate, NavLink, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {getUserPacksTC, removeCardTC} from "../../../bll/reducers/cards";
+import {getUserPacksTC, removeCardTC, updateCardTC} from "../../../bll/reducers/cards";
 import Button from "../../common/components/commonButton/Button";
 import {Debounce} from "../packListPage/Debounce";
 import {Rate} from 'antd';
@@ -11,6 +11,8 @@ import {CardPacksType} from "../../../dal/api/authApi";
 import trash from "../../common/assets/images/trash.png"
 import pencil from "../../common/assets/images/pencil.png"
 import {CardType} from "../../../dal/api/cardApi";
+import LearnPage from "../learnPage/learnPage";
+
 
 const CardsPage = () => {
     const params = useParams();
@@ -27,20 +29,28 @@ const CardsPage = () => {
     }, [])
 
     const [value, setValue] = useState<string>('')
-
+    const [openLearnPage , setOpenLearnPage] = useState<boolean>(false)
     const [openModalAddCard, setOpenModalAddCard] = useState(false);
-
+    const [dataEditCard,setEditCard]=useState<CardType>()
     const closeModal = useCallback(() => setOpenModalAddCard(false), [])
+
+
+
+    const removeCard = useCallback((cardId: string) => {
+        dispatch(removeCardTC(cardId))
+        dispatch(getUserPacksTC(id))
+    }, [])
 
     const addCard =()=> {
         setOpenModalAddCard(true)
 
     }
-    const removeCard = useCallback((cardId: string) => {
-        dispatch(removeCardTC(cardId))
-        dispatch(getUserPacksTC(id))
-    }, [])
-    console.log(cards)
+
+    const showModalForEditCard=(el:CardType)=>{
+        setOpenModalAddCard(true)
+        setEditCard(el)
+    }
+
 
     return (
         <div className={style.container}>
@@ -49,7 +59,11 @@ const CardsPage = () => {
             </div>
             <div className={style.headBlock}>
                 {cardPacks.map((el: CardPacksType) => el._id === id ? <h4>{el.name}</h4> : '')}
-                {my_id === packUserId ? <Button title={'Add new card'} onClickCallBack={addCard}/> : <></>}
+                {my_id === packUserId ? <Button title={'Add new card'} onClickCallBack={()=>addCard()}/> :
+                    <NavLink to={`/learn/${id}`}>
+                        <Button title={'Learn to pack'} onClickCallBack={()=>{setOpenLearnPage(true)}}/>
+                        </NavLink>
+                }
             </div>
             <div className={style.searchBlock}>
                 <Debounce setValue={setValue} value={value}/>
@@ -78,16 +92,16 @@ const CardsPage = () => {
                         <div onClick={()=>removeCard(el._id)}>
                             <img src={trash} alt={"delete"} style={{width:"20px"}}/>
                         </div>
-                        <div >
+                        <div onClick={()=>showModalForEditCard(el)}>
                             <img src={pencil} alt={"pencil"} style={{width:"20px"}} />
                         </div>
                         </div>
                     </td>
-
                 </tr>))}
                 </tbody>
             </table>
-            <AddEditCard isVisible={openModalAddCard} close={closeModal} cardId={id} />
+            <AddEditCard isVisible={openModalAddCard} close={closeModal} packId={id} userId={packUserId} dataEditCard={dataEditCard} />
+
         </div>
     );
 };

@@ -46,7 +46,7 @@ export const List: FC<ListPropsType> = ({
                             ? <Preloader width={'15px'}/>
                             : <div className={style.icons}>
                                 <div>
-                                   <NavLink to={'/learn'} ><img src={learn} alt={"learn"} style={{width: '50px'}}/>
+                                   <NavLink to={'/learn'}><img src={learn} alt={"learn"} style={{width: '50px'}}/>
                                    </NavLink>
                                 </div>
                                 <div onClick={() => {
@@ -57,10 +57,8 @@ export const List: FC<ListPropsType> = ({
                                 <div onClick={() => testHandler(list)}>
                                     <img src={del} alt={'delete'} style={{width: '15px'}}/>
                                 </div>
-
                             </div>
                     }
-
                 </td>
             </tr>
         </>

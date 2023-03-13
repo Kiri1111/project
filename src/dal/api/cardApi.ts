@@ -3,14 +3,17 @@ import {instance} from './authApi';
 
 export type CardType = {
     _id: string
-    cardsPack_id: string
-    user_id: string
+    cardsPack_id?: string | undefined
+    user_id?: string
     answer?: string
     question?: string
     grade?: number
     shots?: number
     created?: string
     updated?: string
+    type?: string
+    rating?: number
+    /*more_id?: string*/
     answerImg?: string
     questionImg?: string
     questionVideo?: string
@@ -40,36 +43,40 @@ type RequestFetchCard = {
     pageCount?: number
 }
 export type CardPostType = {
-        cardsPack_id: string
-        question?: string
-        answer?: string
-        grade?: number
-        shots?: number
-        answerImg?: string
-        questionImg?: string
-        questionVideo?: string
-        answerVideo?: string
+    cardsPack_id: string
+    question?: string
+    answer?: string
+    grade?: number
+    shots?: number
+    answerImg?: string
+    questionImg?: string
+    questionVideo?: string
+    answerVideo?: string
 }
-
+/*export type CardUpdateType = {
+    _id: string,
+    question: string
+}*/
 
 export const cardApi = {
-    getCards(id:string|undefined) {
+    getCards(id: string | undefined) {
         return instance.get<ResponseCardType>(`cards/card?cardsPack_id=${id}`)
     },
-    addCard(card:CardPostType) {
+    addCard(card: CardPostType) {
         return instance.post('cards/card', {
-           card
+            card
         })
     },
-    updateCard(id: string, question: string) {
+    updateCard(card: CardType) {
         return instance.put('cards/card', {
-            params: {
-                _id: id,
-                question
-            }
+            card
         });
     },
     removeCard(id: string) {
         return instance.delete(`cards/card?id=${id}`);
     },
+    gradeCard(card: {card_id:string, grade: number}) {
+        return instance.put('cards/grade', card)
+    }
 }
+
