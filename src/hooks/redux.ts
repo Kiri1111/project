@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { TypedUseSelectorHook, useDispatch } from "react-redux";
+import {useSelector} from "react-redux";
+import {TypedUseSelectorHook, useDispatch} from "react-redux";
 import {AppThunkDispatch, AppRootStateType} from "../bll/store/store";
 
 
